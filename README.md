@@ -79,7 +79,7 @@ root/
    ```
 2. Start the React Native development server:
    ```bash
-   npx react-native start
+   npm start
    ```
 
 ### Backend
