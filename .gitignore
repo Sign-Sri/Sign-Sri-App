@@ -23,6 +23,12 @@ __pycache__/
 *.env
 *.env.*
 
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+
 # Miscellaneous
 .DS_Store
 Thumbs.db
