@@ -1,26 +1,28 @@
-# Dependencies
-**/node_modules/
-**/venv/
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
 
-# Environment variables
-**/.env
-
-# Build files
-**/build/
-**/dist/
-**/.expo/
-**/web-build/
-
-# Logs
-**/*.log
-
-# System files
-.DS_Store
-
-# IDE
-.vscode/
-.idea/
+# React Native
+*.log
+*.lock
+*.tmp
+*.temp
+*.swp
+*.swo
+*.DS_Store
+.expo/
+.expo-shared/
 
 # Python
-**/__pycache__/
-**/*.pyc
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+*.env.*
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
