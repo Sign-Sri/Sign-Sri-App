@@ -4,7 +4,7 @@ import React from 'react'
 const SignLanguagePhraseBookScreen = () => {
   return (
     <View>
-      <Text>SignLanguagePhraseBookScreen</Text>
+      <Text>Sign Language Phrasebook Screen</Text>
     </View>
   )
 }

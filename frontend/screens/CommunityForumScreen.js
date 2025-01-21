@@ -4,7 +4,7 @@ import React from 'react'
 const CommunityForumScreen = () => {
   return (
     <View>
-      <Text>CommunityForumScreen</Text>
+      <Text>Community Forum Screen</Text>
     </View>
   )
 }

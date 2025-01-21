@@ -4,7 +4,7 @@ import React from 'react'
 const TextToSignScreen = () => {
   return (
     <View>
-      <Text>TextToSignScreen</Text>
+      <Text>Text To Sign Screen</Text>
     </View>
   )
 }

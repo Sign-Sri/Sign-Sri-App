@@ -4,7 +4,7 @@ import React from 'react'
 const SignLanguageSchoolScreen = () => {
   return (
     <View>
-      <Text>SignLanguageSchoolScreen</Text>
+      <Text>Sign Language School Screen</Text>
     </View>
   )
 }
