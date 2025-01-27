@@ -2,12 +2,12 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import MenuScreen from './screens/MenuScreen';
-import SignToTextScreen from './screens/SignToTextScreen';
-import TextToSignScreen from './screens/TextToSignScreen';
-import SignLanguageDictionaryScreen from './screens/SignLanguageDictionaryScreen';
-import SchoolScreen from './screens/SignLanguageSchoolScreen';
-import CommunityForumScreen from './screens/CommunityForumScreen';
-import SignLanguagePhraseBookScreen from './screens/SignLanguagePhraseBookScreen';
+import SignToTextScreen from './screens/SignToText/SignToTextScreen';
+import TextToSignScreen from './screens/TextToSign/TextToSignScreen';
+import SignLanguageDictionaryScreen from './screens/SignLanguageDictionary/SignLanguageDictionaryScreen';
+import SchoolScreen from './screens/SignLanguageSchool/SignLanguageSchoolScreen';
+import CommunityForumScreen from './screens/CommunityForum/CommunityForumScreen';
+import SignLanguagePhraseBookScreen from './screens/SignLanguagePraseBook/SignLanguagePhraseBookScreen';
 
 const Stack = createStackNavigator();
 
