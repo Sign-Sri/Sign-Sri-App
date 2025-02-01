@@ -7,7 +7,7 @@ const ProgressBar = ({ progress }) => {
       <View style={styles.progressBar}>
         <View style={[styles.progressFill, { width: `${progress}%` }]} />
       </View>
-      <Text style={styles.progressText}>{progress}% Completed</Text>
+      <Text style={styles.progressText}>{Math.round(progress)}% Completed</Text>
     </View>
   );
 };
