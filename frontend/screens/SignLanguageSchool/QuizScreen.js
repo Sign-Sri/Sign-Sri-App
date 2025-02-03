@@ -371,15 +371,65 @@ const questionsByLesson = {
   '3': [
     {
       phrase: 'Hello',
-      image: require('../../assets/sign1.jpg'),
+      image: require('../../assets/Phrases/signHello.jpg'),
       question: 'What is the sign for "Hello"?',
       options: [
-        { id: '1', image: require('../../assets/sign1.jpg'), isCorrect: true },
-        { id: '2', image: require('../../assets/sign1.jpg'), isCorrect: false },
-        { id: '3', image: require('../../assets/sign1.jpg'), isCorrect: false },
+        { id: '1', image: require('../../assets/Phrases/signHello.jpg'), isCorrect: true },
+        { id: '2', image: require('../../assets/Phrases/signGoodbye.jpg'), isCorrect: false },
+        { id: '3', image: require('../../assets/Phrases/signThankYou.jpg'), isCorrect: false },
       ],
     },
-    // Add more questions for Phrases
+    {
+      phrase: 'Goodbye',
+      image: require('../../assets/Phrases/signGoodbye.jpg'),
+      question: 'What is the sign for "Goodbye"?',
+      options: [
+        { id: '1', image: require('../../assets/Phrases/signGoodbye.jpg'), isCorrect: true },
+        { id: '2', image: require('../../assets/Phrases/signHello.jpg'), isCorrect: false },
+        { id: '3', image: require('../../assets/Phrases/signThankYou.jpg'), isCorrect: false },
+      ],
+    },
+    {
+      phrase: 'Thank You',
+      image: require('../../assets/Phrases/signThankYou.jpg'),
+      question: 'What is the sign for "Thank You"?',
+      options: [
+        { id: '1', image: require('../../assets/Phrases/signThankYou.jpg'), isCorrect: true },
+        { id: '2', image: require('../../assets/Phrases/signHello.jpg'), isCorrect: false },
+        { id: '3', image: require('../../assets/Phrases/signGoodbye.jpg'), isCorrect: false },
+      ],
+    },
+    {
+      phrase: 'Yes',
+      image: require('../../assets/Phrases/signYes.jpg'),
+      question: 'What is the sign for "Yes"?',
+      options: [
+        { id: '1', image: require('../../assets/Phrases/signYes.jpg'), isCorrect: true },
+        { id: '2', image: require('../../assets/Phrases/signNo.jpg'), isCorrect: false },
+        { id: '3', image: require('../../assets/Phrases/signPlease.jpg'), isCorrect: false },
+      ],
+    },
+    {
+      phrase: 'No',
+      image: require('../../assets/Phrases/signNo.jpg'),
+      question: 'What is the sign for "No"?',
+      options: [
+        { id: '1', image: require('../../assets/Phrases/signNo.jpg'), isCorrect: true },
+        { id: '2', image: require('../../assets/Phrases/signYes.jpg'), isCorrect: false },
+        { id: '3', image: require('../../assets/Phrases/signPlease.jpg'), isCorrect: false },
+      ],
+    },
+    {
+      phrase: 'Please',
+      image: require('../../assets/Phrases/signPlease.jpg'),
+      question: 'What is the sign for "Please"?',
+      options: [
+        { id: '1', image: require('../../assets/Phrases/signPlease.jpg'), isCorrect: true },
+        { id: '2', image: require('../../assets/Phrases/signYes.jpg'), isCorrect: false },
+        { id: '3', image: require('../../assets/Phrases/signNo.jpg'), isCorrect: false },
+      ],
+    },
+    // Add more phrases as needed
   ],
 };
 
