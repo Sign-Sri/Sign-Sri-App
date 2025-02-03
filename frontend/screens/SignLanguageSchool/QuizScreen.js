@@ -445,7 +445,7 @@ const QuizScreen = ({ navigation, route }) => {
   const [showIntroduction, setShowIntroduction] = useState(true);
 
   const progress = ((currentQuestion + 1) / questions.length) * 100;
-
+  const questionType = lessonId === '1' ? 'letter' : lessonId === '2' ? 'number' : 'phrase';
   const handleAnswer = (isCorrect) => {
     if (isCorrect) {
       setScore(score + 1);
@@ -475,7 +475,7 @@ const QuizScreen = ({ navigation, route }) => {
       {showIntroduction ? (
         <View style={styles.introContainer}>
           <Text style={styles.introText}>
-            This is the sign for "{questions[currentQuestion].phrase}":
+          {`This is the sign for "${questions[currentQuestion][questionType]}":`}
           </Text>
           <View style={styles.imageContainer}>
             <Image source={questions[currentQuestion].image} style={styles.signImage} />
