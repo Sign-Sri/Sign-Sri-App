@@ -6,10 +6,22 @@ const LessonScreen = ({ route, navigation }) => {
 
   // Fetch lesson content based on lessonId
   const lessonContent = {
-    id: '1',
-    title: 'Alphabet',
-    content: 'Learn the sign language alphabet...',
-  };
+    '1': {
+      id: '1',
+      title: 'Alphabet',
+      content: 'Learn the sign language alphabet...',
+    },
+    '2': {
+      id: '2',
+      title: 'Numbers',
+      content: 'Learn the sign language numbers...',
+    },
+    '3': {
+      id: '3',
+      title: 'Phrases',
+      content: 'Learn common sign language phrases...',
+    },
+  }[lessonId];
 
   return (
     <View style={styles.container}>
@@ -17,7 +29,7 @@ const LessonScreen = ({ route, navigation }) => {
       <Text style={styles.content}>{lessonContent.content}</Text>
       <Button
         title="Take Quiz"
-        onPress={() => navigation.navigate('Quiz')}
+        onPress={() => navigation.navigate('Quiz', { lessonId })}
       />
     </View>
   );
