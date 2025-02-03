@@ -384,9 +384,9 @@ const questionsByLesson = {
       image: require('../../assets/Phrases/signGoodbye.jpg'),
       question: 'What is the sign for "Goodbye"?',
       options: [
-        { id: '1', image: require('../../assets/Phrases/signGoodbye.jpg'), isCorrect: true },
+        { id: '1', image: require('../../assets/Phrases/signThankYou.jpg'), isCorrect: false },
         { id: '2', image: require('../../assets/Phrases/signHello.jpg'), isCorrect: false },
-        { id: '3', image: require('../../assets/Phrases/signThankYou.jpg'), isCorrect: false },
+        { id: '3', image: require('../../assets/Phrases/signGoodbye.jpg'), isCorrect: true },
       ],
     },
     {
@@ -404,8 +404,8 @@ const questionsByLesson = {
       image: require('../../assets/Phrases/signYes.jpg'),
       question: 'What is the sign for "Yes"?',
       options: [
-        { id: '1', image: require('../../assets/Phrases/signYes.jpg'), isCorrect: true },
-        { id: '2', image: require('../../assets/Phrases/signNo.jpg'), isCorrect: false },
+        { id: '1', image: require('../../assets/Phrases/signNo.jpg'), isCorrect: false },
+        { id: '2', image: require('../../assets/Phrases/signYes.jpg'), isCorrect: true },
         { id: '3', image: require('../../assets/Phrases/signPlease.jpg'), isCorrect: false },
       ],
     },
@@ -474,15 +474,21 @@ const QuizScreen = ({ navigation, route }) => {
       <ProgressBar progress={progress} />
       {showIntroduction ? (
         <View style={styles.introContainer}>
-          <Text style={styles.introText}>This is the sign for "{questions[currentQuestion].letter || questions[currentQuestion].number || questions[currentQuestion].phrase}":</Text>
-          <Image source={questions[currentQuestion].image} style={styles.signImage} />
+          <Text style={styles.introText}>
+            This is the sign for "{questions[currentQuestion].phrase}":
+          </Text>
+          <View style={styles.imageContainer}>
+            <Image source={questions[currentQuestion].image} style={styles.signImage} />
+          </View>
           <TouchableOpacity style={styles.nextButton} onPress={() => setShowIntroduction(false)}>
             <Text style={styles.nextButtonText}>Next</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <>
-          <Text style={styles.counter}>Question {currentQuestion + 1} of {questions.length}</Text>
+          <Text style={styles.counter}>
+            Question {currentQuestion + 1} of {questions.length}
+          </Text>
           <Text style={styles.question}>{questions[currentQuestion].question}</Text>
           <View style={styles.optionsContainer}>
             {questions[currentQuestion].options.map((option) => (
@@ -498,7 +504,7 @@ const QuizScreen = ({ navigation, route }) => {
           </View>
           {showFeedback && (
             <View style={styles.feedbackContainer}>
-              <Text style={[styles.feedbackText, { color: isCorrect ? 'green' : 'red' }]}> 
+              <Text style={[styles.feedbackText, { color: isCorrect ? 'green' : 'red' }]}>
                 {isCorrect ? 'Correct! 🎉' : 'Incorrect! 😢'}
               </Text>
               {showTryAgain && (
@@ -516,17 +522,57 @@ const QuizScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: '#fff' },
+
   introContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   introText: { fontSize: 20, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  signImage: { width: 150, height: 150, marginBottom: 20 },
+  
+  imageContainer: { 
+    width: '100%', 
+    alignItems: 'center', 
+    marginBottom: 20 
+  },
+
+  signImage: { 
+    width: '90%',  
+    height: 250, 
+    resizeMode: 'contain' 
+  },
+
   nextButton: { backgroundColor: '#007bff', padding: 12, borderRadius: 8 },
   nextButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
+  
   counter: { fontSize: 16, color: '#666', marginBottom: 10, textAlign: 'center' },
   question: { fontSize: 20, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  optionsContainer: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 20 },
-  option: { padding: 10, backgroundColor: '#f0f0f0', borderRadius: 8 },
-  optionImage: { width: 100, height: 100 },
-  feedbackContainer: { marginTop: 20, padding: 10, backgroundColor: '#fff', borderRadius: 8, alignItems: 'center' },
+
+  optionsContainer: { 
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    flexWrap: 'wrap', 
+    gap: 10, 
+    marginBottom: 20 
+  },
+
+  option: { 
+    padding: 10, 
+    backgroundColor: '#f0f0f0', 
+    borderRadius: 8, 
+    alignItems: 'center',
+  },
+
+  optionImage: { 
+    width: 120, 
+    height: 120, 
+    resizeMode: 'contain' 
+  },
+
+  feedbackContainer: { 
+    marginTop: 20, 
+    padding: 10, 
+    backgroundColor: '#fff', 
+    borderRadius: 8, 
+    alignItems: 'center' 
+  },
+
   feedbackText: { fontSize: 18, fontWeight: 'bold' },
   tryAgainButton: { marginTop: 10, backgroundColor: 'red', padding: 10, borderRadius: 8 },
   tryAgainText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
