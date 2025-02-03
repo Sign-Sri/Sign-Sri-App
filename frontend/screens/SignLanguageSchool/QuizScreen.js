@@ -281,7 +281,7 @@ const questionsByLesson = {
       image: require('../../assets/sign1.jpg'),
       question: 'What is the sign for "1"?',
       options: [
-        { id: '1', image: require('../../assets/sign1.jpg'), isCorrect: false },
+        { id: '1', image: require('../../assets/sign2.jpg'), isCorrect: false },
         { id: '2', image: require('../../assets/sign3.jpg'), isCorrect: false },
         { id: '3', image: require('../../assets/sign1.jpg'), isCorrect: true },
       ],
