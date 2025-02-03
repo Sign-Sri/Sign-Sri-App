@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 // Dummy data for lessons
 const lessons = [
@@ -9,6 +9,7 @@ const lessons = [
     level: 'Beginner',
     completed: true,
     videoUrl: 'https://example.com/alphabet-video', // Example video URL
+    gif: require('../../assets/FirstPage/Alphabet.png'), // Path to Alphabet GIF
   },
   {
     id: '2',
@@ -16,18 +17,21 @@ const lessons = [
     level: 'Beginner',
     completed: false,
     videoUrl: 'https://example.com/numbers-video', // Example video URL
+    gif: require('../../assets/FirstPage/Numbers.png'), // Path to Numbers GIF
   },
   {
     id: '3',
-    title: 'Greetings',
+    title: 'Phrases',
     level: 'Beginner',
     completed: false,
-    videoUrl: 'https://example.com/greetings-video', // Example video URL
+    videoUrl: 'https://example.com/phrases-video', // Example video URL
+    gif: require('../../assets/FirstPage/Phrases.png'), // Path to Phrases GIF
   },
 ];
 
-const LessonCard = ({ title, level, completed, onPress }) => (
+const LessonCard = ({ title, level, completed, gif, onPress }) => (
   <TouchableOpacity onPress={onPress} style={styles.card}>
+    <Image source={gif} style={styles.gif} />
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.level}>{level}</Text>
     {completed && <Text style={styles.completed}>✔️ Completed</Text>}
@@ -40,6 +44,7 @@ const SignLanguageSchoolScreen = ({ navigation }) => {
       title={item.title}
       level={item.level}
       completed={item.completed}
+      gif={item.gif}
       onPress={() => navigation.navigate('Lesson', { lessonId: item.id })}
     />
   );
@@ -70,6 +75,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: '#f0f0f0',
     borderRadius: 8,
+    alignItems: 'center',
+  },
+  gif: {
+    width: 100, // Adjust width as needed
+    height: 100, // Adjust height as needed
+    marginBottom: 10,
   },
   title: { fontSize: 18, fontWeight: 'bold' },
   level: { fontSize: 14, color: '#666' },
