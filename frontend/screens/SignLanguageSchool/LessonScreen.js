@@ -21,6 +21,11 @@ const LessonScreen = ({ route, navigation }) => {
       title: 'Phrases',
       content: 'Learn common sign language phrases...',
     },
+    '4': {
+      id: '4',
+      title: 'Shapes & Colors',
+      content: 'Learn common sign language Shapes & Colors...',
+    },
   }[lessonId];
 
   return (

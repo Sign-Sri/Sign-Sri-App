@@ -368,6 +368,69 @@ const questionsByLesson = {
     },
   ],
 
+  '4': [
+    {
+      phrase: 'Hello',
+      image: require('../../assets/Phrases/signHello.jpg'),
+      question: 'What is the sign for "Hello"?',
+      options: [
+        { id: '1', image: require('../../assets/Phrases/signHello.jpg'), isCorrect: true },
+        { id: '2', image: require('../../assets/Phrases/signGoodbye.jpg'), isCorrect: false },
+        { id: '3', image: require('../../assets/Phrases/signThankYou.jpg'), isCorrect: false },
+      ],
+    },
+    {
+      phrase: 'Goodbye',
+      image: require('../../assets/Phrases/signGoodbye.jpg'),
+      question: 'What is the sign for "Goodbye"?',
+      options: [
+        { id: '1', image: require('../../assets/Phrases/signThankYou.jpg'), isCorrect: false },
+        { id: '2', image: require('../../assets/Phrases/signHello.jpg'), isCorrect: false },
+        { id: '3', image: require('../../assets/Phrases/signGoodbye.jpg'), isCorrect: true },
+      ],
+    },
+    {
+      phrase: 'Thank You',
+      image: require('../../assets/Phrases/signThankYou.jpg'),
+      question: 'What is the sign for "Thank You"?',
+      options: [
+        { id: '1', image: require('../../assets/Phrases/signThankYou.jpg'), isCorrect: true },
+        { id: '2', image: require('../../assets/Phrases/signHello.jpg'), isCorrect: false },
+        { id: '3', image: require('../../assets/Phrases/signGoodbye.jpg'), isCorrect: false },
+      ],
+    },
+    {
+      phrase: 'Yes',
+      image: require('../../assets/Phrases/signYes.jpg'),
+      question: 'What is the sign for "Yes"?',
+      options: [
+        { id: '1', image: require('../../assets/Phrases/signNo.jpg'), isCorrect: false },
+        { id: '2', image: require('../../assets/Phrases/signYes.jpg'), isCorrect: true },
+        { id: '3', image: require('../../assets/Phrases/signPlease.jpg'), isCorrect: false },
+      ],
+    },
+    {
+      phrase: 'No',
+      image: require('../../assets/Phrases/signNo.jpg'),
+      question: 'What is the sign for "No"?',
+      options: [
+        { id: '1', image: require('../../assets/Phrases/signNo.jpg'), isCorrect: true },
+        { id: '2', image: require('../../assets/Phrases/signYes.jpg'), isCorrect: false },
+        { id: '3', image: require('../../assets/Phrases/signPlease.jpg'), isCorrect: false },
+      ],
+    },
+    {
+      phrase: 'Please',
+      image: require('../../assets/Phrases/signPlease.jpg'),
+      question: 'What is the sign for "Please"?',
+      options: [
+        { id: '1', image: require('../../assets/Phrases/signPlease.jpg'), isCorrect: true },
+        { id: '2', image: require('../../assets/Phrases/signYes.jpg'), isCorrect: false },
+        { id: '3', image: require('../../assets/Phrases/signNo.jpg'), isCorrect: false },
+      ],
+    },
+    // Add more phrases as needed
+  ],
   '3': [
     {
       phrase: 'Hello',
@@ -430,6 +493,69 @@ const questionsByLesson = {
       ],
     },
     // Add more phrases as needed
+  ],
+  '4': [ // New lesson: Shapes & Colors
+    {
+      shape: 'Circle',
+      image: require('D:/SDGP/frontend/assets/Shapes & Colors/signCircle.jpg'),
+      question: 'What is the sign for "Circle"?',
+      options: [
+        { id: '1', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signCircle.jpg'), isCorrect: true },
+        { id: '2', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signSquare.jpg'), isCorrect: false },
+        { id: '3', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signTriangle.jpg'), isCorrect: false },
+      ],
+    },
+    {
+      shape: 'Square',
+      image: require('D:/SDGP/frontend/assets/Shapes & Colors/signSquare.jpg'),
+      question: 'What is the sign for "Square"?',
+      options: [
+        { id: '1', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signCircle.jpg'), isCorrect: false },
+        { id: '2', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signSquare.jpg'), isCorrect: true },
+        { id: '3', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signTriangle.jpg'), isCorrect: false },
+      ],
+    },
+    {
+      shape: 'Triangle',
+      image: require('D:/SDGP/frontend/assets/Shapes & Colors/signTriangle.jpg'),
+      question: 'What is the sign for "Triangle"?',
+      options: [
+        { id: '1', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signCircle.jpg'), isCorrect: false },
+        { id: '2', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signSquare.jpg'), isCorrect: false },
+        { id: '3', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signTriangle.jpg'), isCorrect: true },
+      ],
+    },
+    {
+      color: 'Red',
+      image: require('D:/SDGP/frontend/assets/Shapes & Colors/signRed.jpg'),
+      question: 'What is the sign for "Red"?',
+      options: [
+        { id: '1', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signRed.jpg'), isCorrect: true },
+        { id: '2', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signBlue.jpg'), isCorrect: false },
+        { id: '3', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signGreen.jpg'), isCorrect: false },
+      ],
+    },
+    {
+      color: 'Blue',
+      image: require('D:/SDGP/frontend/assets/Shapes & Colors/signBlue.jpg'),
+      question: 'What is the sign for "Blue"?',
+      options: [
+        { id: '1', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signRed.jpg'), isCorrect: false },
+        { id: '2', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signBlue.jpg'), isCorrect: true },
+        { id: '3', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signGreen.jpg'), isCorrect: false },
+      ],
+    },
+    {
+      color: 'Green',
+      image: require('D:/SDGP/frontend/assets/Shapes & Colors/signGreen.jpg'),
+      question: 'What is the sign for "Green"?',
+      options: [
+        { id: '1', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signRed.jpg'), isCorrect: false },
+        { id: '2', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signBlue.jpg'), isCorrect: false },
+        { id: '3', image: require('D:/SDGP/frontend/assets/Shapes & Colors/signGreen.jpg'), isCorrect: true },
+      ],
+    },
+    // Add more shapes and colors as needed
   ],
 };
 

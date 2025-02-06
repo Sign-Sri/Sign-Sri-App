@@ -27,6 +27,14 @@ const lessons = [
     videoUrl: 'https://example.com/phrases-video', // Example video URL
     gif: require('../../assets/FirstPage/Phrases.png'), // Path to Phrases GIF
   },
+  {
+    id: '4',
+    title: 'Shapes & Colors',
+    level: 'Beginner',
+    completed: false,
+    videoUrl: 'https://example.com/phrases-video', // Example video URL
+    gif: require('../../assets/FirstPage/Shapes & Colors.png'), // Path to Phrases GIF
+  },
 ];
 
 const LessonCard = ({ title, level, completed, gif, onPress }) => (
