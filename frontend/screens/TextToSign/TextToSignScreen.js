@@ -61,14 +61,17 @@ const TextToSignScreen = () => {
       {aslGif && (
         <View style={styles.outputContainer}>
           <Image source={aslGif} style={styles.gif} />
+
           <Text style={[styles.outputText, { color: darkMode ? '#ECF0F1' : '#2C3E50' }]}>
-            Entered Word: {text}
+            Entered Text: {text}
           </Text>
+
           <Text style={[styles.outputText, { color: darkMode ? '#ECF0F1' : '#2C3E50' }]}>
             Speed: {speed}
           </Text>
         </View>
       )}
+
     </View>
   );
 };
