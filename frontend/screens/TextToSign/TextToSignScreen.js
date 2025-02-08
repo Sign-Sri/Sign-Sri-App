@@ -1,11 +1,12 @@
-import { View, TextInput, StyleSheet, Text, Switch, Button, TouchableOpacity, Image, Modal, ScrollView } from 'react-native';
-import Slider from '@react-native-community/slider';
+import { View, TextInput, StyleSheet, Text, Button, TouchableOpacity, Image, Modal, ScrollView } from 'react-native';
+//import Slider from '@react-native-community/slider';
 import React, { useState } from 'react';
 
 const TextToSignScreen = () => {
   const [speed, setSpeed] = useState('Normal');
   const [text, setText] = useState('');
   const [aslGif, setAslGif] = useState(null);
+  const [showAlphabetPanel, setShowAlphabetPanel] = useState(false);
 
   const handleTextInputChange = (inputText) => {
     setText(inputText);
@@ -17,6 +18,60 @@ const TextToSignScreen = () => {
 
   const handleStop = () => {
     setAslGif(null);
+  };
+
+  const handleViewAlphabet = () => {
+    console.log("Alphabet Opened");
+    setShowAlphabetPanel(true);
+  };
+
+  const handleCloseAlphabetPanel = () => {
+    console.log("Close button pressed");
+    setShowAlphabetPanel(false);
+  };
+
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789'.split('');
+
+  const getImageForCharacter = (char) => {
+    switch (char) {
+      case 'a': return require('../../assets/ASLimages/a.png');
+      case 'b': return require('../../assets/ASLimages/b.png');
+      case 'c': return require('../../assets/ASLimages/c.png');
+      case 'd': return require('../../assets/ASLimages/d.png');
+      case 'e': return require('../../assets/ASLimages/e.png');
+      case 'f': return require('../../assets/ASLimages/f.png');
+      case 'g': return require('../../assets/ASLimages/g.png');
+      case 'h': return require('../../assets/ASLimages/h.png');
+      case 'i': return require('../../assets/ASLimages/i.png');
+      case 'j': return require('../../assets/ASLimages/j.png');
+      case 'k': return require('../../assets/ASLimages/k.png');
+      case 'l': return require('../../assets/ASLimages/l.png');
+      case 'm': return require('../../assets/ASLimages/m.png');
+      case 'n': return require('../../assets/ASLimages/n.png');
+      case 'o': return require('../../assets/ASLimages/o.png');
+      case 'p': return require('../../assets/ASLimages/p.png');
+      case 'q': return require('../../assets/ASLimages/q.png');
+      case 'r': return require('../../assets/ASLimages/r.png');
+      case 's': return require('../../assets/ASLimages/s.png');
+      case 't': return require('../../assets/ASLimages/t.png');
+      case 'u': return require('../../assets/ASLimages/u.png');
+      case 'v': return require('../../assets/ASLimages/v.png');
+      case 'w': return require('../../assets/ASLimages/w.png');
+      case 'x': return require('../../assets/ASLimages/x.png');
+      case 'y': return require('../../assets/ASLimages/y.png');
+      case 'z': return require('../../assets/ASLimages/z.png');
+      case '0': return require('../../assets/ASLimages/0.png');
+      case '1': return require('../../assets/ASLimages/1.png');
+      case '2': return require('../../assets/ASLimages/2.png');
+      case '3': return require('../../assets/ASLimages/3.png');
+      case '4': return require('../../assets/ASLimages/4.png');
+      case '5': return require('../../assets/ASLimages/5.png');
+      case '6': return require('../../assets/ASLimages/6.png');
+      case '7': return require('../../assets/ASLimages/7.png');
+      case '8': return require('../../assets/ASLimages/8.png');
+      case '9': return require('../../assets/ASLimages/9.png');
+      default: return null;
+    }
   };
 
   return (
@@ -49,6 +104,9 @@ const TextToSignScreen = () => {
 
       <View style={styles.buttonContainer}>
         <Button title="Play" color="#3498DB" onPress={handlePlay} />
+
+        <Button title="View Alphabet" color="#2ECC71" onPress={handleViewAlphabet} />
+
         <Button title="Stop" color="#E74C3C" onPress={handleStop} />
       </View>
 
@@ -66,11 +124,16 @@ const TextToSignScreen = () => {
         </View>
       )}
 
-      <Modal visible={showAlphabetPanel} transparent={true} animationType="slide">
+      <Modal visible={showAlphabetPanel} transparent={true} animationType="slide" onRequestClose={handleCloseAlphabetPanel}>
         <View style={styles.modalContainer}>
-          <TouchableOpacity style={styles.closeButton} onPress={handleCloseAlphabetPanel}>
+          {/* <TouchableOpacity style={styles.closeButton} onPress={handleCloseAlphabetPanel} >
             <Text style={styles.closeButtonText}>X</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+
+          <Button style={styles.closeButton} 
+            title="Close" 
+            onPress={handleCloseAlphabetPanel}
+          />
 
           <ScrollView contentContainerStyle={styles.gridContainer}>
             {alphabet.map((char, index) => (
@@ -100,7 +163,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderRadius: 8,
     fontSize: 16,
-    borderColor: '#3498DB',
+    borderColor: '#172937',
     backgroundColor: '#fff',
     color: '#2C3E50',
   },
@@ -119,13 +182,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#3498DB',
+    borderColor: '#172937',
     flex: 1,
     marginHorizontal: 5,
     alignItems: 'center',
   },
   selectedSpeedButton: {
-    backgroundColor: '#3498DB',
+    //backgroundColor: '#3498DB',
+    backgroundColor: '#79dd09',
   },
   speedButtonText: {
     color: '#3498DB',
@@ -142,7 +206,8 @@ const styles = StyleSheet.create({
   outputContainer: {
     marginTop: 30,
     padding: 20,
-    backgroundColor: '#2980B9',
+    //backgroundColor: '#2980B9',
+    backgroundColor: '#172937',
     borderRadius: 10,
     alignItems: 'center',
   },
@@ -180,21 +245,22 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     marginTop: 50,
+    paddingBottom: 50,
   },
   tile: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
     justifyContent: 'center',
     alignItems: 'center',
     margin: 5,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#3498DB',
+    borderColor: '#172937',
     backgroundColor: '#fff', 
   },
   tileImage: {
-    width: 80,
-    height: 80,
+    width: 110,
+    height: 110,
     resizeMode: 'contain',
   }
   
