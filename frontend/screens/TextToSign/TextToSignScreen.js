@@ -126,14 +126,11 @@ const TextToSignScreen = () => {
 
       <Modal visible={showAlphabetPanel} transparent={true} animationType="slide" onRequestClose={handleCloseAlphabetPanel}>
         <View style={styles.modalContainer}>
-          {/* <TouchableOpacity style={styles.closeButton} onPress={handleCloseAlphabetPanel} >
-            <Text style={styles.closeButtonText}>X</Text>
-          </TouchableOpacity> */}
 
           <Button style={styles.closeButton} 
             title="Close" 
             onPress={handleCloseAlphabetPanel}
-          />
+          />  
 
           <ScrollView contentContainerStyle={styles.gridContainer}>
             {alphabet.map((char, index) => (
