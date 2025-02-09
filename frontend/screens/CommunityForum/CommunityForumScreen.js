@@ -1,10 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput } from 'react-native'
 import React from 'react'
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 
 const CommunityForumScreen = () => {
-
+  const navigation = useNavigation();
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   
@@ -33,7 +34,7 @@ const CommunityForumScreen = () => {
         <Text style={styles.headerTitle}>Create Post</Text>
       
       // next button
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate('SortBy')}>
           <Text style={styles.nextButton}>Next</Text>
         </TouchableOpacity>
       </View>
@@ -43,11 +44,11 @@ const CommunityForumScreen = () => {
         {/* Profile Icon */}
         <View style={styles.profilePic} />
 
-        {/* User Info (Username and Friends Button in Separate Rows) */}
+        //user name
         <View style={styles.userInfo}>
           <Text style={styles.userName}>User_name</Text>
 
-          {/* Friends Button in a Separate Row */}
+          //Friends button
           <TouchableOpacity style={styles.friendsButton}>
             <Text style={styles.friendsButtonText}>Friends</Text>
           </TouchableOpacity> 

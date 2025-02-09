@@ -8,6 +8,9 @@ import SignLanguageDictionaryScreen from './screens/SignLanguageDictionary/SignL
 import SchoolScreen from './screens/SignLanguageSchool/SignLanguageSchoolScreen';
 import CommunityForumScreen from './screens/CommunityForum/CommunityForumScreen';
 import SignLanguagePhraseBookScreen from './screens/SignLanguagePraseBook/SignLanguagePhraseBookScreen';
+import PageNavigation from './screens/CommunityForum/Navigation/PageNavigation';
+import SortByScreen from './screens/CommunityForum/SortByScreen';
+
 
 const Stack = createStackNavigator();
 
@@ -22,6 +25,8 @@ const App = () => {
                 <Stack.Screen name="Phrasebook" component={SignLanguagePhraseBookScreen} />
                 <Stack.Screen name="School" component={SchoolScreen} />
                 <Stack.Screen name="CommunityForum" component={CommunityForumScreen} />
+                <Stack.Screen name="PageNavigation" component={PageNavigation} />
+                <Stack.Screen name="SortBy" component={SortByScreen}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
