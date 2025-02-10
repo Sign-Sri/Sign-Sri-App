@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import  Icon  from 'react-native-vector-icons/Ionicons';
 
 export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -7,6 +8,10 @@ export default function SignInScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Icon name="arrow-back" size={24} color="#000000" />
+      </TouchableOpacity>
       <Text style={styles.title}>Sign In</Text>
       
       <View style={styles.inputContainer}>
@@ -70,6 +75,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     marginTop: 50,
   },
+
+backButton: { 
+  alignSelf: 'flex-start',
+  marginBottom: 20,
+},
   title: {
     fontSize: 28,
     fontWeight: 'bold',

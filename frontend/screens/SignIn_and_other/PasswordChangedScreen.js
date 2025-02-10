@@ -1,9 +1,13 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import  Icon  from 'react-native-vector-icons/Ionicons';
 
 export default function PasswordChangedScreen({ navigation }) {
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+              <Icon name="arrow-back" size={24} color="#000000" />
+            </TouchableOpacity>
       <View style={styles.content}>
         <View style={styles.checkCircle}>
           <Image 
@@ -27,6 +31,10 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
+  },
+  backButton: { 
+    alignSelf: 'flex-start',
+    marginBottom: 20,
   },
   content: {
     alignItems: 'center',

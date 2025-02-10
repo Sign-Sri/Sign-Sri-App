@@ -2,6 +2,11 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
+
+
+//Import Screens
+
 import SplashScreen from './screens/SignIn_and_other/SplashScreen';
 import SignInScreen from './screens/SignIn_and_other/SignInScreen';
 import SignUpScreen from './screens/SignIn_and_other/SignUpScreen';
@@ -22,15 +27,25 @@ export default function App() {
           cardStyle: { backgroundColor: '#FFFFFF' }
         }}
       >
+        {/*Splash Screen*/}
         <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="SignIn" component={SignInScreen} />
+
+        {/*Authentication Screens*/}
+
+        <Stack.Screen name="SignIn" component={SignInScreen}/>
+
         <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+
+        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen}/>
+
         <Stack.Screen name="VerifyEmail" component={VerifyEmailScreen} />
-        <Stack.Screen name="CreatePassword" component={CreatePasswordScreen} />
+
+        <Stack.Screen name="CreatePassword" component={CreatePasswordScreen}  />
+          
         <Stack.Screen name="PasswordChanged" component={PasswordChangedScreen} />
-        
+      
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+

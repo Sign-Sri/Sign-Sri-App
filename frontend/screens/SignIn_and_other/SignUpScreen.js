@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import  Icon  from 'react-native-vector-icons/Ionicons';
 
 export default function SignUpScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');
@@ -9,6 +10,9 @@ export default function SignUpScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState(''); return (
     <ScrollView style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+              <Icon name="arrow-back" size={24} color="#000000" />
+            </TouchableOpacity>
       <Text style={styles.title}>Sign Up</Text>
       
       <TextInput
@@ -78,6 +82,10 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: '#FFFFFF',
     marginTop: 32,
+  },
+  backButton: { 
+    alignSelf: 'flex-start',
+    marginBottom: 20,
   },
   title: {
     fontSize: 28,

@@ -1,9 +1,13 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import  Icon  from 'react-native-vector-icons/Ionicons';
 
 export default function ForgotPasswordScreen({ navigation }) {
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+              <Icon name="arrow-back" size={24} color="#000000" />
+            </TouchableOpacity>
       <Text style={styles.title}>Forgot Password</Text>
       
       <Image 
@@ -24,10 +28,10 @@ export default function ForgotPasswordScreen({ navigation }) {
           <Text style={styles.optionText}>Continue With Email</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.option}>
+        
           <Image source={require('../../assets/Images/phone.jpg')} style={styles.optionIcon} />
           <Text style={styles.optionText}>Continue With Phone</Text>
-        </TouchableOpacity>
+        
       </View>
     </View>
   );
@@ -39,6 +43,10 @@ const styles = StyleSheet.create({
       padding: 24,
       backgroundColor: '#FFFFFF',
       marginTop: 32,
+    },
+    backButton: { 
+      alignSelf: 'flex-start',
+      marginBottom: 20,
     },
     title: {
       fontSize: 28,

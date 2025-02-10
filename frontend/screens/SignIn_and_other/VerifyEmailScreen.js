@@ -1,5 +1,6 @@
 import React , { useState} from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet,Image } from 'react-native';
+import  Icon  from 'react-native-vector-icons/Ionicons';
 
 export default function VerifyEmailScreen({ navigation }) {
     const [code , setCode] = useState(['','', '','']);
@@ -15,6 +16,9 @@ export default function VerifyEmailScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                    <Icon name="arrow-back" size={24} color="#000000" />
+                  </TouchableOpacity>
             <Text style={styles.title}>Verify Your Email</Text>
 
             <Image source={require('../../assets/Images/verify.jpg')} style={styles.illustration} />
@@ -51,6 +55,10 @@ const styles = StyleSheet.create({
         marginTop: 32,
        
     },
+    backButton: { 
+        alignSelf: 'flex-start',
+        marginBottom: 20,
+      },
     title: {
         fontSize: 28,
         fontWeight: 'bold',

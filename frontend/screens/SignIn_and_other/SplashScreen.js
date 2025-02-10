@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff", // Background color
   },
+ 
   iconContainer: {
     alignItems: "center",
   },
