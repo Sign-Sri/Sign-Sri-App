@@ -1,23 +1,44 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal, } from 'react-native'
 import React from 'react'
-import { useState } from 'react';
+import { useState, useRef} from 'react';
 import { useNavigation } from '@react-navigation/native';
+
 
 
 const CommunityForumScreen = () => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
-  
+  const [isFeelingModalVisible, setIsFeelingModalVisible] = useState(false);
+  const currentFeeling = useRef(null);  // Ref for the *selected* feeling
+  const [displayedFeeling, setDisplayedFeeling] = useState(null);
+
+  const feelings = [
+    { name: 'Happy', emoji: '\u{1F60A}' },
+    { name: 'Sad', emoji: '\u{1F622}' },
+    { name: 'Excited', emoji: '\u{1F606}' },
+    { name: 'Angry', emoji: '\u{1F620}' },
+    { name: 'Relaxed', emoji: '\u{1F60C}' },
+    
+  ];
+
+  const handleFeelingPress = (feeling) => {
+    currentFeeling.current = feeling;
+    setDisplayedFeeling(feeling);
+    setIsFeelingModalVisible(false);
+  };
 
     // handle the sent message with delete button
     const sendMessage = () => {
-      if (inputText.trim().length > 0) {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { id: Date.now().toString(), text: inputText }
-        ]);
-        setInputText(''); // Clear input after sending
+      if (inputText.trim().length > 0 || currentFeeling.current) {
+        const newMessage = { 
+          id: Date.now().toString(), 
+          text: inputText, 
+          feeling:currentFeeling.current, 
+        };
+    
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setInputText('');
       }
     };
 
@@ -26,6 +47,13 @@ const CommunityForumScreen = () => {
       setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== id));
     };
 
+    const removeCurrentFeeling = () => {
+      currentFeeling.current = null;  // Clear the ref
+      setDisplayedFeeling(null);
+      
+    };
+
+    
   return (
     <View style={styles.container}>
 
@@ -60,29 +88,83 @@ const CommunityForumScreen = () => {
         data={messages}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.messageContainer}>
-            <Text style={styles.messageText}>{item.text}</Text>
-            <TouchableOpacity onPress={() => deleteMessage(item.id)} style={styles.deleteButton}>
+          <View style={styles.messageOuterContainer}>
+          <View style={styles.messageRow}> {/* Row for message and delete button */}
+            <View style={styles.messageContent}>
+              <Text style={styles.messageText}>{item.text}</Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => deleteMessage(item.id)}
+              style={styles.deleteButton}
+            >
               <Text style={styles.deleteText}>Delete</Text>
             </TouchableOpacity>
           </View>
-        )}
-      />
+        </View>
+      )}
+      inverted={true}
+    /> 
+
+    {/* Current Feeling Display (outside FlatList) */}
+    {displayedFeeling && (
+        <View style={styles.currentFeelingContainer}>
+          
+            <Text style={styles.currentFeelingText}>
+            {displayedFeeling.emoji} {displayedFeeling.name}</Text>
+          
+          <TouchableOpacity
+            style={styles.removeButton} onPress={removeCurrentFeeling}>
+            <Text style={styles.removeButtonText}>Remove</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
 
       //buttons photo, video, feeling
       <View style={styles.optionsBar}>
+
         <TouchableOpacity style={styles.optionButton}>
           <Text style={styles.optionText}>Photo/Video</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionButton}>
-          <Text style={styles.optionText}>Feeling</Text>
+        <TouchableOpacity style={styles.optionButton} onPress={() => setIsFeelingModalVisible(true)}>
+          <Text style={styles.optionText}>Feeling/Activity</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.optionButton}>
           <Text style={styles.optionText}>Live</Text>
         </TouchableOpacity>
       </View>
+
+       {/* Feeling Modal */}
+      <Modal
+        visible={isFeelingModalVisible}
+        animationType="slide"
+        transparent={true} // Make background transparent
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <FlatList // Use FlatList for better performance with many feelings
+              data={feelings}
+              keyExtractor={(item) => item.name}
+              renderItem={({ item }) => (
+                <TouchableOpacity 
+                  style={styles.feelingButton}
+                  onPress={() => handleFeelingPress(item)}
+                >
+                  <Text style={styles.feelingText}>{item.emoji} {item.name}</Text>
+                </TouchableOpacity>
+              )}
+            />
+            <TouchableOpacity 
+              style={styles.closeButton}
+              onPress={() => setIsFeelingModalVisible(false)} // Close modal
+            >
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal> 
 
       // message typing bar
      <View style={styles.inputContainer}>
@@ -173,32 +255,76 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
-  // text input container
-  input: {
-    backgroundColor: '#fff',
-    padding: 15,
-    margin: 15,
-    borderRadius: 8,
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: '#ccc',
+  messageOuterContainer: {
+    marginBottom: 5,
+    marginHorizontal: 10,
   },
 
-  //message container style
-  messageContainer: {
+  messageRow: { // NEW: Row for message and delete
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'flex-start', // Align to top
     backgroundColor: '#e0e0e0',
     padding: 10,
     borderRadius: 8,
-    marginBottom: 5,
-    marginHorizontal: 10,
+  },
+
+  messageContent: {
+    flex: 1, // Allow text to expand
+    marginRight: 10,
   },
 
   //text message
   messageText: {
     fontSize: 16,
     color: '#333',
+  },
+
+  currentFeelingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
+    padding: 5,
+    borderRadius: 5,
+    marginTop: 5,
+    marginHorizontal: 10,
+  },
+
+  currentFeelingText: {
+    fontSize: 14,
+    color: 'gray',
+    marginRight: 5,
+  },
+
+
+  feelingRow: { // NEW: Row for feeling and remove
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5, // Space below message
+    marginLeft: 10, // Indent from left
+  },
+
+  feelingContainer: {
+    backgroundColor: '#f0f0f0',
+    padding: 5,
+    borderRadius: 5,
+    marginRight: 5, // Space between feeling text and remove button
+  },
+
+  feelingText: {
+    fontSize: 14,
+    color: 'gray',
+  },
+
+  removeButton: {
+    backgroundColor: '#ff6b6b',
+    paddingVertical: 3,
+    paddingHorizontal: 6,
+    borderRadius: 3,
+  },
+
+  removeButtonText: {
+    color: 'white',
+    fontSize: 12,
   },
 
    //delete button
@@ -216,6 +342,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 14,
   },
+
+
   
   //option bar container
     optionsBar: {
@@ -238,6 +366,44 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#fff',
+  },
+
+  //feeling modal container
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+  },
+
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%', // Adjust width as needed
+  },
+
+  feelingButton: {
+    padding: 10,
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+
+  feelingText: {
+    fontSize: 16,
+  },
+
+  closeButton: {
+    backgroundColor: '#007aff',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+
+  closeButtonText: {
+    color: 'white',
+    fontSize: 16,
   },
 
   //input message container style
