@@ -21,7 +21,7 @@ const SplashScreen = () => {
       {/* App Icon */}
       <View style={styles.iconContainer}>
         <Image
-          source={require("../../assets/Images/SplashLogoImage.png")} // Update this path if necessary
+          source={require("../../assets/SignIn_and_other_Images/SplashLogoImage.png")} // Update this path if necessary
           style={styles.icon}
         />
        

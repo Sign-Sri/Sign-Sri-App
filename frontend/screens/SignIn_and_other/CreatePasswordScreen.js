@@ -13,7 +13,7 @@ export default function CreatePasswordScreen({ navigation }) {
                   </TouchableOpacity>
             <Text style={styles.title}>Create New Password</Text>
 
-            <Image source={require('../../assets/Images/createPassword.jpg')} style={styles.illustration} />
+            <Image source={require('../../assets/SignIn_and_other_Images/createPassword.jpg')} style={styles.illustration} />
 
             <TextInput
                 style={styles.input}

@@ -11,7 +11,7 @@ export default function PasswordChangedScreen({ navigation }) {
       <View style={styles.content}>
         <View style={styles.checkCircle}>
           <Image 
-            source={require('../../assets/Images/confirm.jpg')}
+            source={require('../../assets/SignIn_and_other_Images/confirm.jpg')}
             style={styles.checkIcon}
           />
         </View>

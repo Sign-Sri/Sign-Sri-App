@@ -11,7 +11,7 @@ export default function ForgotPasswordScreen({ navigation }) {
       <Text style={styles.title}>Forgot Password</Text>
       
       <Image 
-        source={require('../../assets/Images/forgot.jpg')}
+        source={require('../../assets/SignIn_and_other_Images/forgot.jpg')}
         style={styles.illustration}
       />
       
@@ -24,12 +24,12 @@ export default function ForgotPasswordScreen({ navigation }) {
           style={styles.option}
           onPress={() => navigation.navigate('VerifyEmail')}
         >
-          <Image source={require('../../assets/Images/google_icon.jpg')} style={styles.optionIcon} />
+          <Image source={require('../../assets/SignIn_and_other_Images/google_icon.jpg')} style={styles.optionIcon} />
           <Text style={styles.optionText}>Continue With Email</Text>
         </TouchableOpacity>
 
         
-          <Image source={require('../../assets/Images/phone.jpg')} style={styles.optionIcon} />
+          <Image source={require('../../assets/SignIn_and_other_Images/phone.jpg')} style={styles.optionIcon} />
           <Text style={styles.optionText}>Continue With Phone</Text>
         
       </View>

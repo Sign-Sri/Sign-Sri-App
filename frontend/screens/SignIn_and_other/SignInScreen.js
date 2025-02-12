@@ -50,7 +50,7 @@ export default function SignInScreen({ navigation }) {
       <Text style={styles.orText}>Or</Text>
       <View style={styles.socialButtons}>
         <TouchableOpacity style={styles.socialButton}>
-          <Image source={require('../../assets/Images/google_icon.jpg')} style={styles.socialIcon} />
+          <Image source={require('../../assets/SignIn_and_other_Images/google_icon.jpg')} style={styles.socialIcon} />
           <Text style={styles.socialButtonText}>Continue with Google</Text>
         </TouchableOpacity>
         
