@@ -7,7 +7,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
 
 
-
+import BottomTabNavigator from "./BottomTabNavigator";
 import MenuScreen from '../MenuScreen';
 import SignToTextScreen from '../SignToText/SignToTextScreen';
 import TextToSignScreen from '../TextToSign/TextToSignScreen';
@@ -31,12 +31,8 @@ const StackNavigator = () => {
                       screenOptions={{
                         headerStyle: { 
                           backgroundColor: '#172937',
-                          paddingBottom: 20,
-                          
-                          
-                          
                         }, 
-                        headerTintColor: '#FFFFFF', // ✅ White text/icons
+                        headerTintColor: '#FFFFFF', 
                         headerTitleStyle: { 
                           fontWeight: 'bold',
                           letterSpacing: moderateScale(1),
@@ -47,6 +43,8 @@ const StackNavigator = () => {
                         
                       }}
                     >
+                        {/* Bottom Tab Navigator */}
+                        <Stack.Screen name="Main" component={BottomTabNavigator} options={{ headerShown: false }} />
                         <Stack.Screen name="Home" component={MenuScreen} />
                         <Stack.Screen name="Sign To Text" component={SignToTextScreen} />
                         <Stack.Screen name="Text To Sign" component={TextToSignScreen} />
