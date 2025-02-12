@@ -5,49 +5,50 @@ import { FontAwesome5 } from "@expo/vector-icons"; // Ensure you have this insta
 
 const MenuScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.welcomeBox}>
-         <Text style={styles.welcomeText}>Welcome to Sign ශ්‍රී</Text>
+    
+      <View style={styles.container}>
+        <View style={styles.welcomeBox}>
+          <Text style={styles.welcomeText}>Welcome to Sign ශ්‍රී</Text>
+        </View>
+
+        <View style={styles.grid}>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate("Sign To Text")}
+          >
+            <FontAwesome5 name="hands" size={moderateScale(30)} color="#73E000" />
+            <Text style={styles.cardTitle}>Sign to Text</Text>
+            <Text style={styles.cardSubtitle}>Live Translation</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate("Text To Sign")}
+          >
+            <FontAwesome5 name="comment-dots" size={moderateScale(30)} color="#73E000" />
+            <Text style={styles.cardTitle}>Text to Sign</Text>
+            <Text style={styles.cardSubtitle}>Animation Output</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate("Sign Language School")}
+          >
+            <FontAwesome5 name="graduation-cap" size={moderateScale(30)} color="#73E000" />
+            <Text style={styles.cardTitle}>Sign Language School</Text>
+            <Text style={styles.cardSubtitle}>Interactive Learning</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate("Community Forum")}
+          >
+            <FontAwesome5 name="users" size={moderateScale(30)} color="#73E000" />
+            <Text style={styles.cardTitle}>Community Forum</Text>
+            <Text style={styles.cardSubtitle}>Discussions & Q&A</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-
-      <View style={styles.grid}>
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => navigation.navigate("Sign To Text")}
-        >
-          <FontAwesome5 name="hands" size={moderateScale(30)} color="#73E000" />
-          <Text style={styles.cardTitle}>Sign to Text</Text>
-          <Text style={styles.cardSubtitle}>Live Translation</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => navigation.navigate("Text To Sign")}
-        >
-          <FontAwesome5 name="comment-dots" size={moderateScale(30)} color="#73E000" />
-          <Text style={styles.cardTitle}>Text to Sign</Text>
-          <Text style={styles.cardSubtitle}>Animation Output</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => navigation.navigate("Sign Language School")}
-        >
-          <FontAwesome5 name="graduation-cap" size={moderateScale(30)} color="#73E000" />
-          <Text style={styles.cardTitle}>Sign Language School</Text>
-          <Text style={styles.cardSubtitle}>Interactive Learning</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => navigation.navigate("Community Forum")}
-        >
-          <FontAwesome5 name="users" size={moderateScale(30)} color="#73E000" />
-          <Text style={styles.cardTitle}>Community Forum</Text>
-          <Text style={styles.cardSubtitle}>Discussions & Q&A</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
   );
 };
 
