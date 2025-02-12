@@ -70,7 +70,7 @@ const CommunityForumScreen = () => {
       // user information part
       <View style={styles.userInfoContainer}>
         {/* Profile Icon */}
-        <View style={styles.profilePic} />
+        <View style={styles.profilePic}/>
 
         //user name
         <View style={styles.userInfo}>
@@ -95,15 +95,13 @@ const CommunityForumScreen = () => {
             </View>
             <TouchableOpacity
               onPress={() => deleteMessage(item.id)}
-              style={styles.deleteButton}
-            >
+              style={styles.deleteButton}>
               <Text style={styles.deleteText}>Delete</Text>
             </TouchableOpacity>
           </View>
         </View>
       )}
-      inverted={true}
-    /> 
+      inverted={true}/> 
 
     {/* Current Feeling Display (outside FlatList) */}
     {displayedFeeling && (
@@ -150,16 +148,13 @@ const CommunityForumScreen = () => {
               renderItem={({ item }) => (
                 <TouchableOpacity 
                   style={styles.feelingButton}
-                  onPress={() => handleFeelingPress(item)}
-                >
+                  onPress={() => handleFeelingPress(item)}>
                   <Text style={styles.feelingText}>{item.emoji} {item.name}</Text>
                 </TouchableOpacity>
-              )}
-            />
+              )}/>
             <TouchableOpacity 
               style={styles.closeButton}
-              onPress={() => setIsFeelingModalVisible(false)} // Close modal
-            >
+              onPress={() => setIsFeelingModalVisible(false)}> // Close modal
               <Text style={styles.closeButtonText}>Close</Text>
             </TouchableOpacity>
           </View>
@@ -173,15 +168,13 @@ const CommunityForumScreen = () => {
           value={inputText}
           onChangeText={setInputText}
           placeholder="Type a message..."
-          multiline={true}
-        /> 
+          multiline={true}/> 
 
         // send button
         <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
           <Text style={styles.sendText}>Send</Text>
         </TouchableOpacity>
-      </View> 
-      
+      </View>       
     </View>
   );
 };
