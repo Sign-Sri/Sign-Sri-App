@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
 const MenuScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>SignSri - Menu</Text>
 
             <TouchableOpacity
                 style={styles.button}
@@ -20,20 +20,8 @@ const MenuScreen = ({ navigation }) => {
 
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate('Dictionary')}>
-                <Text style={styles.buttonText}>Sign Language Dictionary</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                style={styles.button}
                 onPress={() => navigation.navigate('School')}>
                 <Text style={styles.buttonText}>Sign Language School</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('Phrasebook')}>
-                <Text style={styles.buttonText}>Sign Language Phrasebook</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -51,23 +39,25 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#f5f5f5',
+        padding: moderateScale(10),
     },
     title: {
-        fontSize: 24,
+        fontSize: scale(24),
         fontWeight: 'bold',
-        marginBottom: 20,
+        marginBottom: verticalScale(20),
     },
     button: {
         backgroundColor: '#007BFF',
-        padding: 15,
-        marginVertical: 10,
+        paddingVertical: verticalScale(12),
+        paddingHorizontal: scale(20),
+        marginVertical: verticalScale(10),
         width: '80%',
-        borderRadius: 8,
+        borderRadius: moderateScale(8),
         alignItems: 'center',
     },
     buttonText: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: scale(16),
         fontWeight: 'bold',
     },
 });
