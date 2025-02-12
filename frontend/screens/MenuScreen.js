@@ -2,11 +2,14 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 import { FontAwesome5 } from "@expo/vector-icons"; // Ensure you have this installed
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+
 
 const MenuScreen = ({ navigation }) => {
   return (
     
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.welcomeBox}>
           <Text style={styles.welcomeText}>Welcome to Sign ශ්‍රී</Text>
         </View>
@@ -48,7 +51,7 @@ const MenuScreen = ({ navigation }) => {
             <Text style={styles.cardSubtitle}>Discussions & Q&A</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </SafeAreaView>
   );
 };
 
@@ -57,7 +60,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#f5f5f5",
-    paddingTop: verticalScale(75),
+    
   },
   welcomeBox: {
     backgroundColor: '#FFFFFF',
@@ -76,9 +79,10 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     fontSize: moderateScale(20),
-    color: '#000000',
+    color: '#172937',
     fontWeight: '500',
     letterSpacing: moderateScale(0.5),
+    fontWeight: 'bold',
 
   },
   title: {
@@ -99,7 +103,7 @@ const styles = StyleSheet.create({
   card: {
     width: scale(140),
     height: verticalScale(140),
-    backgroundColor: "#121C23",
+    backgroundColor: "#172937",
     borderRadius: moderateScale(12),
     alignItems: "center",
     justifyContent: "center",

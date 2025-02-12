@@ -2,6 +2,10 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { moderateScale } from "react-native-size-matters";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'react-native';
+
 
 
 import MenuScreen from '../MenuScreen';
@@ -11,20 +15,48 @@ import SchoolScreen from '../SignLanguageSchool/SignLanguageSchoolScreen';
 import CommunityForumScreen from '../CommunityForum/CommunityForumScreen';
 
 
+
 const Stack = createStackNavigator();
 
 
 const StackNavigator = () => {
   return (
-    <NavigationContainer>
-            <Stack.Navigator initialRouteName="Home">
-                <Stack.Screen name="Home" component={MenuScreen} />
-                <Stack.Screen name="Sign To Text" component={SignToTextScreen} />
-                <Stack.Screen name="Text To Sign" component={TextToSignScreen} />
-                <Stack.Screen name="Sign Language School" component={SchoolScreen} />
-                <Stack.Screen name="Community Forum" component={CommunityForumScreen} />
-            </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+          <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+
+          <NavigationContainer>
+              
+                    <Stack.Navigator 
+                      initialRouteName="Home"
+                      screenOptions={{
+                        headerStyle: { 
+                          backgroundColor: '#172937',
+                          paddingBottom: 20,
+                          
+                          
+                          
+                        }, 
+                        headerTintColor: '#FFFFFF', // ✅ White text/icons
+                        headerTitleStyle: { 
+                          fontWeight: 'bold',
+                          letterSpacing: moderateScale(1),
+                          fontSize: moderateScale(25),
+                           
+                          
+                        },
+                        
+                      }}
+                    >
+                        <Stack.Screen name="Home" component={MenuScreen} />
+                        <Stack.Screen name="Sign To Text" component={SignToTextScreen} />
+                        <Stack.Screen name="Text To Sign" component={TextToSignScreen} />
+                        <Stack.Screen name="Sign Language School" component={SchoolScreen} />
+                        <Stack.Screen name="Community Forum" component={CommunityForumScreen} />
+                    </Stack.Navigator>
+                  
+          </NavigationContainer>
+    </SafeAreaProvider> 
+    
   )
 }
 

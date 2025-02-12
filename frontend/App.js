@@ -4,9 +4,14 @@ import StackNavigator from './screens/Navigation/StackNavigator';
 
 
 
+
 const App = () => {
     return (
-        <StackNavigator />
+            <StackNavigator />
+
+
+
+        
     );
 };
 
