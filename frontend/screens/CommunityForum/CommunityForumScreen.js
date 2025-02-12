@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal, } from 'react-native'
 import React from 'react'
-import { useState, useRef} from 'react';
+import { useState, useRef, useEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
-
-
+import { Camera } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
 
 const CommunityForumScreen = () => {
   const navigation = useNavigation();
@@ -12,6 +12,32 @@ const CommunityForumScreen = () => {
   const [isFeelingModalVisible, setIsFeelingModalVisible] = useState(false);
   const currentFeeling = useRef(null);  // Ref for the *selected* feeling
   const [displayedFeeling, setDisplayedFeeling] = useState(null);
+  const [hasCameraPermission, setHasCameraPermission] = useState(null);
+  const [hasMediaPermission, setHasMediaPermission] = useState(null);
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const cameraStatus = await Camera.requestCameraPermissionsAsync();
+      setHasCameraPermission(cameraStatus.status === 'granted');
+  
+      const mediaStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      setHasMediaPermission(mediaStatus.status === 'granted');
+    })();
+  }, []);
+  
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+  
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   const feelings = [
     { name: 'Happy', emoji: '\u{1F60A}' },
@@ -121,8 +147,8 @@ const CommunityForumScreen = () => {
       //buttons photo, video, feeling
       <View style={styles.optionsBar}>
 
-        <TouchableOpacity style={styles.optionButton}>
-          <Text style={styles.optionText}>Photo/Video</Text>
+        <TouchableOpacity style={styles.optionButton} onPress={pickImage}>
+          <Text style={styles.optionText}>Insert a Photo</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.optionButton} onPress={() => setIsFeelingModalVisible(true)}>
@@ -133,6 +159,13 @@ const CommunityForumScreen = () => {
           <Text style={styles.optionText}>Live</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Display the selected image */}
+      {image && (
+        <View style={styles.imageContainer}> {/* Add a style for the image container */}
+          <Image source={{ uri: image }} style={styles.pickedImage} /> {/* Add a style for the Image */}
+        </View>
+      )}
 
        {/* Feeling Modal */}
       <Modal
@@ -336,6 +369,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
+  //style for container of the image
+  imageContainer: {
+    alignItems: 'center',
+    marginTop: 10,       
+  },
+
+  //style for image component
+  pickedImage: {
+    width: 200,     
+    height: 200,         
+    resizeMode: 'contain',
+  },
 
   
   //option bar container
