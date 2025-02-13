@@ -22,16 +22,18 @@ export default function ForgotPasswordScreen({ navigation }) {
       <View style={styles.optionsContainer}>
         <TouchableOpacity 
           style={styles.option}
-          onPress={() => navigation.navigate('VerifyEmail')}
-        >
+          onPress={() => navigation.navigate('VerifyEmail')}>
           <Image source={require('../../assets/SignIn_and_other_Images/google_icon.jpg')} style={styles.optionIcon} />
           <Text style={styles.optionText}>Continue With Email</Text>
         </TouchableOpacity>
 
-        
+        <TouchableOpacity
+          style={styles.option}
+          onPress={() => navigation.navigate('VerifyEmail')}>
           <Image source={require('../../assets/SignIn_and_other_Images/phone.jpg')} style={styles.optionIcon} />
           <Text style={styles.optionText}>Continue With Phone</Text>
-        
+        </TouchableOpacity>
+
       </View>
     </View>
   );
@@ -79,7 +81,7 @@ const styles = StyleSheet.create({
     },
     optionIcon: {
       width: 24,
-      height: 24,
+      height: 25,
       marginRight: 12,
     },
     optionText: {
