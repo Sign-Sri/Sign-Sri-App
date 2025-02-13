@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal, } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal, Image } from 'react-native'
 import React from 'react'
 import { useState, useRef, useEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -37,6 +37,10 @@ const CommunityForumScreen = () => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
+  };
+
+  const deleteImage = () => {  // Function to delete the image
+    setImage(null);
   };
 
   const feelings = [
@@ -147,6 +151,16 @@ const CommunityForumScreen = () => {
       //buttons photo, video, feeling
       <View style={styles.optionsBar}>
 
+        {/* Display the selected image */}
+      {image && (
+        <View style={styles.imageContainer}> {/* Add a style for the image container */}
+          <Image source={{ uri: image }} style={styles.pickedImage} /> {/* Add a style for the Image */}
+          <TouchableOpacity style={styles.deleteImageButton} onPress={deleteImage}>  {/* Delete button */}
+            <Text style={styles.deleteImageButtonText}>Delete Image</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
         <TouchableOpacity style={styles.optionButton} onPress={pickImage}>
           <Text style={styles.optionText}>Insert a Photo</Text>
         </TouchableOpacity>
@@ -160,12 +174,7 @@ const CommunityForumScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Display the selected image */}
-      {image && (
-        <View style={styles.imageContainer}> {/* Add a style for the image container */}
-          <Image source={{ uri: image }} style={styles.pickedImage} /> {/* Add a style for the Image */}
-        </View>
-      )}
+      
 
        {/* Feeling Modal */}
       <Modal
@@ -382,11 +391,27 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 
+  //image delete button style
+  deleteImageButton: {
+    backgroundColor: '#ff6b6b',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginTop: 2, 
+  },
+
+  //image delete button text style
+  deleteImageButtonText: { 
+    color: 'white',
+    fontSize: 12,
+  },
+
   
   //option bar container
     optionsBar: {
     paddingHorizontal: 100,
     marginVertical: 5,
+    
   },
 
   //option button style
