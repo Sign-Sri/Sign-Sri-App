@@ -21,7 +21,7 @@ export default function VerifyEmailScreen({ navigation }) {
                   </TouchableOpacity>
             <Text style={styles.title}>Verify Your Email</Text>
 
-            <Image source={require('../../assets/Images/verify.jpg')} style={styles.illustration} />
+            <Image source={require('../../assets/SignIn_and_other_Images/verify.jpg')} style={styles.illustration} />
 
             <Text style={styles.description}>
                 Please Enter The 4 Digit Verification Code Sent To  {'\n'} example123@gmail.com
