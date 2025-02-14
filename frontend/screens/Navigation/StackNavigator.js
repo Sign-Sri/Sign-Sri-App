@@ -2,7 +2,7 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { moderateScale } from "react-native-size-matters";
+import { moderateScale, scale,verticalScale } from "react-native-size-matters";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
 
@@ -30,12 +30,15 @@ const StackNavigator = () => {
                       screenOptions={{
                         headerStyle: { 
                           backgroundColor: '#172937',
+                          borderBottomRightRadius:scale(100),
+                          height:verticalScale(120),
+                          
                         }, 
                         headerTintColor: '#FFFFFF', 
                         headerTitleStyle: { 
                           fontWeight: 'bold',
                           letterSpacing: moderateScale(1),
-                          fontSize: moderateScale(25),
+                          fontSize: moderateScale(22),
                            
                           
                         },
