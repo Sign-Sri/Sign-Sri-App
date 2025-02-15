@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 

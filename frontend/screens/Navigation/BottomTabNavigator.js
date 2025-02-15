@@ -32,8 +32,8 @@ const BottomTabNavigator = () => {
 
           return <FontAwesome5 name={iconName} size={moderateScale(size)} color={color} />;
         },
-        tabBarActiveTintColor: '#73E000',
-        tabBarInactiveTintColor: '#172937',
+        tabBarActiveTintColor: '#172937',
+        tabBarInactiveTintColor: '#696969',
         tabBarStyle: {
           backgroundColor: '#fff',
           borderTopWidth: 0,
