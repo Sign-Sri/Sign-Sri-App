@@ -8,16 +8,20 @@ const TextToSignScreen = () => {
   const [aslGif, setAslGif] = useState(null);
   const [showAlphabetPanel, setShowAlphabetPanel] = useState(false);
 
+  const [isPlaying, setIsPlaying] = useState(false);
+
   const handleTextInputChange = (inputText) => {
     setText(inputText);
   };
 
   const handlePlay = () => {
     setAslGif(require('../../assets/ASL_output.gif'));
+    setIsPlaying(true);
   };
 
   const handleStop = () => {
     setAslGif(null);
+    setIsPlaying(false);
   };
 
   const handleViewAlphabet = () => {
@@ -110,7 +114,7 @@ const TextToSignScreen = () => {
         <Button title="Stop" color="#E74C3C" onPress={handleStop} />
       </View>
 
-      {aslGif && (
+      {/* {aslGif && (
         <View style={styles.outputContainer}>
           <Image source={aslGif} style={styles.gif} />
 
@@ -122,15 +126,43 @@ const TextToSignScreen = () => {
             Speed: {speed}
           </Text>
         </View>
-      )}
+      )} */}
+
+      <View style={styles.outputContainer}>
+        {isPlaying ? (
+          <>
+            <Image source={aslGif} style={styles.gif} />
+            <Text style={styles.outputText}>
+              Entered Text: {text}
+            </Text>
+            <Text style={styles.outputText}>
+              Speed: {speed}
+            </Text>
+          </>
+        ) : (
+          <Text style={styles.instructionsText}>
+            To see the ASL output:
+            {"\n\n"}
+            1. Enter text in the input field above.
+            {"\n"}
+            2. Select the desired speed (Slow, Normal, Fast).
+            {"\n"}
+            3. Press the "Play" button to generate the ASL output.
+          </Text>
+        )}
+      </View>
 
       <Modal visible={showAlphabetPanel} transparent={true} animationType="slide" onRequestClose={handleCloseAlphabetPanel}>
         <View style={styles.modalContainer}>
 
-          <Button style={styles.closeButton} 
+          {/* <Button style={styles.closeButton}
             title="Close" 
             onPress={handleCloseAlphabetPanel}
-          />  
+          />   */}
+
+          <View >
+            <Button title="Close" color="#d4d8d9" onPress={handleCloseAlphabetPanel} />
+          </View>
 
           <ScrollView contentContainerStyle={styles.gridContainer}>
             {alphabet.map((char, index) => (
@@ -180,20 +212,22 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#172937',
+    backgroundColor:'#172937' ,
     flex: 1,
     marginHorizontal: 5,
     alignItems: 'center',
   },
   selectedSpeedButton: {
     //backgroundColor: '#3498DB',
-    backgroundColor: '#79dd09',
+    backgroundColor: '#172937',
+    borderColor: '#79dd09',
   },
   speedButtonText: {
-    color: '#3498DB',
+    color: '#FFFFFF',
     fontWeight: '600',
   },
   selectedSpeedButtonText: {
-    color: '#fff',
+    color: '#79dd09',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -207,6 +241,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#172937',
     borderRadius: 10,
     alignItems: 'center',
+
+    height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   outputText: {
     fontSize: 16,
@@ -219,6 +257,7 @@ const styles = StyleSheet.create({
     height: 200,
     marginBottom: 10,
   },
+
   modalContainer: {
     flex: 1,
     padding: 20,
@@ -226,17 +265,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#ECF0F1', 
   },
-  closeButton: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
-    padding: 10,
-  },
-  closeButtonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#2C3E50', 
-  },
+
   gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -259,8 +288,16 @@ const styles = StyleSheet.create({
     width: 110,
     height: 110,
     resizeMode: 'contain',
-  }
+  },
   
+  instructionsText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#ECF0F1',
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+
 });
 
 export default TextToSignScreen;
