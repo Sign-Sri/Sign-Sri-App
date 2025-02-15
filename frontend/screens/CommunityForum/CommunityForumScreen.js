@@ -15,6 +15,7 @@ const CommunityForumScreen = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasMediaPermission, setHasMediaPermission] = useState(null);
   const [image, setImage] = useState(null);
+  const [isFriendsModalVisible, setIsFriendsModalVisible] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -107,10 +108,32 @@ const CommunityForumScreen = () => {
           <Text style={styles.userName}>User_name</Text>
 
           //Friends button
-          <TouchableOpacity style={styles.friendsButton}>
+          <TouchableOpacity 
+            style={styles.friendsButton} 
+            onPress={() => setIsFriendsModalVisible(true)}
+          >
             <Text style={styles.friendsButtonText}>Friends</Text>
           </TouchableOpacity> 
         </View>
+        <Modal
+        visible={isFriendsModalVisible}
+        animationType="slide"
+        transparent={true}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Add Friends</Text>  {/* The title */}
+            <Text>This is where you'll add friend functionality.</Text> {/* Placeholder content */}
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setIsFriendsModalVisible(false)}
+            >
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       </View>
 
       // display sent message
@@ -288,6 +311,34 @@ const styles = StyleSheet.create({
   friendsButtonText: {
     color: '#fff',
     fontSize: 14,
+  },
+
+  //friends botton modal container
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center', // Center content within the modal
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  closeButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  closeButtonText: {
+    color: 'white',
   },
 
   messageOuterContainer: {
