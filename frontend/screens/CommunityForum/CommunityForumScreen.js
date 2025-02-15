@@ -16,6 +16,12 @@ const CommunityForumScreen = () => {
   const [hasMediaPermission, setHasMediaPermission] = useState(null);
   const [image, setImage] = useState(null);
   const [isFriendsModalVisible, setIsFriendsModalVisible] = useState(false);
+  const [friends, setFriends] = useState([ // Sample friend data - replace with your data
+    { id: 1, name: 'Alice'}, // Example image path
+    { id: 2, name: 'Bob'},
+    { id: 3, name: 'Charlie'},
+    // ... more friends
+  ]);
 
   useEffect(() => {
     (async () => {
@@ -123,7 +129,22 @@ const CommunityForumScreen = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Add Friends</Text>  {/* The title */}
-            <Text>This is where you'll add friend functionality.</Text> {/* Placeholder content */}
+            
+            <FlatList
+              data={friends}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <View style={styles.friendItem}> {/* Container for each friend */}
+                  <Image source={item.image} style={styles.friendImage} /> {/* Friend's image */}
+                  <Text>{item.name}</Text>
+                  <TouchableOpacity style={styles.addButton}> {/* Add button */}
+                    <Text style={styles.addButtonText}>Add</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+
+
             <TouchableOpacity
               style={styles.closeButton}
               onPress={() => setIsFriendsModalVisible(false)}
@@ -330,12 +351,40 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+    textAlign: 'center',
   },
+
+  friendItem: { // Style for the container of each friend
+    flexDirection: 'row', // Arrange image, name, and button horizontally
+    alignItems: 'center', // Vertically align them
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  friendImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+
+  addButton: {
+    backgroundColor: 'green', // Or any color you prefer
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginLeft: 'auto', // Push the button to the right
+  },
+  addButtonText: {
+    color: 'white',
+  },
+
   closeButton: {
     backgroundColor: 'blue',
     padding: 10,
     borderRadius: 5,
-    marginTop: 10,
+    marginTop: 20, // Add some top margin
+    alignItems: 'center',
   },
   closeButtonText: {
     color: 'white',
