@@ -13,6 +13,7 @@ const Stack = createStackNavigator();
 const HomeStackNavigator = () => {
   return (
     <Stack.Navigator
+      initialRouteName="Home"
       screenOptions={{
         headerStyle: {
           backgroundColor: '#172937',
@@ -28,7 +29,7 @@ const HomeStackNavigator = () => {
       }}
     >
       <Stack.Screen 
-        name="Menu" 
+        name="Home" 
         component={MenuScreen} 
         options={{ 
             title: 'Home',

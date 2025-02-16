@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { View, StyleSheet } from 'react-native'; // Import View and StyleSheet
 
 import HomeStackNavigator from './HomeStackNavigator'; // We'll create this
 import PhrasebookScreen from '../SignLanguagePraseBook/SignLanguagePhraseBookScreen'; // Create this screen
@@ -30,7 +31,12 @@ const BottomTabNavigator = () => {
             iconName = 'user';
           }
 
-          return <FontAwesome5 name={iconName} size={moderateScale(size)} color={color} />;
+          
+          return (
+            <View style={focused ? styles.activeTab : null}>
+              <FontAwesome5 name={iconName} size={moderateScale(size)} color={color} />
+            </View>
+          );
         },
         tabBarActiveTintColor: '#172937',
         tabBarInactiveTintColor: '#696969',
@@ -45,7 +51,7 @@ const BottomTabNavigator = () => {
           fontWeight: 'bold',
           marginBottom: verticalScale(5),
         },
-        headerShown: route.name !== 'Home', // Hide header only for the Home tab
+        headerShown: route.name !== 'Home', 
         headerStyle: {
           backgroundColor: '#172937',
           borderBottomRightRadius: scale(100),
@@ -71,5 +77,17 @@ const BottomTabNavigator = () => {
     </Tab.Navigator>
   );
 };
+
+// Define styles for the active tab circle
+const styles = StyleSheet.create({
+  activeTab: {
+    backgroundColor: '#D3D3D3', // Light grey color
+    borderRadius: moderateScale(20), // Circular shape
+    width: moderateScale(50), // Fixed width for the circle
+    height: moderateScale(33), // Fixed height for the circle
+    justifyContent: 'center', // Center the icon horizontally
+    alignItems: 'center', // Center the icon vertically
+  },
+});
 
 export default BottomTabNavigator;
