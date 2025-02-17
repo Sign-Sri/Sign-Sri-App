@@ -7,7 +7,7 @@ import { View, StyleSheet } from 'react-native'; // Import View and StyleSheet
 import HomeStackNavigator from './HomeStackNavigator'; // We'll create this
 import PhrasebookScreen from '../SignLanguagePraseBook/SignLanguagePhraseBookScreen'; // Create this screen
 import DictionaryScreen from '../SignLanguageDictionary/SignLanguageDictionaryScreen'; // Create this screen
-import LeaderboardScreen from '../Leaderboard/LeaderBoardScreen'; // Create this screen
+import LeaderboardScreen from '../LeaderBoard/LeaderBoardScreen'; // Create this screen
 import ProfileScreen from '../Profile/ProfileScreen'; // Create this screen
 
 const Tab = createBottomTabNavigator();
