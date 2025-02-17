@@ -15,7 +15,7 @@ const TextToSignScreen = () => {
   };
 
   const handlePlay = () => {
-    setAslGif(require('../../assets/ASL_output.gif'));
+    setAslGif(require('../../assets/ASLimages/ASL_output.gif'));
     setIsPlaying(true);
   };
 
