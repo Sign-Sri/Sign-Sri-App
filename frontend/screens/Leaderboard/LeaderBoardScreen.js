@@ -1,12 +1,145 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from "react";
+import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet } from "react-native";
+
+const LeaderBoardItem = ({ item }) => (
+  <View style={styles.itemContainer}>
+    <Text style={styles.rank}>{item.rank}</Text>
+    <Image source={item.avatar} style={styles.avatar} />
+    <View style={styles.info}>
+      <Text style={styles.name}>{item.name}</Text>
+      <Text style={styles.points}>{item.points} pts</Text>
+    </View>
+    <Text style={item.change.startsWith("+") ? styles.positiveChange : styles.negativeChange}>
+      {item.change}
+    </Text>
+  </View>
+);
 
 const LeaderBoardScreen = () => {
-  return (
-    <View>
-      <Text>LeaderBoardScreen</Text>
-    </View>
-  )
-}
+  const podiumData = [
+    { rank: 2, name: "Alex", avatar: require("../../assets/LeaderBoardImages/2nd_place.jpg"), bgColor: "#FF9D23" },
+    { rank: 1, name: "Chris", avatar: require("../../assets/LeaderBoardImages/winner.jpg"), bgColor: "#DDEB9D" },
+    { rank: 3, name: "Taylor", avatar: require("../../assets/LeaderBoardImages/3rd_place.jpg"), bgColor: "#FFD95F" },
+  ];
 
-export default LeaderBoardScreen
+  const leaderboardData = [
+    { rank: 4, name: "Jennifer", points: 780, change: "+3", avatar: require("../../assets/LeaderBoardImages/pic1.jpg") },
+    { rank: 5, name: "William", points: 756, change: "-1", avatar: require("../../assets/LeaderBoardImages/pic2.jpg") },
+    { rank: 6, name: "Samantha", points: 698, change: "-2", avatar: require("../../assets/LeaderBoardImages/pic3.jpg") },
+    { rank: 7, name: "Emery", points: 636, change: "-1", avatar: require("../../assets/LeaderBoardImages/pic4.jpg") },
+    { rank: 8, name: "Lydia", points: 560, change: "-1", avatar: require("../../assets/LeaderBoardImages/pic5.jpg") },
+  ];
+
+  return (
+    <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => console.log("Go Back")}>
+          <Text style={styles.backButton}>←</Text>
+        </TouchableOpacity>
+        <Text style={styles.title}>Leader Board</Text>
+      </View>
+
+      {/* Podium Section */}
+      <View style={styles.podiumContainer}>
+        <View style={styles.podium}>
+          {/* 2nd Place */}
+          <View style={[styles.podiumStep, { height: 180, backgroundColor: podiumData[0].bgColor }]}>
+            <Image source={podiumData[0].avatar} style={styles.avatar} />
+            <Text style={styles.podiumRank}>2</Text>
+            <Text style={styles.podiumName}>{podiumData[0].name}</Text>
+          </View>
+          {/* 1st Place */}
+          <View style={[styles.podiumStep, { height: 200, backgroundColor: podiumData[1].bgColor }]}>
+            <Image source={podiumData[1].avatar} style={styles.avatar} />
+            <Text style={styles.podiumRank}>1</Text>
+            <Text style={styles.podiumName}>{podiumData[1].name}</Text>
+          </View>
+          {/* 3rd Place */}
+          <View style={[styles.podiumStep, { height: 155, backgroundColor: podiumData[2].bgColor }]}>
+            <Image source={podiumData[2].avatar} style={styles.avatar} />
+            <Text style={styles.podiumRank}>3</Text>
+            <Text style={styles.podiumName}>{podiumData[2].name}</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Leaderboard List */}
+      <FlatList
+        data={leaderboardData}
+        keyExtractor={(item) => item.rank.toString()}
+        renderItem={({ item }) => <LeaderBoardItem item={item} />}
+        contentContainerStyle={styles.list}
+      />
+    </View>
+  );
+};
+
+export default LeaderBoardScreen;
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#143D60" },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: "#fff",
+    elevation: 4,
+  },
+  backButton: { fontSize: 24, color: "#333" },
+  title: { fontSize: 20, fontWeight: "bold", marginLeft: 16 },
+  podiumContainer: {
+    marginTop: 16,
+    alignItems: "center",
+  },
+  podium: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    width: "100%",
+    backgroundColor: "#143D60",
+  },
+  podiumStep: {
+    width: 90,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    borderRadius: 10,
+    marginHorizontal: 9,
+    elevation: 10,
+  },
+  podiumRank: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginVertical: 10,
+    color: "black",
+  },
+  podiumName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  avatar: {
+    width: 60,
+    height: 68,
+    borderRadius: 30,
+    borderWidth: 2,
+    borderColor: "black",
+    marginBottom: 8,
+  },
+  list: { padding: 20 },
+  itemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFEFC8",
+    marginBottom: 8,
+    padding: 10,
+    borderRadius: 18,
+    elevation: 5,
+  },
+  rank: { fontSize: 18, fontWeight: "bold", marginRight: 20 },
+  info: { flex: 5 ,marginLeft: 10},
+  name: { fontSize: 16, fontWeight: "bold", color: "#333" },
+  points: { fontSize: 14, color: "#888" },
+  positiveChange: { fontSize: 18, color: "green", fontWeight: "bold" },
+  negativeChange: { fontSize: 18, color: "red", fontWeight: "bold" },
+});
