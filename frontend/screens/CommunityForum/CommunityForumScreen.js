@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal, Image } from 'react-native'
 import React from 'react'
 import { useState, useRef, useEffect} from 'react';
-import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -31,8 +32,27 @@ const CommunityForumScreen = () => {
   
       const mediaStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
       setHasMediaPermission(mediaStatus.status === 'granted');
+
+      loadImage();
     })();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+        loadImage(); // Reload the image when the user navigates back
+    }, [])
+  );
+
+  const loadImage = async () => {
+    try {
+        const savedImage = await AsyncStorage.getItem('selectedImage');
+        if (savedImage !== null) {
+            setImage(savedImage);
+        }
+    } catch (error) {
+        console.log('Error loading image:', error);
+    }
+  };
   
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -44,11 +64,13 @@ const CommunityForumScreen = () => {
   
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      await AsyncStorage.setItem('selectedImage', result.assets[0].uri);
     }
   };
 
-  const deleteImage = () => {  // Function to delete the image
+  const deleteImage = async () => {  // Function to delete the image
     setImage(null);
+    await AsyncStorage.removeItem('selectedImage');
   };
 
   const feelings = [
