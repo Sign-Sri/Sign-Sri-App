@@ -39,6 +39,18 @@ const CommunityForumScreen = () => {
 
   useFocusEffect(
     React.useCallback(() => {
+      const loadMessages = async () => {
+        try {
+          const savedMessages = await AsyncStorage.getItem('messages');
+          if (savedMessages !== null) {
+            setMessages(JSON.parse(savedMessages));
+          }
+        } catch (error) {
+          console.log('Error loading messages:', error);
+        }
+      }; 
+
+        loadMessages();
         loadImage(); // Reload the image when the user navigates back
     }, [])
   );
@@ -89,22 +101,38 @@ const CommunityForumScreen = () => {
   };
 
     // handle the sent message with delete button
-    const sendMessage = () => {
+    const sendMessage = async () => {
       if (inputText.trim().length > 0 || currentFeeling.current) {
         const newMessage = { 
           id: Date.now().toString(), 
           text: inputText, 
           feeling:currentFeeling.current, 
         };
+
+        const updatedMessages = [...messages, newMessage];
+        setMessages(updatedMessages);
     
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        try {
+          await AsyncStorage.setItem('messages', JSON.stringify(updatedMessages));
+        } catch (error) {
+          console.log('Error saving messages:', error);
+        }
+    
+    
         setInputText('');
       }
     };
 
     // Function to delete a message
-    const deleteMessage = (id) => {
-      setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== id));
+    const deleteMessage = async (id) => {
+      const updatedMessages = messages.filter((msg) => msg.id !== id);
+      setMessages(updatedMessages);
+    
+      try {
+        await AsyncStorage.setItem('messages', JSON.stringify(updatedMessages));
+      } catch (error) {
+        console.log('Error deleting message:', error);
+      }
     };
 
     const removeCurrentFeeling = () => {
