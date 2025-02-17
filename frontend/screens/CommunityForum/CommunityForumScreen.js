@@ -34,6 +34,7 @@ const CommunityForumScreen = () => {
       setHasMediaPermission(mediaStatus.status === 'granted');
 
       loadImage();
+      loadFeeling();
     })();
   }, []);
 
@@ -52,6 +53,7 @@ const CommunityForumScreen = () => {
 
         loadMessages();
         loadImage(); // Reload the image when the user navigates back
+        loadFeeling();
     }, [])
   );
 
@@ -63,6 +65,18 @@ const CommunityForumScreen = () => {
         }
     } catch (error) {
         console.log('Error loading image:', error);
+    }
+  };
+
+  const loadFeeling = async () => {
+    try {
+      const savedFeeling = await AsyncStorage.getItem('selectedFeeling');
+      if (savedFeeling !== null) {
+        setDisplayedFeeling(JSON.parse(savedFeeling));
+        currentFeeling.current = JSON.parse(savedFeeling);
+      }
+    } catch (error) {
+      console.log('Error loading feeling:', error);
     }
   };
   
@@ -98,6 +112,7 @@ const CommunityForumScreen = () => {
     currentFeeling.current = feeling;
     setDisplayedFeeling(feeling);
     setIsFeelingModalVisible(false);
+    AsyncStorage.setItem('selectedFeeling', JSON.stringify(feeling));
   };
 
     // handle the sent message with delete button
@@ -138,6 +153,7 @@ const CommunityForumScreen = () => {
     const removeCurrentFeeling = () => {
       currentFeeling.current = null;  // Clear the ref
       setDisplayedFeeling(null);
+      AsyncStorage.removeItem('selectedFeeling');
       
     };
 
