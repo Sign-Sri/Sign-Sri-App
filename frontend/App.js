@@ -1,10 +1,9 @@
 import React from 'react';
-import StackNavigator from './screens/Navigation/StackNavigator';
-
+import LeaderBoardScreen from './screens//LeaderBoard/LeaderBoardScreen';
 
 const App = () => {
     return (
-            <StackNavigator />
+            <LeaderBoardScreen />
 
     );
 };
