@@ -15,11 +15,12 @@ const CommunityForumScreen = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasMediaPermission, setHasMediaPermission] = useState(null);
   const [image, setImage] = useState(null);
+  
   const [isFriendsModalVisible, setIsFriendsModalVisible] = useState(false);
   const [friends, setFriends] = useState([ // Sample friend data - replace with your data
-    { id: 1, name: 'Alice'}, // Example image path
-    { id: 2, name: 'Bob'},
-    { id: 3, name: 'Charlie'},
+    { id: 1, name: 'Alice', image: require('../../assets/user1.png') }, // Example image path
+    { id: 2, name: 'Bob', image: require('../../assets/user2.png') },
+    { id: 3, name: 'Charlie', image: require('../../assets/user3.png') },
     // ... more friends
   ]);
 
