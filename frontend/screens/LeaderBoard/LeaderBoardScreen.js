@@ -32,14 +32,7 @@ const LeaderBoardScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => console.log("Go Back")}>
-          <Text style={styles.backButton}>←</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>Leader Board</Text>
-      </View>
-
+      
       {/* Podium Section */}
       <View style={styles.podiumContainer}>
         <View style={styles.podium}>
@@ -78,7 +71,7 @@ const LeaderBoardScreen = () => {
 export default LeaderBoardScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#143D60" },
+  container: { flex: 1, backgroundColor: "#fff" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -97,7 +90,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     justifyContent: "center",
     width: "100%",
-    backgroundColor: "#143D60",
+    backgroundColor: "#fff",
   },
   podiumStep: {
     width: 90,
