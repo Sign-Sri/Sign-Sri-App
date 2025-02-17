@@ -1,12 +1,12 @@
 import React from 'react';
-import LeaderBoardScreen from './screens//LeaderBoard/LeaderBoardScreen';
+import StackNavigator from './screens/Navigation/StackNavigator';
+
 
 const App = () => {
     return (
-            <LeaderBoardScreen />
+            <StackNavigator />
 
     );
 };
 
 export default App;
-
