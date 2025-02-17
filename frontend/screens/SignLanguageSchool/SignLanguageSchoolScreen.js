@@ -59,7 +59,7 @@ const SignLanguageSchoolScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Sign Language School</Text>
+      
       <FlatList
         data={lessons}
         renderItem={renderLesson}
