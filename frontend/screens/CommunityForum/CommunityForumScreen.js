@@ -15,7 +15,7 @@ const CommunityForumScreen = () => {
   const [displayedFeeling, setDisplayedFeeling] = useState(null);
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasMediaPermission, setHasMediaPermission] = useState(null);
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
   
   const [isFriendsModalVisible, setIsFriendsModalVisible] = useState(false);
   const [friends, setFriends] = useState([ // Sample friend data - replace with your data
@@ -61,7 +61,7 @@ const CommunityForumScreen = () => {
     try {
         const savedImage = await AsyncStorage.getItem('selectedImage');
         if (savedImage !== null) {
-            setImage(savedImage);
+            setImages(JSON.parse(savedImage));
         }
     } catch (error) {
         console.log('Error loading image:', error);
@@ -89,14 +89,16 @@ const CommunityForumScreen = () => {
     });
   
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
-      await AsyncStorage.setItem('selectedImage', result.assets[0].uri);
+      const newImages = [...images, result.assets[0].uri];
+      setImages(newImages);
+      await AsyncStorage.setItem('selectedImage', JSON.stringify(newImages));
     }
   };
 
-  const deleteImage = async () => {  // Function to delete the image
-    setImage(null);
-    await AsyncStorage.removeItem('selectedImage');
+  const deleteImage = async (index) => {  // Function to delete the image
+    const newImages = images.filter((_, i) => i !== index);
+    setImages(newImages);
+    await AsyncStorage.setItem('selectedImages', JSON.stringify(newImages));
   };
 
   const feelings = [
@@ -263,14 +265,14 @@ const CommunityForumScreen = () => {
       <View style={styles.optionsBar}>
 
         {/* Display the selected image */}
-      {image && (
-        <View style={styles.imageContainer}> {/* Add a style for the image container */}
-          <Image source={{ uri: image }} style={styles.pickedImage} /> {/* Add a style for the Image */}
-          <TouchableOpacity style={styles.deleteImageButton} onPress={deleteImage}>  {/* Delete button */}
+        {images.map((image, index) => (
+        <View key={index} style={styles.imageContainer}>
+          <Image source={{ uri: image }} style={styles.pickedImage} />
+          <TouchableOpacity style={styles.deleteImageButton} onPress={() => deleteImage(index)}>
             <Text style={styles.deleteImageButtonText}>Delete Image</Text>
           </TouchableOpacity>
         </View>
-      )}
+      ))}
 
         <TouchableOpacity style={styles.optionButton} onPress={pickImage}>
           <Text style={styles.optionText}>Insert a Photo</Text>
