@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal, Image } from 'react-native'
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal, Image } from 'react-native'
 import React from 'react'
 import { useState, useRef, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -162,7 +162,7 @@ const CommunityForumScreen = () => {
     
   return (
     <View style={styles.container}>
-
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
       // header part
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Create Post</Text>
@@ -329,7 +329,8 @@ const CommunityForumScreen = () => {
         <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
           <Text style={styles.sendText}>Send</Text>
         </TouchableOpacity>
-      </View>       
+      </View>  
+      </ScrollView>     
     </View>
   );
 };
@@ -339,6 +340,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f2f6ff',
+  },
+
+  //Scroll container style
+  scrollContainer: {
+    flexGrow: 1,
+    paddingBottom: 20, // Add some padding at the bottom
   },
 
   //header row style
