@@ -1,4 +1,4 @@
-import { View, TextInput, StyleSheet, Text, Button, TouchableOpacity, Image, Modal, ScrollView } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Button, TouchableOpacity, Image, Modal, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 //import Slider from '@react-native-community/slider';
 import React, { useState } from 'react';
 
@@ -79,6 +79,11 @@ const TextToSignScreen = () => {
   };
 
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+
     <View style={styles.container}>
       <TextInput
         value={text}
@@ -175,6 +180,7 @@ const TextToSignScreen = () => {
       </Modal>
 
     </View>
+    </KeyboardAvoidingView>
   );
 };
 
