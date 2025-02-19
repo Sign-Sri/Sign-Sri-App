@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
+  apiKey: "AIzaSyAYjAtPOvBsePoYMiScvu5EtbUbn4S2jws",
+  authDomain: "sign-sri-123.firebaseapp.com",
+  projectId: "sign-sri-123",
+  storageBucket: "sign-sri-123.firebasestorage.app",
   messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  appId: "1:955746453795:android:9028f5391defab4b3aa496",
 };
 
 const app = initializeApp(firebaseConfig);
