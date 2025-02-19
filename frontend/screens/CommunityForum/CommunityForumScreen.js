@@ -415,13 +415,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
   },
   modalContent: {
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
-    alignItems: 'center', // Center content within the modal
+    alignItems: 'center', 
   },
   modalTitle: {
     fontSize: 20,
@@ -465,7 +465,8 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: 'white',
   },
-
+  
+  //style for message container
   messageOuterContainer: {
     marginBottom: 5,
     marginHorizontal: 10,
@@ -490,6 +491,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
 
+  //style for current feeling container
   currentFeelingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
