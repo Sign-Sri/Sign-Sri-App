@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 
 export default function SignUpScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');
