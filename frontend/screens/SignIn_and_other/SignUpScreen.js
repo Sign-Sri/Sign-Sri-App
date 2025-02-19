@@ -31,26 +31,21 @@ export default function SignUpScreen({ navigation }) {
     }
 
     try {
-      // Call the backend API to sign up the user
-      const response = await axios.post('http://localhost:3000/signup', {
-        email,
-        password,
-        firstName,
-        lastName,
-        phoneNumber,
+      // Create user in Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Send user data to backend
+      await fetch("http://localhost:5000/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName, email, phoneNumber, password }),
       });
 
-      // If successful, navigate to the VerifyEmail screen
-      if (response.data.message) {
-        navigation.navigate('VerifyEmail', { email });
-      }
+      Alert.alert("Success", "Account created successfully!");
+      navigation.navigate("SignInScreen");
     } catch (error) {
-      // Handle errors
-      if (error.response) {
-        Alert.alert('Error', error.response.data.error || 'An error occurred during sign-up.');
-      } else {
-        Alert.alert('Error', 'Network error. Please check your connection.');
-      }
+      Alert.alert("Error", error.message);
     }
   };
 
