@@ -17,6 +17,7 @@ const CommunityForumScreen = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasMediaPermission, setHasMediaPermission] = useState(null);
   const [images, setImages] = useState([]);
+  const [imagesKey, setImagesKey] = useState(Date.now());
   const [video, setVideo] = useState(null);
   
   const [isFriendsModalVisible, setIsFriendsModalVisible] = useState(false);
@@ -66,7 +67,9 @@ const CommunityForumScreen = () => {
         const savedImage = await AsyncStorage.getItem('selectedImage');
         if (savedImage !== null) {
             setImages(JSON.parse(savedImage));
-        }
+        }else {
+          setImages([]);
+      }
     } catch (error) {
         console.log('Error loading image:', error);
     }
@@ -113,7 +116,8 @@ const CommunityForumScreen = () => {
   const deleteImage = async (index) => {  // Function to delete the image
     const newImages = images.filter((_, i) => i !== index);
     setImages(newImages);
-    await AsyncStorage.setItem('selectedImages', JSON.stringify(newImages));
+    await AsyncStorage.setItem('selectedImage', JSON.stringify(newImages));
+    setImagesKey(Date.now());
   };
 
   const pickVideo = async () => {
@@ -300,14 +304,19 @@ const deleteVideo = async () => {
       <View style={styles.optionsBar}>
 
         {/* Display the selected image */}
-        {images.map((image, index) => (
-        <View key={index} style={styles.imageContainer}>
-          <Image source={{ uri: image }} style={styles.pickedImage} />
-          <TouchableOpacity style={styles.deleteImageButton} onPress={() => deleteImage(index)}>
-            <Text style={styles.deleteImageButtonText}>Delete Image</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
+        <FlatList //Use flatlist to display images
+                        data={images}
+                        keyExtractor={(item, index) => index.toString()}
+                        key={imagesKey} // Use key to force re-render
+                        renderItem={({ item, index }) => (
+                            <View key={index} style={styles.imageContainer}>
+                                <Image source={{ uri: item }} style={styles.pickedImage} />
+                                <TouchableOpacity style={styles.deleteImageButton} onPress={() => deleteImage(index)}>
+                                    <Text style={styles.deleteImageButtonText}>Delete Image</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+          />
 
         {video && (
             <View style={styles.videoContainer}>
