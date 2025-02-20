@@ -124,8 +124,10 @@ const CommunityForumScreen = () => {
     });
 
     if (!result.canceled) {
+        console.log("Video Picker Result:", result);
         setVideo(result.assets[0].uri);
         await AsyncStorage.setItem('selectedVideo', result.assets[0].uri);
+        console.log("Video URI:", result.assets[0].uri);
     }
 };
 
@@ -307,30 +309,34 @@ const deleteVideo = async () => {
         </View>
       ))}
 
-      {video && (
-        <View style={styles.videoContainer}>
-            <Video
-                source={{ uri: video }}
-                style={styles.pickedVideo}
-                controls={true}
-                resizeMode="contain"
-            />
-            <TouchableOpacity style={styles.deleteVideoButton} onPress={deleteVideo}>
-                <Text style={styles.deleteVideoButtonText}>Delete Video</Text>
-            </TouchableOpacity>
-        </View>
-      )}
-
-        <TouchableOpacity style={styles.optionButton} onPress={pickImage}>
-          <Text style={styles.optionText}>Insert a Photo</Text>
-        </TouchableOpacity>
+        {video && (
+            <View style={styles.videoContainer}>
+                <Video
+                    source={{ uri: video }}
+                    style={styles.pickedVideo}
+                    controls={true}
+                    resizeMode="contain"
+                    shouldPlay={true}
+                    key={video}
+                    onLoad={() => console.log('Video loaded successfully')}
+                    onError={(error) => console.log('Video error:', error)}
+                />
+                <TouchableOpacity style={styles.deleteVideoButton} onPress={deleteVideo}>
+                    <Text style={styles.deleteVideoButtonText}>Delete Video</Text>
+                </TouchableOpacity>
+            </View>
+        )}
 
         <TouchableOpacity style={styles.optionButton} onPress={() => setIsFeelingModalVisible(true)}>
           <Text style={styles.optionText}>Feeling/Activity</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.optionButton} onPress={pickImage}>
+          <Text style={styles.optionText}>Insert a Photo</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.optionButton} onPress={pickVideo}>
-          <Text style={styles.optionText}>Live</Text>
+          <Text style={styles.optionText}>Insert a Video</Text>
         </TouchableOpacity>
       </View>
 
