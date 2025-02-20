@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
+import { Video } from 'expo-av';
 
 const CommunityForumScreen = () => {
   const navigation = useNavigation();
@@ -16,6 +17,7 @@ const CommunityForumScreen = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasMediaPermission, setHasMediaPermission] = useState(null);
   const [images, setImages] = useState([]);
+  const [video, setVideo] = useState(null);
   
   const [isFriendsModalVisible, setIsFriendsModalVisible] = useState(false);
   const [friends, setFriends] = useState([ // Sample friend data - replace with your data
@@ -35,6 +37,7 @@ const CommunityForumScreen = () => {
 
       loadImage();
       loadFeeling();
+      loadVideo();
     })();
   }, []);
 
@@ -54,6 +57,7 @@ const CommunityForumScreen = () => {
         loadMessages();
         loadImage(); // Reload the image when the user navigates back
         loadFeeling();
+        loadVideo();
     }, [])
   );
 
@@ -67,6 +71,17 @@ const CommunityForumScreen = () => {
         console.log('Error loading image:', error);
     }
   };
+
+  const loadVideo = async () => {
+    try {
+        const savedVideo = await AsyncStorage.getItem('selectedVideo');
+        if (savedVideo !== null) {
+            setVideo(savedVideo);
+        }
+    } catch (error) {
+        console.log('Error loading video:', error);
+    }
+};
 
   const loadFeeling = async () => {
     try {
@@ -100,6 +115,24 @@ const CommunityForumScreen = () => {
     setImages(newImages);
     await AsyncStorage.setItem('selectedImages', JSON.stringify(newImages));
   };
+
+  const pickVideo = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        allowsEditing: true,
+        quality: 1,
+    });
+
+    if (!result.canceled) {
+        setVideo(result.assets[0].uri);
+        await AsyncStorage.setItem('selectedVideo', result.assets[0].uri);
+    }
+};
+
+const deleteVideo = async () => {
+    setVideo(null);
+    await AsyncStorage.removeItem('selectedVideo');
+};
 
   const feelings = [
     { name: 'Happy', emoji: '\u{1F60A}' },
@@ -274,6 +307,20 @@ const CommunityForumScreen = () => {
         </View>
       ))}
 
+      {video && (
+        <View style={styles.videoContainer}>
+            <Video
+                source={{ uri: video }}
+                style={styles.pickedVideo}
+                controls={true}
+                resizeMode="contain"
+            />
+            <TouchableOpacity style={styles.deleteVideoButton} onPress={deleteVideo}>
+                <Text style={styles.deleteVideoButtonText}>Delete Video</Text>
+            </TouchableOpacity>
+        </View>
+      )}
+
         <TouchableOpacity style={styles.optionButton} onPress={pickImage}>
           <Text style={styles.optionText}>Insert a Photo</Text>
         </TouchableOpacity>
@@ -282,14 +329,14 @@ const CommunityForumScreen = () => {
           <Text style={styles.optionText}>Feeling/Activity</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionButton}>
+        <TouchableOpacity style={styles.optionButton} onPress={pickVideo}>
           <Text style={styles.optionText}>Live</Text>
         </TouchableOpacity>
       </View>
 
       
 
-       {/* Feeling Modal */}
+      {/* Feeling Modal */}
       <Modal
         visible={isFeelingModalVisible}
         animationType="slide"
@@ -584,6 +631,26 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 
+  videoContainer: {
+    alignItems: 'center',
+    marginTop: 10,
+},
+pickedVideo: {
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
+},
+deleteVideoButton: {
+    backgroundColor: '#ff6b6b',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginTop: 2,
+},
+deleteVideoButtonText: {
+    color: 'white',
+    fontSize: 12,
+},
   
   //option bar container
     optionsBar: {
