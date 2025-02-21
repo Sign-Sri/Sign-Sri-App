@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebaseConfig";
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth } from "../../config/firebase";
 
 export default function SignUpScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');
@@ -14,44 +14,44 @@ export default function SignUpScreen({ navigation }) {
   const [loading, setLoading] = useState(false); // Prevent multiple requests
 
   const handleSignUp = async () => {
-    if (!firstName || !lastName || !email || !phoneNumber || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match.');
-      return;
-    }
-
-    if (password.length < 8) {
-      Alert.alert('Error', 'Password must be at least 8 characters long.');
-      return;
-    }
-
-    setLoading(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      const response = await fetch("http://192.168.1.100:3000/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName, lastName, email, phoneNumber }),
-      });
-
-      const responseData = await response.json();
-      if (response.ok) {
-        Alert.alert("Success", "Account created successfully!", [
-          { text: "OK", onPress: () => navigation.navigate("SignInScreen") },
-        ]);
-      } else {
-        Alert.alert("Error", responseData.message || "Something went wrong");
+      // Validate passwords match
+      if (password !== confirmPassword) {
+        throw new Error("Passwords don't match");
       }
+  
+      // Create user in Firebase
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+  
+      // Update user profile
+      await updateProfile(userCredential.user, {
+        displayName: `${firstName} ${lastName}`
+      });
+  
+      // Send verification email
+      await userCredential.user.sendEmailVerification();
+  
+      // Call backend to store additional user data
+      await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+        }),
+      });
+  
+      // Navigate to email verification screen
+      navigation.navigate('VerifyEmail', { email });
     } catch (error) {
-      Alert.alert("Error", error.message);
-    } finally {
-      setLoading(false);
+      console.error('Error signing up:', error);
+      setError(error.message);
     }
   };
 
