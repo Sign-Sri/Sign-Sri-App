@@ -1,0 +1,7 @@
+{
+  "A": [
+    { "word": "Again", "video": "again.mp4" },
+    { "word": "Ant", "video": "ant.mp4" }
+  ],
+  "B": [{ "word": "Bat", "video": "bat.mp4" }]
+}
