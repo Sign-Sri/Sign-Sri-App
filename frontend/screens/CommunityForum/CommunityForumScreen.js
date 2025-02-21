@@ -18,8 +18,9 @@ const CommunityForumScreen = () => {
   const [hasMediaPermission, setHasMediaPermission] = useState(null);
   const [images, setImages] = useState([]);
   const [imagesKey, setImagesKey] = useState(Date.now());
-  const [video, setVideo] = useState(null);
-  
+  const [videos, setVideos] = useState(null);
+  const [videoPlaybackStatus, setVideoPlaybackStatus] = useState({});
+
   const [isFriendsModalVisible, setIsFriendsModalVisible] = useState(false);
   const [friends, setFriends] = useState([ // Sample friend data - replace with your data
     { id: 1, name: 'Alice', image: require('../../assets/user1.png') }, // Example image path
@@ -38,7 +39,7 @@ const CommunityForumScreen = () => {
 
       loadImage();
       loadFeeling();
-      loadVideo();
+      loadVideos();
     })();
   }, []);
 
@@ -58,7 +59,7 @@ const CommunityForumScreen = () => {
         loadMessages();
         loadImage(); // Reload the image when the user navigates back
         loadFeeling();
-        loadVideo();
+        loadVideos();
     }, [])
   );
 
@@ -75,11 +76,13 @@ const CommunityForumScreen = () => {
     }
   };
 
-  const loadVideo = async () => {
+  const loadVideos = async () => {
     try {
-        const savedVideo = await AsyncStorage.getItem('selectedVideo');
-        if (savedVideo !== null) {
-            setVideo(savedVideo);
+        const savedVideos = await AsyncStorage.getItem('selectedVideos'); // Corrected key
+        if (savedVideos !== null) {
+            setVideos(JSON.parse(savedVideos));
+        } else {
+            setVideos([]); // Ensure it's an array if null
         }
     } catch (error) {
         console.log('Error loading video:', error);
@@ -123,21 +126,29 @@ const CommunityForumScreen = () => {
   const pickVideo = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        allowsMultipleSelection: true,
         allowsEditing: true,
         quality: 1,
     });
 
     if (!result.canceled) {
-        console.log("Video Picker Result:", result);
-        setVideo(result.assets[0].uri);
-        await AsyncStorage.setItem('selectedVideo', result.assets[0].uri);
-        console.log("Video URI:", result.assets[0].uri);
-    }
+      const selectedVideos = result.assets.map((asset) => asset.uri);
+      setVideos(selectedVideos);
+      await AsyncStorage.setItem('selectedVideos', JSON.stringify(selectedVideos));
+  }
 };
 
-const deleteVideo = async () => {
-    setVideo(null);
-    await AsyncStorage.removeItem('selectedVideo');
+const deleteVideo = async (index) => {
+  const newVideos = videos.filter((_, i) => i !== index);
+  setVideos(newVideos);
+  await AsyncStorage.setItem('selectedVideos', JSON.stringify(newVideos));
+};
+
+const handlePlayPause = async (uri) => {
+  setVideoPlaybackStatus((prevStatus) => ({
+      ...prevStatus,
+      [uri]: !prevStatus[uri],
+  }));
 };
 
   const feelings = [
@@ -318,23 +329,35 @@ const deleteVideo = async () => {
                         )}
           />
 
-        {video && (
-            <View style={styles.videoContainer}>
-                <Video
-                    source={{ uri: video }}
-                    style={styles.pickedVideo}
-                    controls={true}
-                    resizeMode="contain"
-                    shouldPlay={true}
-                    key={video}
-                    onLoad={() => console.log('Video loaded successfully')}
-                    onError={(error) => console.log('Video error:', error)}
+                <FlatList
+                    data={videos}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item, index }) => (
+                        <View style={styles.videoContainer}>
+                            <Video
+                                source={{ uri: item }}
+                                style={styles.pickedVideo}
+                                controls={false} // Disable default controls
+                                resizeMode="contain"
+                                shouldPlay={videoPlaybackStatus[item]}
+                                isLooping
+                                onLoad={() => console.log('Video loaded successfully')}
+                                onError={(error) => console.log('Video error:', error)}
+                            />
+                            <View style={styles.videoControls}>
+                                <TouchableOpacity
+                                    style={styles.controlButton}
+                                    onPress={() => handlePlayPause(item)}
+                                >
+                                    <Text>{videoPlaybackStatus[item] ? 'Pause' : 'Play'}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.deleteVideoButton} onPress={() => deleteVideo(index)}>
+                                    <Text style={styles.deleteVideoButtonText}>Delete Video</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    )}
                 />
-                <TouchableOpacity style={styles.deleteVideoButton} onPress={deleteVideo}>
-                    <Text style={styles.deleteVideoButtonText}>Delete Video</Text>
-                </TouchableOpacity>
-            </View>
-        )}
 
         <TouchableOpacity style={styles.optionButton} onPress={() => setIsFeelingModalVisible(true)}>
           <Text style={styles.optionText}>Feeling/Activity</Text>
@@ -650,11 +673,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
 },
+
 pickedVideo: {
     width: 200,
     height: 200,
     resizeMode: 'contain',
 },
+
+videoControls: {
+  flexDirection: 'row',
+  marginTop: 5,
+},
+
+controlButton: {
+  backgroundColor: '#007aff',
+  paddingVertical: 5,
+  paddingHorizontal: 10,
+  borderRadius: 5,
+  marginRight: 5,
+},
+
 deleteVideoButton: {
     backgroundColor: '#ff6b6b',
     paddingVertical: 5,
