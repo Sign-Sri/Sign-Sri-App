@@ -9,9 +9,6 @@ export default function SignInScreen({ navigation }) {
   return (
     <View style={styles.container}>
 
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Icon name="arrow-back" size={24} color="#000000" />
-      </TouchableOpacity>
       <Text style={styles.title}>Sign In</Text>
       
       <View style={styles.inputContainer}>
