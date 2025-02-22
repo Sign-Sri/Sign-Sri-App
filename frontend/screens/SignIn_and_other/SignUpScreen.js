@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import  Icon  from 'react-native-vector-icons/Ionicons';
 import { createUserWithEmailAndPassword} from 'firebase/auth';
 import {auth,db} from '../../config/firebaseConfig';
 import {setDoc,doc} from 'firebase/firestore';
+import { UserDetailContext } from '../../Context/UserDetailContext';
 
 export default function SignUpScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');
@@ -12,6 +13,7 @@ export default function SignUpScreen({ navigation }) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const {userDetail,setUserDetail} = useContext(UserDetailContext);
   
   const CreateNewAccount = () => {
       createUserWithEmailAndPassword(auth, email, password)
@@ -28,7 +30,7 @@ export default function SignUpScreen({ navigation }) {
   }
 
   const SaveUser = async(user)=>{
-    await setDoc(doc(db,'users',email),{
+    const data={
       firstName: firstName,
       lastName: lastName,
       email: email,
@@ -36,7 +38,9 @@ export default function SignUpScreen({ navigation }) {
       password: password,
       member:false,
       uid:user?.uid
-    })
+    }
+    await setDoc(doc(db,'users',email),data )
+    setUserDetail(data)
     // navigate to next screen
   }
 

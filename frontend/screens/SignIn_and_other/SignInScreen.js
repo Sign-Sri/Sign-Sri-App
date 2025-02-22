@@ -1,10 +1,42 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import  Icon  from 'react-native-vector-icons/Ionicons';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import React, { useContext, useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ToastAndroid, ActivityIndicator } from 'react-native';
+import { auth, db } from '../../config/firebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
+import { UserDetailContext } from '../../Context/UserDetailContext';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { useRoute } from '@react-navigation/native';
 
 export default function SignInScreen({ navigation }) {
+  const router = useRoute();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const {userDetail,setUserDetail} = useContext(UserDetailContext);
+  const[loading,setLoading]=useState(false);
+
+  const onSignInClick=()=>{
+    setLoading(true);
+    signInWithEmailAndPassword(auth, email, password)
+    .then(async(resp)=>{
+      const user=resp.user;
+      console.log(user);
+      await getUserDetail();
+      setLoading(false);
+      router.replace('../Home');
+
+    }).catch(e=>{
+      console.log(e.message);
+      setLoading(false);
+      ToastAndroid.show("Incorrect email & Password",ToastAndroid.BOTTOM)
+    })
+  }
+
+
+  const getUserDetail = async () => {
+    const result = await getDoc(doc(db,'users',email));
+    console.log(result.data());
+    setUserDetail(result.data());
+  }
 
   return (
     <View style={styles.container}>
@@ -15,8 +47,7 @@ export default function SignInScreen({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="Email Address"
-          value={email}
-          onChangeText={setEmail}
+          onChangeText={(value) => setEmail(value)}	
           keyboardType="email-address"
           autoCapitalize="none"
         />
@@ -24,8 +55,7 @@ export default function SignInScreen({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
+          onChangeText={(value) => setPassword(value)}	
           secureTextEntry
         />
         
@@ -39,9 +69,11 @@ export default function SignInScreen({ navigation }) {
 
       <TouchableOpacity
         style={styles.signInButton}
-        onPress={() => navigation.navigate('Map')}
+        onPress={onSignInClick}
+        disabled={loading}
       >
-        <Text style={styles.buttonText}>Sign In</Text>
+          {!loading? <Text style={styles.buttonText}>Sign In</Text>:
+          <ActivityIndicator size={"large"} color={Colors.WHITE}/>}
       </TouchableOpacity>
 
       <Text style={styles.orText}>Or</Text>
