@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import  Icon  from 'react-native-vector-icons/Ionicons';
+import { createUserWithEmailAndPassword} from 'firebase/auth';
+import {auth,db} from '../../config/firebaseConfig';
+import {setDoc,doc} from 'firebase/firestore';
 
 export default function SignUpScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');
@@ -8,7 +11,34 @@ export default function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(''); 
+  const [confirmPassword, setConfirmPassword] = useState('');
+  
+  const CreateNewAccount = () => {
+      createUserWithEmailAndPassword(auth, email, password)
+      .then(async(resp)=>{
+        const user = resp.user;
+        console.log(user);
+        await SaveUser(user);
+        //save user to database
+        
+      })
+      .catch(e => {
+        console.log(e.message);
+      })
+  }
+
+  const SaveUser = async(user)=>{
+    await setDoc(doc(db,'users',email),{
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phoneNumber: phoneNumber,
+      password: password,
+      member:false,
+      uid:user?.uid
+    })
+    // navigate to next screen
+  }
 
   const handleSignUp = async () => {
     // Validate inputs
@@ -38,21 +68,21 @@ export default function SignUpScreen({ navigation }) {
         style={styles.input}
         placeholder="First Name"
         value={firstName}
-        onChangeText={setFirstName}
+        onChangeText={(value) => setFirstName(value)}
       />
       
       <TextInput
         style={styles.input}
         placeholder="Last Name"
         value={lastName}
-        onChangeText={setLastName}
+        onChangeText={(value) => setLastName(value)}
       />
       
       <TextInput
         style={styles.input}
         placeholder="Email Address"
         value={email}
-        onChangeText={setEmail}
+        onChangeText={(value) => setEmail(value)}
         keyboardType="email-address"
         autoCapitalize="none"
       />
@@ -61,7 +91,7 @@ export default function SignUpScreen({ navigation }) {
         style={styles.input}
         placeholder="Phone Number"
         value={phoneNumber}
-        onChangeText={setPhoneNumber}
+        onChangeText={(value) => setPhoneNumber(value)}
         keyboardType="phone-pad"
       />
       
@@ -69,7 +99,7 @@ export default function SignUpScreen({ navigation }) {
         style={styles.input}
         placeholder="Password"
         value={password}
-        onChangeText={setPassword}
+        onChangeText={(value) => setPassword(value)}
         secureTextEntry
       />
       
@@ -77,7 +107,7 @@ export default function SignUpScreen({ navigation }) {
         style={styles.input}
         placeholder="Confirm Password"
         value={confirmPassword}
-        onChangeText={setConfirmPassword}
+        onChangeText={(value) => setConfirmPassword(value)}
         secureTextEntry
       />
 
@@ -87,7 +117,8 @@ export default function SignUpScreen({ navigation }) {
 
       <TouchableOpacity
         style={styles.signUpButton}
-        onPress={() => navigation.navigate('VerifyEmail')}
+        onPress={CreateNewAccount}
+        //onPress={() => navigation.navigate('VerifyEmail')}
       >
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
