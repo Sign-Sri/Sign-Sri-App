@@ -5,10 +5,10 @@ import { auth, db } from '../../config/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
 import { UserDetailContext } from '../../Context/UserDetailContext';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { useRoute } from '@react-navigation/native';
+import {MenuScreen} from './../MenuScreen';
+
 
 export default function SignInScreen({ navigation }) {
-  const router = useRoute();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {userDetail,setUserDetail} = useContext(UserDetailContext);
@@ -22,7 +22,7 @@ export default function SignInScreen({ navigation }) {
       console.log(user);
       await getUserDetail();
       setLoading(false);
-      router.replace('../Home');
+      navigation.navigate('/MenuScreen');
 
     }).catch(e=>{
       console.log(e.message);
