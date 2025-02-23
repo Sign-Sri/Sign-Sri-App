@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
+
 // Dummy data for lessons
 const lessons = [
   {
@@ -53,7 +54,7 @@ const SignLanguageSchoolScreen = ({ navigation }) => {
       level={item.level}
       completed={item.completed}
       gif={item.gif}
-      onPress={() => navigation.navigate('Lesson', { lessonId: item.id })}
+      onPress={() => navigation.navigate('Lesson Screen', { lessonId: item.id })}
     />
   );
 

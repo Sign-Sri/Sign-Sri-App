@@ -15,5 +15,4 @@ const StackNavigator = () => {
     </SafeAreaProvider>
   );
 };
-
 export default StackNavigator;
