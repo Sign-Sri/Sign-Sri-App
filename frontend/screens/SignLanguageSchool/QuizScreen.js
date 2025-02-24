@@ -86,7 +86,7 @@ const questionsByLesson = {
     },
     {
       letter: 'I',
-      image: require('D:/SDGP/frontend/assets/Alphabet/signI.png'),
+      image: require('../../assets/Alphabet/signI.png'),
       question: 'What is the sign for "I"?',
       options: [
         { id: '1', image: require('../../assets/Alphabet/signG.png'), isCorrect: false },

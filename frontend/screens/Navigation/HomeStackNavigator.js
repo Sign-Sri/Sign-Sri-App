@@ -8,6 +8,8 @@ import TextToSignScreen from '../TextToSign/TextToSignScreen';
 import SchoolScreen from '../SignLanguageSchool/SignLanguageSchoolScreen';
 import CommunityForumScreen from '../CommunityForum/CommunityForumScreen';
 import LessonScreen from './../SignLanguageSchool/LessonScreen';
+import ProgressScreen from './../SignLanguageSchool/ProgressScreen';
+import QuizScreen from './../SignLanguageSchool/QuizScreen';
 
 
 const Stack = createStackNavigator();
@@ -43,6 +45,12 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="Sign Language School" component={SchoolScreen} />
       <Stack.Screen name="Community Forum" component={CommunityForumScreen} />
       <Stack.Screen name="Lesson Screen" component={LessonScreen} />
+      <Stack.Screen name="Progress" component={ProgressScreen} />
+      <Stack.Screen name="Quiz" component={QuizScreen} />
+      
+
+    
+
 
       
     </Stack.Navigator>
