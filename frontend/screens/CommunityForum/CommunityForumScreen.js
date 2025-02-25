@@ -709,11 +709,13 @@ fixedBottomContainer: {
 },
   
 optionsBar: {
-    flexDirection: 'column',
-    padding: 10,
-    paddingHorizontal: 100,
-    marginVertical: 5,
-    
+  flexDirection: 'row',
+  padding: 10,
+  paddingHorizontal: 20,
+  marginVertical: 5,
+  borderLeftWidth: 4, 
+  borderLeftColor: '#fff', 
+  backgroundColor: '#f2f6ff', 
   },
 
   scrollContent: {
@@ -724,10 +726,11 @@ optionsBar: {
 optionButton: {
     backgroundColor: '#9ec2f5',
     paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 8,
+    paddingHorizontal: 2,
+    borderRadius: 15,
     marginBottom: 10, 
     alignItems: 'center',
+    marginRight: 20,
   },
 
 optionText: {
