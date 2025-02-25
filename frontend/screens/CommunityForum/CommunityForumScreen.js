@@ -319,7 +319,7 @@ const handlePlayPause = async (uri) => {
       )}
 
 
-      <View style={styles.optionsBar}>
+      
 
         {/* Display the selected image */}
         <FlatList 
@@ -365,9 +365,17 @@ const handlePlayPause = async (uri) => {
                             </View>
                         </View>
                     )}
-                    scrollEnabled={false}
-                />
 
+                />  
+      </>
+    } 
+    contentContainerStyle={styles.scrollContent}
+    keyboardShouldPersistTaps="handled"  
+  />
+
+  {/* Fixed Bottom Section */}
+ <View style={styles.fixedBottomContainer}>
+    <View style={styles.optionsBar}>
         <TouchableOpacity style={styles.optionButton} onPress={() => setIsFeelingModalVisible(true)}>
           <Text style={styles.optionText}>Feeling/Activity</Text>
         </TouchableOpacity>
@@ -380,9 +388,24 @@ const handlePlayPause = async (uri) => {
           <Text style={styles.optionText}>Insert a Video</Text>
         </TouchableOpacity>
       </View>
-      </>
-    }   
-  />
+  
+
+    {/*message typing bar*/}
+    <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          value={inputText}
+          onChangeText={setInputText}
+          placeholder="Type a message..."
+          multiline={true}/> 
+
+        {/*send button*/}
+        <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
+          <Text style={styles.sendText}>Send</Text>
+        </TouchableOpacity>
+      </View>  
+  </View>         
+  
 
       {/* Feeling Modal */}
       <Modal
@@ -411,21 +434,7 @@ const handlePlayPause = async (uri) => {
         </View>
       </Modal> 
 
-      {/*message typing bar*/}
-     <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={inputText}
-          onChangeText={setInputText}
-          placeholder="Type a message..."
-          multiline={true}/> 
-
-        {/*send button*/}
-        <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
-          <Text style={styles.sendText}>Send</Text>
-        </TouchableOpacity>
-      </View>  
-           
+      
     </View>
   );
 };
@@ -690,14 +699,29 @@ deleteVideoButtonText: {
     color: 'white',
     fontSize: 12,
 },
+
+fixedBottomContainer: {
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: '#f2f6ff',
+},
   
-    optionsBar: {
+optionsBar: {
+    flexDirection: 'column',
+    padding: 10,
     paddingHorizontal: 100,
     marginVertical: 5,
     
   },
 
-  optionButton: {
+  scrollContent: {
+    marginTop: 10,
+    paddingBottom: 300,
+  },
+
+optionButton: {
     backgroundColor: '#9ec2f5',
     paddingVertical: 10,
     paddingHorizontal: 10,
@@ -706,10 +730,41 @@ deleteVideoButtonText: {
     alignItems: 'center',
   },
 
-  optionText: {
+optionText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#fff',
+  },
+
+inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderColor: '#ccc',
+  },
+
+input: {
+    flex: 1,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+  },
+
+sendButton: {
+    backgroundColor: '#007aff',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    marginLeft: 10,
+  },
+
+  sendText: {
+    color: 'white',
+    fontSize: 16,
   },
 
   modalContainer: {
@@ -749,36 +804,7 @@ deleteVideoButtonText: {
     fontSize: 16,
   },
 
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderColor: '#ccc',
-  },
-
-  input: {
-    flex: 1,
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-  },
-
-  sendButton: {
-    backgroundColor: '#007aff',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    marginLeft: 10,
-  },
-
-  sendText: {
-    color: 'white',
-    fontSize: 16,
-  },
+  
 
 
 })
