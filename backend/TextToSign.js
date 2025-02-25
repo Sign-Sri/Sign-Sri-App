@@ -37,3 +37,17 @@ app.post('/convert', async (req, res) => {
 
     }
 });
+
+// Function to run python scripts
+function runPythonScript(scriptName, args){
+    return new Promise((resolve, reject) => {
+        
+        let outputData = '';
+        let errorData = '';
+
+        pythonProcess.stdout.on('data', (data) => {
+            outputData = outputData + data.toString();
+        });
+
+    });
+}
