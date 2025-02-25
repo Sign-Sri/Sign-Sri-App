@@ -1,4 +1,5 @@
 const express = require('express');
+const { spawn } = require('child_process');
 
 const app = express();
 
@@ -47,6 +48,18 @@ function runPythonScript(scriptName, args){
 
         pythonProcess.stdout.on('data', (data) => {
             outputData = outputData + data.toString();
+        });
+
+        pythonProcess.stderr.on('data', (data) => {
+            errorData += data.toString();
+        });
+
+        pythonProcess.on('close', (code) => {
+            if (code !== 0) {
+                reject(new Error(`Python script failed: ${errorData}`));
+            } else {
+                resolve(outputData.trim());
+            }
         });
 
     });
