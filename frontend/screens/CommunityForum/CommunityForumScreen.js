@@ -212,7 +212,7 @@ const handlePlayPause = async (uri) => {
     
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      
       {/* header part */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Create Post</Text>
@@ -275,6 +275,12 @@ const handlePlayPause = async (uri) => {
       </Modal>
 
       </View>
+      
+      {/* Main Content with FlatList */}
+  <FlatList
+    data={[]}
+    ListHeaderComponent={
+        <>
 
       {/*display sent message*/}
       <FlatList
@@ -294,7 +300,9 @@ const handlePlayPause = async (uri) => {
           </View>
         </View>
       )}
-      inverted={true}/> 
+      inverted={true}
+      scrollEnabled={false}
+      /> 
 
     {/* Current Feeling Display (outside FlatList) */}
     {displayedFeeling && (
@@ -326,6 +334,7 @@ const handlePlayPause = async (uri) => {
                                 </TouchableOpacity>
                             </View>
                         )}
+                        scrollEnabled={false} 
           />
 
                 <FlatList
@@ -356,6 +365,7 @@ const handlePlayPause = async (uri) => {
                             </View>
                         </View>
                     )}
+                    scrollEnabled={false}
                 />
 
         <TouchableOpacity style={styles.optionButton} onPress={() => setIsFeelingModalVisible(true)}>
@@ -370,8 +380,9 @@ const handlePlayPause = async (uri) => {
           <Text style={styles.optionText}>Insert a Video</Text>
         </TouchableOpacity>
       </View>
-
-      
+      </>
+    }   
+  />
 
       {/* Feeling Modal */}
       <Modal
@@ -414,7 +425,7 @@ const handlePlayPause = async (uri) => {
           <Text style={styles.sendText}>Send</Text>
         </TouchableOpacity>
       </View>  
-      </ScrollView>     
+           
     </View>
   );
 };
@@ -424,11 +435,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f2f6ff',
-  },
-
-  scrollContainer: {
-    flexGrow: 1,
-    paddingBottom: 20, 
   },
 
   header: {
