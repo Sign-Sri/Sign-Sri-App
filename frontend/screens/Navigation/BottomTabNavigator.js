@@ -38,10 +38,10 @@ const BottomTabNavigator = () => {
             </View>
           );
         },
-        tabBarActiveTintColor: '#172937',
+        tabBarActiveTintColor: 'FFFFFF',
         tabBarInactiveTintColor: '#696969',
         tabBarStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: '#172937',//
           borderTopWidth: 0,
           height: verticalScale(55),
           paddingBottom: verticalScale(5),
