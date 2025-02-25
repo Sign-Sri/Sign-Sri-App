@@ -20,7 +20,7 @@ app.post('/convert', async (req, res) => {
         const outputPath = path.join(outputsDir, outputFileName);
 
         // First, Running the text preprocessing script
-        const preprocessedText = await runPythonScript('A.py',[text]);
+        const preprocessedText = await runPythonScript('preprocess.py',[text]);
 
         // Assigning the frame duration to go with the speed
         let frameDuration = 1500; // Normal Speed
@@ -28,10 +28,11 @@ app.post('/convert', async (req, res) => {
         if (speed == 'Fast') frameDuration = 1000;
 
         // Second, Running the GIF generation script
-        await runPythonScript ('B.py',[
+        await runPythonScript('text_to_asl.py', [
             preprocessedText,
-            // path
-            // speed
+            path.join(__dirname, 'ASLimages'), // add loction
+            outputPath,
+            frameDuration.toString()
         ]);
 
     }catch (error){
