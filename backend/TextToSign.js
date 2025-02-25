@@ -1,0 +1,39 @@
+const express = require('express');
+
+const app = express();
+
+// Middleware
+app.use(express.json());
+
+// Endpoint for text-to-ASL conversion
+app.post('/convert', async (req, res) => {
+    try{
+        const { text, speed = 'Normal' } = req.body;
+        if (!text) {
+            return res.status(400).json({ error: 'Text is required' }); 
+        }
+
+        // Generate a unique filename for the gif
+        const timestamp = Date.now();
+        const outputFileName = 'ASL_output_${timestamp}.gif';
+        const outputPath = path.join(outputsDir, outputFileName);
+
+        // First, Running the text preprocessing script
+        const preprocessedText = await runPythonScript('A.py',[text]);
+
+        // Assigning the frame duration to go with the speed
+        let frameDuration = 1500; // Normal Speed
+        if (speed == 'Slow') frameDuration = 2000;
+        if (speed == 'Fast') frameDuration = 1000;
+
+        // Second, Running the GIF generation script
+        await runPythonScript ('B.py',[
+            preprocessedText,
+            // path
+            // speed
+        ]);
+
+    }catch (error){
+
+    }
+});
