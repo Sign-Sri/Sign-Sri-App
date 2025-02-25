@@ -12,7 +12,7 @@ const CommunityForumScreen = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [isFeelingModalVisible, setIsFeelingModalVisible] = useState(false);
-  const currentFeeling = useRef(null);  // Ref for the *selected* feeling
+  const currentFeeling = useRef(null);  
   const [displayedFeeling, setDisplayedFeeling] = useState(null);
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasMediaPermission, setHasMediaPermission] = useState(null);
@@ -22,11 +22,11 @@ const CommunityForumScreen = () => {
   const [videoPlaybackStatus, setVideoPlaybackStatus] = useState({});
 
   const [isFriendsModalVisible, setIsFriendsModalVisible] = useState(false);
-  const [friends, setFriends] = useState([ // Sample friend data - replace with your data
-    { id: 1, name: 'Alice', image: require('../../assets/user1.png') }, // Example image path
+  const [friends, setFriends] = useState([ 
+    { id: 1, name: 'Alice', image: require('../../assets/user1.png') }, 
     { id: 2, name: 'Bob', image: require('../../assets/user2.png') },
     { id: 3, name: 'Charlie', image: require('../../assets/user3.png') },
-    // ... more friends
+    
   ]);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const CommunityForumScreen = () => {
       }; 
 
         loadMessages();
-        loadImage(); // Reload the image when the user navigates back
+        loadImage(); 
         loadFeeling();
         loadVideos();
     }, [])
@@ -78,11 +78,11 @@ const CommunityForumScreen = () => {
 
   const loadVideos = async () => {
     try {
-        const savedVideos = await AsyncStorage.getItem('selectedVideos'); // Corrected key
+        const savedVideos = await AsyncStorage.getItem('selectedVideos');
         if (savedVideos !== null) {
             setVideos(JSON.parse(savedVideos));
         } else {
-            setVideos([]); // Ensure it's an array if null
+            setVideos([]); 
         }
     } catch (error) {
         console.log('Error loading video:', error);
@@ -116,7 +116,7 @@ const CommunityForumScreen = () => {
     }
   };
 
-  const deleteImage = async (index) => {  // Function to delete the image
+  const deleteImage = async (index) => { 
     const newImages = images.filter((_, i) => i !== index);
     setImages(newImages);
     await AsyncStorage.setItem('selectedImage', JSON.stringify(newImages));
@@ -167,7 +167,7 @@ const handlePlayPause = async (uri) => {
     AsyncStorage.setItem('selectedFeeling', JSON.stringify(feeling));
   };
 
-    // handle the sent message with delete button
+   
     const sendMessage = async () => {
       if (inputText.trim().length > 0 || currentFeeling.current) {
         const newMessage = { 
@@ -190,7 +190,7 @@ const handlePlayPause = async (uri) => {
       }
     };
 
-    // Function to delete a message
+   
     const deleteMessage = async (id) => {
       const updatedMessages = messages.filter((msg) => msg.id !== id);
       setMessages(updatedMessages);
@@ -203,7 +203,7 @@ const handlePlayPause = async (uri) => {
     };
 
     const removeCurrentFeeling = () => {
-      currentFeeling.current = null;  // Clear the ref
+      currentFeeling.current = null; 
       setDisplayedFeeling(null);
       AsyncStorage.removeItem('selectedFeeling');
       
@@ -213,26 +213,26 @@ const handlePlayPause = async (uri) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-      // header part
+      {/* header part */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Create Post</Text>
       
-      // next button
+      {/* next button */}
         <TouchableOpacity onPress={()=>navigation.navigate('SortBy')}>
           <Text style={styles.nextButton}>Next</Text>
         </TouchableOpacity>
       </View>
 
-      // user information part
+      {/* user information part */}
       <View style={styles.userInfoContainer}>
         {/* Profile Icon */}
         <View style={styles.profilePic}/>
 
-        //user name
+        {/* user name */}
         <View style={styles.userInfo}>
           <Text style={styles.userName}>User_name</Text>
 
-          //Friends button
+          {/*Friends button*/}
           <TouchableOpacity 
             style={styles.friendsButton} 
             onPress={() => setIsFriendsModalVisible(true)}
@@ -247,16 +247,16 @@ const handlePlayPause = async (uri) => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Add Friends</Text>  {/* The title */}
+            <Text style={styles.modalTitle}>Add Friends</Text> 
             
             <FlatList
               data={friends}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <View style={styles.friendItem}> {/* Container for each friend */}
-                  <Image source={item.image} style={styles.friendImage} /> {/* Friend's image */}
+                <View style={styles.friendItem}> 
+                  <Image source={item.image} style={styles.friendImage} /> 
                   <Text>{item.name}</Text>
-                  <TouchableOpacity style={styles.addButton}> {/* Add button */}
+                  <TouchableOpacity style={styles.addButton}>
                     <Text style={styles.addButtonText}>Add</Text>
                   </TouchableOpacity>
                 </View>
@@ -276,13 +276,13 @@ const handlePlayPause = async (uri) => {
 
       </View>
 
-      // display sent message
+      {/*display sent message*/}
       <FlatList
         data={messages}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.messageOuterContainer}>
-          <View style={styles.messageRow}> {/* Row for message and delete button */}
+          <View style={styles.messageRow}> 
             <View style={styles.messageContent}>
               <Text style={styles.messageText}>{item.text}</Text>
             </View>
@@ -311,14 +311,13 @@ const handlePlayPause = async (uri) => {
       )}
 
 
-      //buttons photo, video, feeling
       <View style={styles.optionsBar}>
 
         {/* Display the selected image */}
-        <FlatList //Use flatlist to display images
+        <FlatList 
                         data={images}
                         keyExtractor={(item, index) => index.toString()}
-                        key={imagesKey} // Use key to force re-render
+                        key={imagesKey} 
                         renderItem={({ item, index }) => (
                             <View key={index} style={styles.imageContainer}>
                                 <Image source={{ uri: item }} style={styles.pickedImage} />
@@ -337,7 +336,7 @@ const handlePlayPause = async (uri) => {
                             <Video
                                 source={{ uri: item }}
                                 style={styles.pickedVideo}
-                                controls={false} // Disable default controls
+                                controls={false}
                                 resizeMode="contain"
                                 shouldPlay={videoPlaybackStatus[item]}
                                 isLooping
@@ -378,11 +377,11 @@ const handlePlayPause = async (uri) => {
       <Modal
         visible={isFeelingModalVisible}
         animationType="slide"
-        transparent={true} // Make background transparent
+        transparent={true} 
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <FlatList // Use FlatList for better performance with many feelings
+            <FlatList
               data={feelings}
               keyExtractor={(item) => item.name}
               renderItem={({ item }) => (
@@ -394,14 +393,14 @@ const handlePlayPause = async (uri) => {
               )}/>
             <TouchableOpacity 
               style={styles.closeButton}
-              onPress={() => setIsFeelingModalVisible(false)}> // Close modal
+              onPress={() => setIsFeelingModalVisible(false)}> 
               <Text style={styles.closeButtonText}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal> 
 
-      // message typing bar
+      {/*message typing bar*/}
      <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -410,7 +409,7 @@ const handlePlayPause = async (uri) => {
           placeholder="Type a message..."
           multiline={true}/> 
 
-        // send button
+        {/*send button*/}
         <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
           <Text style={styles.sendText}>Send</Text>
         </TouchableOpacity>
@@ -421,19 +420,17 @@ const handlePlayPause = async (uri) => {
 };
 
 const styles = StyleSheet.create({
-  //header container
+
   container: {
     flex: 1,
     backgroundColor: '#f2f6ff',
   },
 
-  //Scroll container style
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 20, // Add some padding at the bottom
+    paddingBottom: 20, 
   },
 
-  //header row style
   header: {
     backgroundColor: '#16467D',
     flexDirection: 'row',
@@ -443,7 +440,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
 
-  //header title style
   headerTitle: {
     color: '#fff',
     fontSize: 24,
@@ -451,13 +447,11 @@ const styles = StyleSheet.create({
     marginLeft: 120
   },
 
-  //next button text style
   nextButton: {
     color: '#fff',
     fontSize: 16,
   },
 
-  //user informatin container
   userInfoContainer: {
     flexDirection: 'row',
     padding: 20,
@@ -465,7 +459,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  //profile pic style
   profilePic: {
     width: 50,
     height: 50,
@@ -474,13 +467,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
 
-  //user name style
   userName: {
     fontSize: 16,
     fontWeight: 'bold',
   },
 
-  //friends button style
   friendsButton: {
     backgroundColor: '#9ec2f5',
     borderRadius: 5,
@@ -489,13 +480,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
-  //friends button text
   friendsButtonText: {
     color: '#fff',
     fontSize: 14,
   },
 
-  //friends botton modal container
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -515,9 +504,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  friendItem: { // Style for the container of each friend
-    flexDirection: 'row', // Arrange image, name, and button horizontally
-    alignItems: 'center', // Vertically align them
+  friendItem: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
@@ -530,11 +519,11 @@ const styles = StyleSheet.create({
   },
 
   addButton: {
-    backgroundColor: 'green', // Or any color you prefer
+    backgroundColor: 'green', 
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 5,
-    marginLeft: 'auto', // Push the button to the right
+    marginLeft: 'auto', 
   },
   addButtonText: {
     color: 'white',
@@ -544,39 +533,36 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     padding: 10,
     borderRadius: 5,
-    marginTop: 20, // Add some top margin
+    marginTop: 20,
     alignItems: 'center',
   },
   closeButtonText: {
     color: 'white',
   },
   
-  //style for message container
   messageOuterContainer: {
     marginBottom: 5,
     marginHorizontal: 10,
   },
 
-  messageRow: { // NEW: Row for message and delete
+  messageRow: { 
     flexDirection: 'row',
-    alignItems: 'flex-start', // Align to top
+    alignItems: 'flex-start', 
     backgroundColor: '#e0e0e0',
     padding: 10,
     borderRadius: 8,
   },
 
   messageContent: {
-    flex: 1, // Allow text to expand
+    flex: 1, 
     marginRight: 10,
   },
 
-  //text message
   messageText: {
     fontSize: 16,
     color: '#333',
   },
 
-  //style for current feeling container
   currentFeelingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -594,18 +580,18 @@ const styles = StyleSheet.create({
   },
 
 
-  feelingRow: { // NEW: Row for feeling and remove
+  feelingRow: { 
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 5, // Space below message
-    marginLeft: 10, // Indent from left
+    marginTop: 5, 
+    marginLeft: 10, 
   },
 
   feelingContainer: {
     backgroundColor: '#f0f0f0',
     padding: 5,
     borderRadius: 5,
-    marginRight: 5, // Space between feeling text and remove button
+    marginRight: 5, 
   },
 
   feelingText: {
@@ -625,7 +611,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 
-   //delete button
    deleteButton: {
     backgroundColor: '#007aff',
     paddingVertical: 5,
@@ -635,26 +620,22 @@ const styles = StyleSheet.create({
     
   },
 
-  //delete text style
   deleteText: {
     color: 'white',
     fontSize: 14,
   },
 
-  //style for container of the image
   imageContainer: {
     alignItems: 'center',
     marginTop: 10,       
   },
 
-  //style for image component
   pickedImage: {
     width: 200,     
     height: 200,         
     resizeMode: 'contain',
   },
 
-  //image delete button style
   deleteImageButton: {
     backgroundColor: '#ff6b6b',
     paddingVertical: 5,
@@ -663,7 +644,6 @@ const styles = StyleSheet.create({
     marginTop: 2, 
   },
 
-  //image delete button text style
   deleteImageButtonText: { 
     color: 'white',
     fontSize: 12,
@@ -705,43 +685,39 @@ deleteVideoButtonText: {
     fontSize: 12,
 },
   
-  //option bar container
     optionsBar: {
     paddingHorizontal: 100,
     marginVertical: 5,
     
   },
 
-  //option button style
   optionButton: {
     backgroundColor: '#9ec2f5',
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 8,
-    marginBottom: 10, // Space between buttons
+    marginBottom: 10, 
     alignItems: 'center',
   },
 
-  // option button text styles
   optionText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#fff',
   },
 
-  //feeling modal container
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 
   modalContent: {
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
-    width: '80%', // Adjust width as needed
+    width: '80%',
   },
 
   feelingButton: {
@@ -767,7 +743,6 @@ deleteVideoButtonText: {
     fontSize: 16,
   },
 
-  //input message container style
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -786,7 +761,6 @@ deleteVideoButtonText: {
     paddingHorizontal: 10,
   },
 
-  //send button style
   sendButton: {
     backgroundColor: '#007aff',
     paddingVertical: 5,
@@ -795,7 +769,6 @@ deleteVideoButtonText: {
     marginLeft: 10,
   },
 
-  //send button text style
   sendText: {
     color: 'white',
     fontSize: 16,
