@@ -1,10 +1,16 @@
 const express = require('express');
 const { spawn } = require('child_process');
+const path = require('path');
+const cors = require('cors');
+const fs = require('fs');
 
 const app = express();
+const port = 3000;
 
 // Middleware
 app.use(express.json());
+app.use(express.json());
+app.use('/outputs', express.static('outputs'));
 
 // Creating outputs directory, if it is not created
 const outputsDir = path.join(__dirname, 'outputs');
@@ -50,6 +56,10 @@ app.post('/convert', async (req, res) => {
 // Function to run python scripts
 function runPythonScript(scriptName, args){
     return new Promise((resolve, reject) => {
+        const pythonProcess = spawn('./venv/bin/python', [
+            path.join(__dirname, 'python', scriptName),
+            ...args
+        ]);
         
         let outputData = '';
         let errorData = '';
