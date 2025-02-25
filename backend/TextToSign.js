@@ -6,6 +6,12 @@ const app = express();
 // Middleware
 app.use(express.json());
 
+// Creating outputs directory, if it is not created
+const outputsDir = path.join(__dirname, 'outputs');
+if (!fs.existsSync(outputsDir)) {
+    fs.mkdirSync(outputsDir);
+}
+
 // Endpoint for text-to-ASL conversion
 app.post('/convert', async (req, res) => {
     try{
@@ -16,7 +22,7 @@ app.post('/convert', async (req, res) => {
 
         // Generate a unique filename for the gif
         const timestamp = Date.now();
-        const outputFileName = 'ASL_output_${timestamp}.gif';
+        const outputFileName = `ASL_output_${timestamp}.gif`;
         const outputPath = path.join(outputsDir, outputFileName);
 
         // First, Running the text preprocessing script
@@ -36,7 +42,8 @@ app.post('/convert', async (req, res) => {
         ]);
 
     }catch (error){
-
+        console.error('Conversion error:', error);
+        res.status(500).json({ error: 'Conversion failed', details: error.message });
     }
 });
 
