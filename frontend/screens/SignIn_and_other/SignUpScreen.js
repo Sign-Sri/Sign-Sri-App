@@ -37,9 +37,9 @@ export default function SignUpScreen({ navigation }) {
       phoneNumber: phoneNumber,
       password: password,
       member:false,
-      uid:user?.uid
+      uid: user.uid,
     }
-    await setDoc(doc(db,'users',email),data )
+    await setDoc(doc(db,'users',user.uid),data )
     setUserDetail(data)
     // navigate to next screen
   }

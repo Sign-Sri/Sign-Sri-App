@@ -19,9 +19,9 @@ export default function SignInScreen({ navigation }) {
     .then(async(resp)=>{
       const user=resp.user;
       console.log(user);
-      await getUserDetail();
+      await getUserDetail(user.uid);
       setLoading(false);
-      navigation.navigate('Menu');
+      navigation.replace('Menu');
 
     }).catch(e=>{
       console.log(e.message);
@@ -31,8 +31,8 @@ export default function SignInScreen({ navigation }) {
   }
 
 
-  const getUserDetail = async () => {
-    const result = await getDoc(doc(db,'users',email));
+  const getUserDetail = async (uid) => {
+    const result = await getDoc(doc(db,'users',uid));
     console.log(result.data());
     setUserDetail(result.data());
   }

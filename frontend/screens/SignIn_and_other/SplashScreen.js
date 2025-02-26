@@ -1,52 +1,51 @@
-// Path: frontend/screens/SignIn_and_other/SplashScreen.js
-
-import React, { useContext } from "react";
-import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
-import { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
+import { View, Image, StyleSheet, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../config/firebaseConfig";
+import { auth, db } from "../../config/firebaseConfig"; // Ensure `db` is imported
 import { doc, getDoc } from "firebase/firestore";
 import { UserDetailContext } from "../../Context/UserDetailContext";
 
-
 const SplashScreen = () => {
   const navigation = useNavigation();
-    const {userDetail,setUserDetail} = useContext(UserDetailContext);
-  
-
-  onAuthStateChanged(auth,async (user) => {
-    if (user) {
-      console.log(user);
-      const result = await getDoc(doc(db, "users", user?.email));
-      setUserDetail(result.data());
-      navigation.navigate("Menu");
-
-    }
-  });
+  const { setUserDetail } = useContext(UserDetailContext);
 
   useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate("SignIn");
-    }, 2000);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        console.log(user);
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.email));
+          if (userDoc.exists()) {
+            setUserDetail(userDoc.data());
+          }
+          navigation.replace("Menu"); // Use `replace` to prevent going back to Splash
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          navigation.replace("SignIn");
+        }
+      } else {
+        setTimeout(() => {
+          navigation.replace("SignIn");
+        }, 2000);
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup the listener when unmounting
   }, []);
 
-  
-    
-  
   return (
     <View style={styles.container}>
       {/* App Icon */}
       <View style={styles.iconContainer}>
         <Image
-          source={require("../../assets/SignIn_and_other_Images/SplashLogoImage.png")} // Update this path if necessary
+          source={require("../../assets/SignIn_and_other_Images/SplashLogoImage.png")}
           style={styles.icon}
         />
-       
       </View>
 
       {/* Loader */}
-      <ActivityIndicator size="100" color="#000" style={styles.loader} />
+      <ActivityIndicator size="large" color="#000" style={styles.loader} />
     </View>
   );
 };
@@ -56,9 +55,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff", // Background color
+    backgroundColor: "#fff",
   },
- 
   iconContainer: {
     alignItems: "center",
   },
@@ -69,7 +67,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-
   loader: {
     marginTop: 10,
   },
