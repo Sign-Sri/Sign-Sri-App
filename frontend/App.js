@@ -11,6 +11,7 @@ import VerifyEmailScreen from './screens/SignIn_and_other/VerifyEmailScreen';
 import CreatePasswordScreen from './screens/SignIn_and_other/CreatePasswordScreen';
 import PasswordChangedScreen from './screens/SignIn_and_other/PasswordChangedScreen';
 import { UserDetailContext } from './Context/UserDetailContext';
+import MenuScreen from './screens/MenuScreen'
 
 const Stack = createStackNavigator();
 
@@ -38,6 +39,7 @@ export default function App() {
           <Stack.Screen name="VerifyEmail" component={VerifyEmailScreen} />
           <Stack.Screen name="CreatePassword" component={CreatePasswordScreen} />
           <Stack.Screen name="PasswordChanged" component={PasswordChangedScreen} />
+          <Stack.Screen name="Menu" component={MenuScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserDetailContext.Provider>
