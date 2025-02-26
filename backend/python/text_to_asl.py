@@ -24,7 +24,7 @@ def text_to_asl_gif(preprocessed_text, asl_folder, output_file, frame_duration):
             save_all=True,
             append_images=frames[1:],
             duration=int(frame_duration),
-            loop=0
+            loop=1
         )
         print(f"ASL animation saved as {output_file}")
         return True
