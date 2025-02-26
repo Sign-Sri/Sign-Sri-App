@@ -41,7 +41,7 @@ export default function SignUpScreen({ navigation }) {
     }
     await setDoc(doc(db,'users',user.uid),data )
     setUserDetail(data)
-    // navigate to next screen
+    
   }
 
   const handleSignUp = async () => {
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   input: {
     height: 56,
     backgroundColor: '#F5F5F5',
-    borderRadius: 12,
+    borderRadius: 50,
     paddingHorizontal: 16,
     marginBottom: 16,
     fontSize: 16,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   signUpButton: {
     height: 56,
     backgroundColor: '#1E3D59',
-    borderRadius: 12,
+    borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
   },

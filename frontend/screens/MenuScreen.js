@@ -1,10 +1,24 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { auth } from "../config/firebaseConfig";
+import { signOut } from 'firebase/auth';
+
 
 const MenuScreen = ({ navigation }) => {
+    const handleLogout = async () => {
+        try {
+          await signOut(auth);
+          navigation.replace("SignIn"); // Redirect to SignIn screen after logout
+        } catch (error) {
+          console.error("Logout Error:", error);
+        }
+      };
     return (
         <View style={styles.container}>
             <Text style={styles.title}>SignSri - Menu</Text>
+            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+                <Text style={styles.buttonText}>Sign Out</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
                 style={styles.button}
@@ -69,6 +83,12 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    logoutButton: {
+        backgroundColor: "#d9534f", // Red button for sign out
+        padding: 15,
+        borderRadius: 5,
+        marginTop: 20,
     },
 });
 

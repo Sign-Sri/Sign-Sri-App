@@ -39,13 +39,13 @@ const SplashScreen = () => {
       {/* App Icon */}
       <View style={styles.iconContainer}>
         <Image
-          source={require("../../assets/SignIn_and_other_Images/SplashLogoImage.png")}
+          source={require("../../assets/SignIn_and_other_Images/logo.jpg")}
           style={styles.icon}
         />
       </View>
 
       {/* Loader */}
-      <ActivityIndicator size="large" color="#000" style={styles.loader} />
+      <ActivityIndicator size="large" color="#ffffff" style={styles.loader} />
     </View>
   );
 };
@@ -55,14 +55,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#172937",
   },
   iconContainer: {
     alignItems: "center",
   },
   icon: {
     width: 400,
-    height: 350,
+    height: 400,
     resizeMode: "contain",
     alignItems: "center",
     marginBottom: 10,

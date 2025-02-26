@@ -1,91 +1,127 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import  Icon  from 'react-native-vector-icons/Ionicons';
+import { sendPasswordResetEmail } from "firebase/auth";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ToastAndroid,
+  ActivityIndicator,
+} from "react-native";
+import { auth, db } from "../../config/firebaseConfig"; // Ensure Firestore is imported
 
 export default function ForgotPasswordScreen({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const onResetPassword = async () => {
+    if (!email) {
+      ToastAndroid.show("Please enter your email", ToastAndroid.SHORT);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // **Step 1: Check if the email exists in Firestore**
+      const usersRef = collection(db, "users"); // Reference to users collection
+      const q = query(usersRef, where("email", "==", email)); // Query Firestore
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        // Email not found in Firestore
+        setLoading(false);
+        ToastAndroid.show("Email not registered!", ToastAndroid.LONG);
+        return;
+      }
+
+      // **Step 2: If email exists, send reset email**
+      await sendPasswordResetEmail(auth, email);
+      setLoading(false);
+      ToastAndroid.show(
+        "Password reset email sent. Check your inbox.",
+        ToastAndroid.LONG
+      );
+      navigation.goBack(); // Navigate back to Sign In screen
+    } catch (error) {
+      setLoading(false);
+      ToastAndroid.show("Error: " + error.message, ToastAndroid.LONG);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-              <Icon name="arrow-back" size={24} color="#000000" />
-            </TouchableOpacity>
-      <Text style={styles.title}>Forgot Password</Text>
-      
-      <Image 
-        source={require('../../assets/SignIn_and_other_Images/forgot.jpg')}
-        style={styles.illustration}
+      <Text style={styles.title}>Reset Password</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your email"
+        onChangeText={(value) => setEmail(value)}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
-      
-      <Text style={styles.description}>
-        Please Enter Your Email Address To Receive a Verification Code
-      </Text>
 
-      <View style={styles.optionsContainer}>
-        <TouchableOpacity 
-          style={styles.option}
-          onPress={() => navigation.navigate('VerifyEmail')}>
-          <Image source={require('../../assets/SignIn_and_other_Images/google_icon.jpg')} style={styles.optionIcon} />
-          <Text style={styles.optionText}>Continue With Email</Text>
-        </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.resetButton}
+        onPress={onResetPassword}
+        disabled={loading}
+      >
+        {!loading ? (
+          <Text style={styles.buttonText}>Send Reset Email</Text>
+        ) : (
+          <ActivityIndicator size="small" color="#FFFFFF" />
+        )}
+      </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.option}
-          onPress={() => navigation.navigate('VerifyEmail')}>
-          <Image source={require('../../assets/SignIn_and_other_Images/phone.jpg')} style={styles.optionIcon} />
-          <Text style={styles.optionText}>Continue With Phone</Text>
-        </TouchableOpacity>
-
-      </View>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Text style={styles.backText}>Back to Sign In</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 24,
-      backgroundColor: '#FFFFFF',
-      marginTop: 32,
-    },
-    backButton: { 
-      alignSelf: 'flex-start',
-      marginBottom: 20,
-    },
-    title: {
-      fontSize: 28,
-      fontWeight: 'bold',
-      color: '#1E3D59',
-      marginBottom: 32,
-    },
-    illustration: {
-      width: '100%',
-      height: 200,
-      resizeMode: 'contain',
-      marginBottom: 32,
-    },
-    description: {
-      fontSize: 16,
-      color: '#666666',
-      textAlign: 'center',
-      marginBottom: 32,
-    },
-    optionsContainer: {
-      gap: 16,
-    },
-    option: {
-      height: 56,
-      flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: '#F5F5F5',
-      borderRadius: 12,
-      paddingHorizontal: 16,
-    },
-    optionIcon: {
-      width: 24,
-      height: 25,
-      marginRight: 12,
-    },
-    optionText: {
-      fontSize: 16,
-      color: '#1E3D59',
-    },
-  });
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#1E3D59",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  input: {
+    height: 50,
+    backgroundColor: "#F5F5F5",
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    marginBottom: 16,
+  },
+  resetButton: {
+    height: 50,
+    backgroundColor: "#1E3D59",
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  backText: {
+    textAlign: "center",
+    color: "#1E3D59",
+    fontSize: 14,
+    
+    
+  },
+});

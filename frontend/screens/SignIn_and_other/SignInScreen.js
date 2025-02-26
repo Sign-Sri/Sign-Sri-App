@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ToastAndroi
 import { auth, db } from '../../config/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
 import { UserDetailContext } from '../../Context/UserDetailContext';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { Ionicons } from '@expo/vector-icons'; // Import eye icon
 
 
 export default function SignInScreen({ navigation }) {
@@ -12,6 +12,8 @@ export default function SignInScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const {userDetail,setUserDetail} = useContext(UserDetailContext);
   const[loading,setLoading]=useState(false);
+  const [secureText, setSecureText] = useState(true); // State to toggle password visibility
+
 
   const onSignInClick=()=>{
     setLoading(true);
@@ -24,7 +26,6 @@ export default function SignInScreen({ navigation }) {
       navigation.replace('Menu');
 
     }).catch(e=>{
-      console.log(e.message);
       setLoading(false);
       ToastAndroid.show("Incorrect email & Password",ToastAndroid.BOTTOM)
     })
@@ -55,8 +56,11 @@ export default function SignInScreen({ navigation }) {
           style={styles.input}
           placeholder="Password"
           onChangeText={(value) => setPassword(value)}	
-          secureTextEntry
+          secureTextEntry={secureText}          
         />
+        <TouchableOpacity onPress={() => setSecureText(!secureText)}>
+            <Ionicons name={secureText ? "eye-off" : "eye"} size={24} color="gray" />
+        </TouchableOpacity>
         
         <TouchableOpacity
           onPress={() => navigation.navigate('ForgotPassword')}
@@ -72,7 +76,7 @@ export default function SignInScreen({ navigation }) {
         disabled={loading}
       >
           {!loading? <Text style={styles.buttonText}>Sign In</Text>:
-          <ActivityIndicator size={"large"} color={Colors.WHITE}/>}
+          <ActivityIndicator size={"large"} color="white"/>}
       </TouchableOpacity>
 
       <Text style={styles.orText}>Or</Text>
@@ -120,7 +124,7 @@ backButton: {
   input: {
     height: 56,
     backgroundColor: '#F5F5F5',
-    borderRadius: 12,
+    borderRadius: 50,
     paddingHorizontal: 16,
     marginBottom: 16,
     fontSize: 16,
@@ -135,7 +139,7 @@ backButton: {
   signInButton: {
     height: 56,
     backgroundColor: '#1E3D59',
-    borderRadius: 12,
+    borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 24,
@@ -161,7 +165,7 @@ backButton: {
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: '#E0E0E0',
-    borderRadius: 12,
+    borderRadius: 50,
   },
   socialIcon: {
     width: 24,
