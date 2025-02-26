@@ -1,19 +1,37 @@
 // Path: frontend/screens/SignIn_and_other/SplashScreen.js
 
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
 import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../config/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
+import { UserDetailContext } from "../../Context/UserDetailContext";
 
 
 const SplashScreen = () => {
   const navigation = useNavigation();
+    const {userDetail,setUserDetail} = useContext(UserDetailContext);
+  
+
+  onAuthStateChanged(auth,async (user) => {
+    if (user) {
+      console.log(user);
+      const result = await getDoc(doc(db, "users", user?.email));
+      setUserDetail(result.data());
+      navigation.navigate("Menu");
+
+    }
+  });
 
   useEffect(() => {
     setTimeout(() => {
       navigation.navigate("SignIn");
     }, 2000);
   }, []);
+
+  
     
   
   return (

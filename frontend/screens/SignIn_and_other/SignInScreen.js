@@ -21,7 +21,7 @@ export default function SignInScreen({ navigation }) {
       console.log(user);
       await getUserDetail();
       setLoading(false);
-      navigation.navigate('/MenuScreen');
+      navigation.navigate('Menu');
 
     }).catch(e=>{
       console.log(e.message);
