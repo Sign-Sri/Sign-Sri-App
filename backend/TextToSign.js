@@ -53,6 +53,13 @@ app.post('/convert', async (req, res) => {
             frameDuration.toString()
         ]);
 
+        //Return
+        res.join({
+            success: true,
+            name: `/outputs/${outputFileName}`,
+            processedText: preprocessedText
+        })
+
     }catch (error){
         console.error('Conversion error:', error);
         res.status(500).json({ error: 'Conversion failed', details: error.message });
