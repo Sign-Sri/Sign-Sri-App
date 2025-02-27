@@ -1,10 +1,13 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import React, { useContext, useState } from 'react';
+import { signInWithEmailAndPassword} from 'firebase/auth';
+import React, { useContext, useState,useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ToastAndroid, ActivityIndicator } from 'react-native';
 import { auth, db } from '../../config/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
 import { UserDetailContext } from '../../Context/UserDetailContext';
 import { Ionicons } from '@expo/vector-icons'; // Import eye icon
+
+
+
 
 
 export default function SignInScreen({ navigation }) {
@@ -14,6 +17,8 @@ export default function SignInScreen({ navigation }) {
   const[loading,setLoading]=useState(false);
   const [secureText, setSecureText] = useState(true); // State to toggle password visibility
 
+
+  
 
   const onSignInClick=()=>{
     setLoading(true);
