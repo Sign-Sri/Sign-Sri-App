@@ -5,6 +5,8 @@ import { createUserWithEmailAndPassword} from 'firebase/auth';
 import {auth,db} from '../../config/firebaseConfig';
 import {setDoc,doc} from 'firebase/firestore';
 import { UserDetailContext } from '../../Context/UserDetailContext';
+import { Ionicons } from '@expo/vector-icons'; // Import eye icon
+
 
 export default function SignUpScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');
@@ -14,7 +16,10 @@ export default function SignUpScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const {userDetail,setUserDetail} = useContext(UserDetailContext);
-  
+ // State for hiding/showing password
+ const [secureTextPassword, setSecureTextPassword] = useState(true);
+ const [secureTextConfirm, setSecureTextConfirm] = useState(true);
+ 
   const CreateNewAccount = () => {
       createUserWithEmailAndPassword(auth, email, password)
       .then(async(resp)=>{
@@ -99,21 +104,33 @@ export default function SignUpScreen({ navigation }) {
         keyboardType="phone-pad"
       />
       
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={(value) => setPassword(value)}
-        secureTextEntry
-      />
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChangeText={(value) => setConfirmPassword(value)}
-        secureTextEntry
-      />
+       {/* Password Field */}
+       <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.passwordInput}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={secureTextPassword}
+        />
+        <TouchableOpacity onPress={() => setSecureTextPassword(!secureTextPassword)} style={styles.eyeIcon}>
+          <Ionicons name={secureTextPassword ? "eye-off" : "eye"} size={24} color="gray" />
+        </TouchableOpacity>
+      </View>
+
+      {/* Confirm Password Field */}
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.passwordInput}
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          secureTextEntry={secureTextConfirm}
+        />
+        <TouchableOpacity onPress={() => setSecureTextConfirm(!secureTextConfirm)} style={styles.eyeIcon}>
+          <Icon name={secureTextConfirm ? "eye-off" : "eye"} size={24} color="gray" />
+        </TouchableOpacity>
+      </View>
 
       <Text style={styles.termsText}>
         By proceeding you agree to our Terms & Privacy Policy
@@ -174,5 +191,26 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+    borderRadius: 50,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    height: 56,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+  },
+  passwordInput: {
+    flex: 1,
+    fontSize: 16,
+    height: '100%',
+  },
+  eyeIcon: {
+    padding: 12,
+    position: 'absolute',
+    right: 16,
   },
 });
