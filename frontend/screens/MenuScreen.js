@@ -1,10 +1,17 @@
-import React from 'react';
+import React,{useContext}from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { auth } from "../config/firebaseConfig";
 import { signOut } from 'firebase/auth';
 
+import { UserDetailContext } from '../Context/UserDetailContext';
+
 
 const MenuScreen = ({ navigation }) => {
+    
+    
+
+    const {userDetail,setUserDetail} = useContext(UserDetailContext);
+   
     const handleLogout = async () => {
         try {
           await signOut(auth);
@@ -15,7 +22,7 @@ const MenuScreen = ({ navigation }) => {
       };
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>SignSri - Menu</Text>
+            <Text style={styles.title}>Hello {userDetail?.firstName}</Text>
             <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
                 <Text style={styles.buttonText}>Sign Out</Text>
             </TouchableOpacity>

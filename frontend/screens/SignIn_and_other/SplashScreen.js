@@ -15,9 +15,10 @@ const SplashScreen = () => {
       if (user) {
         console.log(user);
         try {
-          const userDoc = await getDoc(doc(db, "users", user.email));
+          const userDoc = await getDoc(doc(db, "users", user.uid));
           if (userDoc.exists()) {
             setUserDetail(userDoc.data());
+
           }
           navigation.replace("Menu"); // Use `replace` to prevent going back to Splash
         } catch (error) {
