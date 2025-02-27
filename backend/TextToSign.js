@@ -12,6 +12,12 @@ app.use(express.json());
 app.use(express.json());
 app.use('/outputs', express.static('outputs'));
 
+// Root route
+app.get('/', (req, res) => {
+    res.send('Running');
+});
+
+
 // Creating outputs directory, if it is not created
 const outputsDir = path.join(__dirname, 'outputs');
 if (!fs.existsSync(outputsDir)) {
@@ -83,6 +89,7 @@ function runPythonScript(scriptName, args){
     });
 }
 
+// Start server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
