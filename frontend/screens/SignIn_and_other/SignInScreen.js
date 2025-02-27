@@ -51,16 +51,19 @@ export default function SignInScreen({ navigation }) {
           keyboardType="email-address"
           autoCapitalize="none"
         />
+      
         
+      <View style={styles.passwordContainer}>
         <TextInput
-          style={styles.input}
+          style={styles.passwordInput}
           placeholder="Password"
-          onChangeText={(value) => setPassword(value)}	
-          secureTextEntry={secureText}          
+          onChangeText={(value) => setPassword(value)}
+          secureTextEntry={secureText}
         />
-        <TouchableOpacity onPress={() => setSecureText(!secureText)}>
-            <Ionicons name={secureText ? "eye-off" : "eye"} size={24} color="gray" />
+        <TouchableOpacity onPress={() => setSecureText(!secureText)} style={styles.eyeIcon}>
+          <Ionicons name={secureText ? "eye-off" : "eye"} size={24} color="gray" />
         </TouchableOpacity>
+      </View>
         
         <TouchableOpacity
           onPress={() => navigation.navigate('ForgotPassword')}
@@ -128,6 +131,8 @@ backButton: {
     paddingHorizontal: 16,
     marginBottom: 16,
     fontSize: 16,
+    borderWidth: 1, // Optional: Gives a light border
+    borderColor: '#E0E0E0', // Matches existing style
   },
   forgotPassword: {
     alignSelf: 'flex-end',
@@ -192,4 +197,26 @@ backButton: {
     fontSize: 14,
     fontWeight: 'bold',
   },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+    borderRadius: 50,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    height: 56,
+    borderWidth: 1, // Optional: Gives a light border
+    borderColor: '#E0E0E0', // Matches existing style
+  },
+  passwordInput: {
+    flex: 1,  // Takes full width except icon space
+    fontSize: 16,
+    height: '100%',
+  },
+  eyeIcon: {
+    padding: 12,
+    position: 'absolute',
+    right: 16, // Ensures icon stays in the right corner
+  },
+  
 });

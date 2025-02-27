@@ -154,6 +154,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 16,
     fontSize: 16,
+    borderWidth: 1, // Optional: Gives a light border
+    borderColor: '#E0E0E0', // Matches existing style
   },
   termsText: {
     fontSize: 14,

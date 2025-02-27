@@ -103,6 +103,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 16,
     marginBottom: 16,
+    borderWidth: 1, // Optional: Gives a light border
+    borderColor: '#E0E0E0',
+    borderRadius: 50, // Matches existing style
+
   },
   resetButton: {
     height: 50,
