@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
 const ProgressScreen = ({ route }) => {
   const { score = 0, totalQuestions = 1 } = route.params || {};
@@ -27,11 +28,34 @@ const ProgressScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16 },
-  progress: { fontSize: 18, marginBottom: 10 },
-  score: { fontSize: 18, marginBottom: 10 },
-  badges: { fontSize: 18, fontWeight: 'bold', color: 'blue' },
+  container: {
+    flex: 1,
+    padding: moderateScale(16),
+    backgroundColor: '#f5f5f5',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: moderateScale(24),
+    fontWeight: 'bold',
+    marginBottom: verticalScale(16),
+    color: '#172937',
+  },
+  progress: {
+    fontSize: moderateScale(18),
+    marginBottom: verticalScale(10),
+    color: '#666',
+  },
+  score: {
+    fontSize: moderateScale(18),
+    marginBottom: verticalScale(10),
+    color: '#666',
+  },
+  badges: {
+    fontSize: moderateScale(18),
+    fontWeight: 'bold',
+    color: '#73E000',
+  },
 });
 
 export default ProgressScreen;

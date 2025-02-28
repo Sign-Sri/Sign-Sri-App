@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
-
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 // Dummy data for lessons
 const lessons = [
@@ -60,7 +61,6 @@ const SignLanguageSchoolScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      
       <FlatList
         data={lessons}
         renderItem={renderLesson}
@@ -77,31 +77,54 @@ const SignLanguageSchoolScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#fff' },
-  header: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
+  container: {
+    flex: 1,
+    padding: moderateScale(16),
+    backgroundColor: '#f5f5f5',
+  },
   card: {
-    padding: 16,
-    marginBottom: 10,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 8,
+    padding: moderateScale(16),
+    marginBottom: verticalScale(10),
+    backgroundColor: '#fff',
+    borderRadius: moderateScale(8),
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
   },
   gif: {
-    width: 100, // Adjust width as needed
-    height: 100, // Adjust height as needed
-    marginBottom: 10,
+    width: scale(100),
+    height: verticalScale(100),
+    marginBottom: verticalScale(10),
   },
-  title: { fontSize: 18, fontWeight: 'bold' },
-  level: { fontSize: 14, color: '#666' },
-  completed: { fontSize: 14, color: 'green', marginTop: 5 },
+  title: {
+    fontSize: moderateScale(18),
+    fontWeight: 'bold',
+    color: '#172937',
+  },
+  level: {
+    fontSize: moderateScale(14),
+    color: '#666',
+  },
+  completed: {
+    fontSize: moderateScale(14),
+    color: '#73E000',
+    marginTop: verticalScale(5),
+  },
   progressButton: {
-    marginTop: 20,
-    padding: 15,
-    backgroundColor: '#007bff',
-    borderRadius: 8,
+    marginTop: verticalScale(20),
+    padding: moderateScale(15),
+    backgroundColor: '#73E000',
+    borderRadius: moderateScale(8),
     alignItems: 'center',
   },
-  progressButtonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
+  progressButtonText: {
+    color: '#fff',
+    fontSize: moderateScale(16),
+    fontWeight: 'bold',
+  },
 });
 
 export default SignLanguageSchoolScreen;

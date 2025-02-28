@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
 const LessonScreen = ({ route, navigation }) => {
   const { lessonId } = route.params;
 
-  // Fetch lesson content based on lessonId
   const lessonContent = {
     '1': {
       id: '1',
@@ -24,7 +24,7 @@ const LessonScreen = ({ route, navigation }) => {
     '4': {
       id: '4',
       title: 'Shapes & Colors',
-      content: 'Learn common sign language Shapes & Colors...',
+      content: 'Learn the sign language for shapes and colors...',
     },
   }[lessonId];
 
@@ -32,18 +32,44 @@ const LessonScreen = ({ route, navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}>{lessonContent.title}</Text>
       <Text style={styles.content}>{lessonContent.content}</Text>
-      <Button
-        title="Take Quiz"
+      <TouchableOpacity
+        style={styles.quizButton}
         onPress={() => navigation.navigate('Quiz', { lessonId })}
-      />
+      >
+        <Text style={styles.quizButtonText}>Take Quiz</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#fff' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16 },
-  content: { fontSize: 16, marginBottom: 20 },
+  container: {
+    flex: 1,
+    padding: moderateScale(16),
+    backgroundColor: '#f5f5f5',
+  },
+  title: {
+    fontSize: moderateScale(24),
+    fontWeight: 'bold',
+    marginBottom: verticalScale(16),
+    color: '#172937',
+  },
+  content: {
+    fontSize: moderateScale(16),
+    marginBottom: verticalScale(20),
+    color: '#666',
+  },
+  quizButton: {
+    backgroundColor: '#73E000',
+    padding: moderateScale(12),
+    borderRadius: moderateScale(8),
+    alignItems: 'center',
+  },
+  quizButtonText: {
+    color: '#fff',
+    fontSize: moderateScale(18),
+    fontWeight: 'bold',
+  },
 });
 
 export default LessonScreen;
