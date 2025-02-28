@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(20),
     padding: moderateScale(15),
     backgroundColor: '#73E000', // Green background for button
-    borderRadius: moderateScale(8),
+    borderRadius: moderateScale(50),
     alignItems: 'center',
   },
   progressButtonText: {
