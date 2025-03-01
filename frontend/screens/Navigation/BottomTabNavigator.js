@@ -39,7 +39,7 @@ const BottomTabNavigator = () => {
           );
         },
         tabBarActiveTintColor: 'FFFFFF',
-        tabBarInactiveTintColor: '#696969',
+        tabBarInactiveTintColor: 'FFFFFF',
         tabBarStyle: {
           backgroundColor: '#172937',//
           borderTopWidth: 0,
