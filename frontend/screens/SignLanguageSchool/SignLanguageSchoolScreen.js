@@ -105,9 +105,10 @@ const styles = StyleSheet.create({
     width: scale(140),
     height: verticalScale(140),
     backgroundColor: '#172937', // Dark blue background for cards
-    borderRadius: moderateScale(8),
+    borderRadius: moderateScale(12),
     alignItems: 'center',
     justifyContent: 'center',
+    padding: moderateScale(10),
     margin: moderateScale(10),
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -116,10 +117,11 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   title: {
-    fontSize: moderateScale(16),
+    fontSize: moderateScale(15),
     fontWeight: 'bold',
-    marginTop: verticalScale(10),
+    marginTop: verticalScale(8),
     color: '#FFFFFF', // White text for card titles
+    letterSpacing: moderateScale(0.5),
   },
   level: {
     fontSize: moderateScale(14),
