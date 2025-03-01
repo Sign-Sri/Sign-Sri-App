@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import ProgressBar from './components/ProgressBar'; // Ensure this path is correct
-
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { FontAwesome5 } from '@expo/vector-icons';
+import ProgressBar from './components/ProgressBar';
 const questionsByLesson = {
   '1': [
     {
@@ -268,102 +269,102 @@ const questionsByLesson = {
   '2': [
     {
       number: '0',
-      image: require('../../assets/Numbers/sign0.jpg'),
+      image: require('../../assets/Numbers/sign0.png'),
       question: 'What is the sign for "0"?',
       options: [
-        { id: '1', image: require('../../assets/Numbers/sign0.jpg'), isCorrect: true },
-        { id: '2', image: require('../../assets/Numbers/sign2.jpg'), isCorrect: false },
-        { id: '3', image: require('../../assets/Numbers/sign1.jpg'), isCorrect: false },
+        { id: '1', image: require('../../assets/Numbers/sign0.png'), isCorrect: true },
+        { id: '2', image: require('../../assets/Numbers/sign2.png'), isCorrect: false },
+        { id: '3', image: require('../../assets/Numbers/sign1.png'), isCorrect: false },
       ],
     },
     {
       number: '1',
-      image: require('../../assets/Numbers/sign1.jpg'),
+      image: require('../../assets/Numbers/sign1.png'),
       question: 'What is the sign for "1"?',
       options: [
-        { id: '1', image: require('../../assets/Numbers/sign2.jpg'), isCorrect: false },
-        { id: '2', image: require('../../assets/Numbers/sign3.jpg'), isCorrect: false },
-        { id: '3', image: require('../../assets/Numbers/sign1.jpg'), isCorrect: true },
+        { id: '1', image: require('../../assets/Numbers/sign2.png'), isCorrect: false },
+        { id: '2', image: require('../../assets/Numbers/sign3.png'), isCorrect: false },
+        { id: '3', image: require('../../assets/Numbers/sign1.png'), isCorrect: true },
       ],
     },
     {
       number: '2',
-      image: require('../../assets/Numbers/sign2.jpg'),
+      image: require('../../assets/Numbers/sign2.png'),
       question: 'What is the sign for "2"?',
       options: [
-        { id: '1', image: require('../../assets/Numbers/sign4.jpg'), isCorrect: false },
-        { id: '2', image: require('../../assets/Numbers/sign2.jpg'), isCorrect: true },
-        { id: '3', image: require('../../assets/Numbers/sign1.jpg'), isCorrect: false },
+        { id: '1', image: require('../../assets/Numbers/sign4.png'), isCorrect: false },
+        { id: '2', image: require('../../assets/Numbers/sign2.png'), isCorrect: true },
+        { id: '3', image: require('../../assets/Numbers/sign1.png'), isCorrect: false },
       ],
     },
     {
       number: '3',
-      image: require('../../assets/Numbers/sign3.jpg'),
+      image: require('../../assets/Numbers/sign3.png'),
       question: 'What is the sign for "3"?',
       options: [
-        { id: '1', image: require('../../assets/Numbers/sign2.jpg'), isCorrect: false },
-        { id: '2', image: require('../../assets/Numbers/sign5.jpg'), isCorrect: false },
-        { id: '3', image: require('../../assets/Numbers/sign3.jpg'), isCorrect: true },
+        { id: '1', image: require('../../assets/Numbers/sign2.png'), isCorrect: false },
+        { id: '2', image: require('../../assets/Numbers/sign5.png'), isCorrect: false },
+        { id: '3', image: require('../../assets/Numbers/sign3.png'), isCorrect: true },
       ],
     },
     {
       number: '4',
-      image: require('../../assets/Numbers/sign4.jpg'),
+      image: require('../../assets/Numbers/sign4.png'),
       question: 'What is the sign for "4"?',
       options: [
-        { id: '1', image: require('../../assets/Numbers/sign4.jpg'), isCorrect: true },
-        { id: '2', image: require('../../assets/Numbers/sign6.jpg'), isCorrect: false },
-        { id: '3', image: require('../../assets/Numbers/sign3.jpg'), isCorrect: false },
+        { id: '1', image: require('../../assets/Numbers/sign4.png'), isCorrect: true },
+        { id: '2', image: require('../../assets/Numbers/sign6.png'), isCorrect: false },
+        { id: '3', image: require('../../assets/Numbers/sign3.png'), isCorrect: false },
       ],
     },
     {
       number: '5',
-      image: require('../../assets/Numbers/sign5.jpg'),
+      image: require('../../assets/Numbers/sign5.png'),
       question: 'What is the sign for "5"?',
       options: [
-        { id: '1', image: require('../../assets/Numbers/sign4.jpg'), isCorrect: false },
-        { id: '2', image: require('../../assets/Numbers/sign7.jpg'), isCorrect: false },
-        { id: '3', image: require('../../assets/Numbers/sign5.jpg'), isCorrect: true },
+        { id: '1', image: require('../../assets/Numbers/sign4.png'), isCorrect: false },
+        { id: '2', image: require('../../assets/Numbers/sign7.png'), isCorrect: false },
+        { id: '3', image: require('../../assets/Numbers/sign5.png'), isCorrect: true },
       ],
     },
     {
       number: '6',
-      image: require('../../assets/Numbers/sign6.jpg'),
+      image: require('../../assets/Numbers/sign6.png'),
       question: 'What is the sign for "6"?',
       options: [
-        { id: '1', image: require('../../assets/Numbers/sign8.jpg'), isCorrect: false },
-        { id: '2', image: require('../../assets/Numbers/sign6.jpg'), isCorrect: true },
-        { id: '3', image: require('../../assets/Numbers/sign5.jpg'), isCorrect: false },
+        { id: '1', image: require('../../assets/Numbers/sign8.png'), isCorrect: false },
+        { id: '2', image: require('../../assets/Numbers/sign6.png'), isCorrect: true },
+        { id: '3', image: require('../../assets/Numbers/sign5.png'), isCorrect: false },
       ],
     },
     {
       number: '7',
-      image: require('../../assets/Numbers/sign7.jpg'),
+      image: require('../../assets/Numbers/sign7.png'),
       question: 'What is the sign for "7"?',
       options: [
-        { id: '1', image: require('../../assets/Numbers/sign7.jpg'), isCorrect: true },
-        { id: '2', image: require('../../assets/Numbers/sign9.jpg'), isCorrect: false },
-        { id: '3', image: require('../../assets/Numbers/sign6.jpg'), isCorrect: false },
+        { id: '1', image: require('../../assets/Numbers/sign7.png'), isCorrect: true },
+        { id: '2', image: require('../../assets/Numbers/sign9.png'), isCorrect: false },
+        { id: '3', image: require('../../assets/Numbers/sign6.png'), isCorrect: false },
       ],
     },
     {
       number: '8',
-      image: require('../../assets/Numbers/sign8.jpg'),
+      image: require('../../assets/Numbers/sign8.png'),
       question: 'What is the sign for "8"?',
       options: [
-        { id: '1', image: require('../../assets/Numbers/sign7.jpg'), isCorrect: false },
-        { id: '2', image: require('../../assets/Numbers/sign0.jpg'), isCorrect: false },
-        { id: '3', image: require('../../assets/Numbers/sign8.jpg'), isCorrect: true },
+        { id: '1', image: require('../../assets/Numbers/sign7.png'), isCorrect: false },
+        { id: '2', image: require('../../assets/Numbers/sign0.png'), isCorrect: false },
+        { id: '3', image: require('../../assets/Numbers/sign8.png'), isCorrect: true },
       ],
     },
     {
       number: '9',
-      image: require('../../assets/Numbers/sign9.jpg'),
+      image: require('../../assets/Numbers/sign9.png'),
       question: 'What is the sign for "9"?',
       options: [
-        { id: '1', image: require('../../assets/Numbers/sign1.jpg'), isCorrect: false },
-        { id: '2', image: require('../../assets/Numbers/sign9.jpg'), isCorrect: true },
-        { id: '3', image: require('../../assets/Numbers/sign8.jpg'), isCorrect: false },
+        { id: '1', image: require('../../assets/Numbers/sign1.png'), isCorrect: false },
+        { id: '2', image: require('../../assets/Numbers/sign9.png'), isCorrect: true },
+        { id: '3', image: require('../../assets/Numbers/sign8.png'), isCorrect: false },
       ],
     },
   ],
@@ -572,6 +573,7 @@ const QuizScreen = ({ navigation, route }) => {
 
   const progress = ((currentQuestion + 1) / questions.length) * 100;
   const questionType = lessonId === '1' ? 'letter' : lessonId === '2' ? 'number' : 'phrase';
+
   const handleAnswer = (isCorrect) => {
     if (isCorrect) {
       setScore(score + 1);
@@ -601,7 +603,7 @@ const QuizScreen = ({ navigation, route }) => {
       {showIntroduction ? (
         <View style={styles.introContainer}>
           <Text style={styles.introText}>
-          {`This is the sign for "${questions[currentQuestion][questionType]}":`}
+            {`This is the sign for "${questions[currentQuestion][questionType]}":`}
           </Text>
           <View style={styles.imageContainer}>
             <Image source={questions[currentQuestion].image} style={styles.signImage} />
@@ -630,7 +632,7 @@ const QuizScreen = ({ navigation, route }) => {
           </View>
           {showFeedback && (
             <View style={styles.feedbackContainer}>
-              <Text style={[styles.feedbackText, { color: isCorrect ? 'green' : 'red' }]}>
+              <Text style={[styles.feedbackText, { color: isCorrect ? '#73E000' : '#FF0000' }]}>
                 {isCorrect ? 'Correct! 🎉' : 'Incorrect! 😢'}
               </Text>
               {showTryAgain && (
@@ -647,61 +649,101 @@ const QuizScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#fff' },
-
-  introContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  introText: { fontSize: 20, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  
-  imageContainer: { 
-    width: '100%', 
-    alignItems: 'center', 
-    marginBottom: 20 
+  container: {
+    flex: 1,
+    padding: moderateScale(16),
+    backgroundColor: '#f5f5f5',
   },
-
-  signImage: { 
-    width: '90%',  
-    height: 250, 
-    resizeMode: 'contain' 
-  },
-
-  nextButton: { backgroundColor: '#007bff', padding: 12, borderRadius: 8 },
-  nextButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
-  
-  counter: { fontSize: 16, color: '#666', marginBottom: 10, textAlign: 'center' },
-  question: { fontSize: 20, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-
-  optionsContainer: { 
-    flexDirection: 'row', 
-    justifyContent: 'center', 
-    flexWrap: 'wrap', 
-    gap: 10, 
-    marginBottom: 20 
-  },
-
-  option: { 
-    padding: 10, 
-    backgroundColor: '#f0f0f0', 
-    borderRadius: 8, 
+  introContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-
-  optionImage: { 
-    width: 120, 
-    height: 120, 
-    resizeMode: 'contain' 
+  introText: {
+    fontSize: moderateScale(20),
+    fontWeight: 'bold',
+    marginBottom: verticalScale(20),
+    textAlign: 'center',
+    color: '#172937',
   },
-
-  feedbackContainer: { 
-    marginTop: 20, 
-    padding: 10, 
-    backgroundColor: '#fff', 
-    borderRadius: 8, 
-    alignItems: 'center' 
+  imageContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: verticalScale(20),
   },
-
-  feedbackText: { fontSize: 18, fontWeight: 'bold' },
-  tryAgainButton: { marginTop: 10, backgroundColor: 'red', padding: 10, borderRadius: 8 },
-  tryAgainText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
+  signImage: {
+    width: '90%',
+    height: verticalScale(250),
+    resizeMode: 'contain',
+  },
+  nextButton: {
+    backgroundColor: '#73E000',
+    padding: moderateScale(12),
+    borderRadius: moderateScale(8),
+  },
+  nextButtonText: {
+    color: '#fff',
+    fontSize: moderateScale(18),
+    fontWeight: 'bold',
+  },
+  counter: {
+    fontSize: moderateScale(16),
+    color: '#666',
+    marginBottom: verticalScale(10),
+    textAlign: 'center',
+  },
+  question: {
+    fontSize: moderateScale(20),
+    fontWeight: 'bold',
+    marginBottom: verticalScale(20),
+    textAlign: 'center',
+    color: '#172937',
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    gap: scale(10),
+    marginBottom: verticalScale(20),
+  },
+  option: {
+    padding: moderateScale(10),
+    backgroundColor: '#fff',
+    borderRadius: moderateScale(8),
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  optionImage: {
+    width: scale(120),
+    height: verticalScale(120),
+    resizeMode: 'contain',
+  },
+  feedbackContainer: {
+    marginTop: verticalScale(20),
+    padding: moderateScale(10),
+    backgroundColor: '#fff',
+    borderRadius: moderateScale(8),
+    alignItems: 'center',
+  },
+  feedbackText: {
+    fontSize: moderateScale(18),
+    fontWeight: 'bold',
+  },
+  tryAgainButton: {
+    marginTop: verticalScale(10),
+    backgroundColor: '#FF0000',
+    padding: moderateScale(10),
+    borderRadius: moderateScale(8),
+  },
+  tryAgainText: {
+    color: '#fff',
+    fontSize: moderateScale(16),
+    fontWeight: 'bold',
+  },
 });
 
 export default QuizScreen;

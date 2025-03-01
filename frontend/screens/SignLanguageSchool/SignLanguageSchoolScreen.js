@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
-
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 // Dummy data for lessons
 const lessons = [
@@ -11,6 +12,7 @@ const lessons = [
     completed: true,
     videoUrl: 'https://example.com/alphabet-video', // Example video URL
     gif: require('../../assets/FirstPage/Alphabet.png'), // Path to Alphabet GIF
+    icon: 'font', // FontAwesome5 icon name
   },
   {
     id: '2',
@@ -19,6 +21,7 @@ const lessons = [
     completed: false,
     videoUrl: 'https://example.com/numbers-video', // Example video URL
     gif: require('../../assets/FirstPage/Numbers.png'), // Path to Numbers GIF
+    icon: 'sort-numeric-up', // FontAwesome5 icon name
   },
   {
     id: '3',
@@ -27,6 +30,7 @@ const lessons = [
     completed: false,
     videoUrl: 'https://example.com/phrases-video', // Example video URL
     gif: require('../../assets/FirstPage/Phrases.png'), // Path to Phrases GIF
+    icon: 'comment-dots', // FontAwesome5 icon name
   },
   {
     id: '4',
@@ -35,12 +39,13 @@ const lessons = [
     completed: false,
     videoUrl: 'https://example.com/phrases-video', // Example video URL
     gif: require('../../assets/FirstPage/Shapes & Colors.png'), // Path to Phrases GIF
+    icon: 'shapes', // FontAwesome5 icon name
   },
 ];
 
-const LessonCard = ({ title, level, completed, gif, onPress }) => (
+const LessonCard = ({ title, level, completed, gif, icon, onPress }) => (
   <TouchableOpacity onPress={onPress} style={styles.card}>
-    <Image source={gif} style={styles.gif} />
+    <FontAwesome5 name={icon} size={moderateScale(30)} color="#73E000" />
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.level}>{level}</Text>
     {completed && <Text style={styles.completed}>✔️ Completed</Text>}
@@ -54,17 +59,20 @@ const SignLanguageSchoolScreen = ({ navigation }) => {
       level={item.level}
       completed={item.completed}
       gif={item.gif}
+      icon={item.icon}
       onPress={() => navigation.navigate('Lesson Screen', { lessonId: item.id })}
     />
   );
 
   return (
     <View style={styles.container}>
-      
+      <Text style={styles.header}>Sign Language School</Text>
       <FlatList
         data={lessons}
         renderItem={renderLesson}
         keyExtractor={(item) => item.id}
+        numColumns={2} // Display 2 items per row
+        contentContainerStyle={styles.grid}
       />
       <TouchableOpacity
         style={styles.progressButton}
@@ -77,31 +85,63 @@ const SignLanguageSchoolScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#fff' },
-  header: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
+  container: {
+    flex: 1,
+    padding: moderateScale(16),
+    backgroundColor: '#FFFFFF', // White background
+  },
+  header: {
+    fontSize: moderateScale(24),
+    fontWeight: 'bold',
+    marginBottom: verticalScale(20),
+    color: '#172937', // Dark blue text
+    textAlign: 'center',
+  },
+  grid: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   card: {
-    padding: 16,
-    marginBottom: 10,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 8,
+    width: scale(140),
+    height: verticalScale(140),
+    backgroundColor: '#172937', // Dark blue background for cards
+    borderRadius: moderateScale(8),
     alignItems: 'center',
+    justifyContent: 'center',
+    margin: moderateScale(10),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
   },
-  gif: {
-    width: 100, // Adjust width as needed
-    height: 100, // Adjust height as needed
-    marginBottom: 10,
+  title: {
+    fontSize: moderateScale(16),
+    fontWeight: 'bold',
+    marginTop: verticalScale(10),
+    color: '#FFFFFF', // White text for card titles
   },
-  title: { fontSize: 18, fontWeight: 'bold' },
-  level: { fontSize: 14, color: '#666' },
-  completed: { fontSize: 14, color: 'green', marginTop: 5 },
+  level: {
+    fontSize: moderateScale(14),
+    color: '#B0B0B0', // Light gray text for level
+  },
+  completed: {
+    fontSize: moderateScale(14),
+    color: '#73E000', // Green text for completed status
+    marginTop: verticalScale(5),
+  },
   progressButton: {
-    marginTop: 20,
-    padding: 15,
-    backgroundColor: '#007bff',
-    borderRadius: 8,
+    marginTop: verticalScale(20),
+    padding: moderateScale(15),
+    backgroundColor: '#73E000', // Green background for button
+    borderRadius: moderateScale(50),
     alignItems: 'center',
   },
-  progressButtonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
+  progressButtonText: {
+    color: '#FFFFFF', // White text for button
+    fontSize: moderateScale(16),
+    fontWeight: 'bold',
+  },
 });
 
 export default SignLanguageSchoolScreen;
