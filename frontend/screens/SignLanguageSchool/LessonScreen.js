@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   quizButton: {
     backgroundColor: '#73E000',
     padding: moderateScale(12),
-    borderRadius: moderateScale(8),
+    borderRadius: moderateScale(50),
     alignItems: 'center',
   },
   quizButtonText: {
