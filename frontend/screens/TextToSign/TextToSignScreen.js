@@ -45,6 +45,8 @@ const TextToSignScreen = () => {
 
       const data = await response.json();
 
+      setAslGif({ uri: `http://localhost:3000${data.name}` });
+
     };
 
     setAslGif(require('../../assets/ASL_output.gif'));
