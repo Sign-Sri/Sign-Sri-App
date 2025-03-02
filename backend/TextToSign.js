@@ -57,8 +57,8 @@ app.post('/convert', async (req, res) => {
         res.join({
             success: true,
             name: `/outputs/${outputFileName}`,
-            processedText: preprocessedText
-        })
+            processedText: preprocessedText,
+        });
 
     }catch (error){
         console.error('Conversion error:', error);
