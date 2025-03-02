@@ -25,6 +25,7 @@ const TextToSignScreen = () => {
     }
 
     setIsLoading(true);
+    setError(null);
 
     setAslGif(require('../../assets/ASL_output.gif'));
     setIsPlaying(true);
