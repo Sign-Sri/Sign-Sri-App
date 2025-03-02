@@ -9,6 +9,7 @@ const TextToSignScreen = () => {
   const [showAlphabetPanel, setShowAlphabetPanel] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
 
