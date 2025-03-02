@@ -174,9 +174,9 @@ const TextToSignScreen = () => {
       <View style={styles.outputContainer}>
         {isLoading ? (
           <ActivityIndicator size='large' color='#0000ff'
-        ) : error
-
-        {isPlaying ? (
+        ) : error ? (
+          <Text style={styles.errorText}>{error}</Text>
+        ) : isPlaying ? (
           <>
             <Image source={aslGif} style={styles.gif} />
             <Text style={styles.outputText}>
