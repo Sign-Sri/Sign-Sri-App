@@ -46,11 +46,12 @@ const TextToSignScreen = () => {
       const data = await response.json();
 
       setAslGif({ uri: `http://localhost:3000${data.name}` });
+      setIsPlaying(true);
 
     };
 
-    setAslGif(require('../../assets/ASL_output.gif'));
-    setIsPlaying(true);
+    //setAslGif(require('../../assets/ASL_output.gif'));
+    
   };
 
   const handleStop = () => {
