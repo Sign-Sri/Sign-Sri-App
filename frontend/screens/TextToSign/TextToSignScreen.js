@@ -15,6 +15,12 @@ const TextToSignScreen = () => {
   };
 
   const handlePlay = () => {
+
+    if(!text){
+      setError ('Please enter the text');
+      return;
+    }
+
     setAslGif(require('../../assets/ASL_output.gif'));
     setIsPlaying(true);
   };
