@@ -27,6 +27,20 @@ const TextToSignScreen = () => {
     setIsLoading(true);
     setError(null);
 
+    try{
+      const response = await fetch('http://localhost:3000/convert', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            text: text,
+            speed: speed,
+        }),
+      });
+
+    };
+
     setAslGif(require('../../assets/ASL_output.gif'));
     setIsPlaying(true);
   };
