@@ -1,4 +1,4 @@
-import { View, TextInput, StyleSheet, Text, Button, TouchableOpacity, Image, Modal, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Button, TouchableOpacity, Image, Modal, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 //import Slider from '@react-native-community/slider';
 import React, { useState } from 'react';
 
@@ -172,6 +172,10 @@ const TextToSignScreen = () => {
       )} */}
 
       <View style={styles.outputContainer}>
+        {isLoading ? (
+          <ActivityIndicator size='large' color='#0000ff'
+        ) : error
+
         {isPlaying ? (
           <>
             <Image source={aslGif} style={styles.gif} />
