@@ -17,7 +17,7 @@ const TextToSignScreen = () => {
     setText(inputText);
   };
 
-  const handlePlay = () => {
+  const handlePlay = async () => {
 
     if(!text){
       setError ('Please enter the text');
