@@ -51,9 +51,9 @@ const TextToSignScreen = () => {
     }catch (error){
       console.error('Error:', error);
       setError('Failed to generate ASL GIF. Please try again.'); 
+    }finally{
+      setIsLoading(false);
     }
-
-    //setAslGif(require('../../assets/ASL_output.gif'));
     
   };
 
