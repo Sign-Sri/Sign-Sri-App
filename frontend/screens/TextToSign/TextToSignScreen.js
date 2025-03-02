@@ -39,6 +39,12 @@ const TextToSignScreen = () => {
         }),
       });
 
+      if(!response.ok){
+        throw new error('Failed');
+      }
+
+      const data = await response.json();
+
     };
 
     setAslGif(require('../../assets/ASL_output.gif'));
