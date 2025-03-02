@@ -48,7 +48,10 @@ const TextToSignScreen = () => {
       setAslGif({ uri: `http://localhost:3000${data.name}` });
       setIsPlaying(true);
 
-    };
+    }catch (error){
+      console.error('Error:', error);
+      setError('Failed to generate ASL GIF. Please try again.'); 
+    }
 
     //setAslGif(require('../../assets/ASL_output.gif'));
     
