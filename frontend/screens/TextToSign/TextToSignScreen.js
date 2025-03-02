@@ -8,6 +8,8 @@ const TextToSignScreen = () => {
   const [aslGif, setAslGif] = useState(null);
   const [showAlphabetPanel, setShowAlphabetPanel] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [isPlaying, setIsPlaying] = useState(false);
 
   const handleTextInputChange = (inputText) => {
