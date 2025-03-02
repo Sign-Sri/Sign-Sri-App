@@ -8,7 +8,7 @@ const app = express();
 const port = 3000;
 
 // Middleware
-app.use(express.json());
+app.use(cors());
 app.use(express.json());
 app.use('/outputs', express.static('outputs'));
 
