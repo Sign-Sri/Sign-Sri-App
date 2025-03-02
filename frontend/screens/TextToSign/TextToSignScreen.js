@@ -23,6 +23,8 @@ const TextToSignScreen = () => {
       return;
     }
 
+    setIsLoading(true);
+
     setAslGif(require('../../assets/ASL_output.gif'));
     setIsPlaying(true);
   };
