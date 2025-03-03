@@ -54,7 +54,8 @@ app.post('/convert', async (req, res) => {
         ]);
 
         //Return
-        res.join({
+        //res.join({
+            res.json({
             success: true,
             name: `/outputs/${outputFileName}`,
             processedText: preprocessedText,

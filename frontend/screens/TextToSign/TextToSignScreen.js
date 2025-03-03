@@ -42,7 +42,7 @@ const TextToSignScreen = () => {
 
       console.log('Response status:', response.status);
       if(!response.ok){
-        throw new error('Failed');
+        throw new Error('Failed');
       }
 
       const data = await response.json();
