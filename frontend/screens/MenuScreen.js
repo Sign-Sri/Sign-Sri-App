@@ -1,16 +1,37 @@
-import React from "react";
+
+import React,{useContext}from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 import { FontAwesome5 } from "@expo/vector-icons"; // Ensure you have this installed
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { auth } from "../config/firebaseConfig";
+import { signOut } from 'firebase/auth';
+
+import { UserDetailContext } from '../Context/UserDetailContext';
+
 
 
 
 const MenuScreen = ({ navigation }) => {
+  
+   const {userDetail,setUserDetail} = useContext(UserDetailContext);
+   
+   const handleLogout = async () => {
+        try {
+          await signOut(auth);
+          navigation.replace("SignIn"); // Redirect to SignIn screen after logout
+        } catch (error) {
+          console.error("Logout Error:", error);
+        }
+  };
   return (
     
       <SafeAreaView style={styles.container}>
         <View style={styles.welcomeBox}>
+          <Text style={styles.title}>Hello {userDetail?.firstName}</Text>
+            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+                <Text style={styles.buttonText}>Sign Out</Text>
+            </TouchableOpacity>
           <Text style={styles.welcomeText}>Welcome to Sign ශ්‍රී</Text>
         </View>
 
@@ -73,6 +94,14 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
+
+    logoutButton: {
+        backgroundColor: "#d9534f", // Red button for sign out
+        padding: 15,
+        borderRadius: 5,
+        marginTop: 20,
+    },
+=======
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 3,
@@ -125,6 +154,7 @@ const styles = StyleSheet.create({
     lineHeight: verticalScale(12),
     
   },
+
 });
 
 export default MenuScreen;
