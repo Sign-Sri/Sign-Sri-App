@@ -1,6 +1,5 @@
 
 
-import StackNavigator from './screens/Navigation/StackNavigator';
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -18,7 +17,7 @@ import VerifyEmailScreen from './screens/SignIn_and_other/VerifyEmailScreen';
 import CreatePasswordScreen from './screens/SignIn_and_other/CreatePasswordScreen';
 import PasswordChangedScreen from './screens/SignIn_and_other/PasswordChangedScreen';
 
-import BottomTabNavigator from './screens/Navigation/BottomTabNavigator';
+import StackNavigator from './screens/Navigation/StackNavigator';
 
 const Stack = createStackNavigator();
 
