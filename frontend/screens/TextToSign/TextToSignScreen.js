@@ -29,7 +29,7 @@ const TextToSignScreen = () => {
 
     try{
       console.log('Sending request to backend...');
-      const response = await fetch('http://localhost:3000/convert', {
+      const response = await fetch('http://192.168.1.29:3000/convert', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ const TextToSignScreen = () => {
       const data = await response.json();
       console.log('Response data:', data);
 
-      setAslGif({ uri: `http://localhost:3000${data.name}` });
+      setAslGif({ uri: `http://192.168.1.29:3000${data.name}` });
       setIsPlaying(true);
 
     }catch (error){
