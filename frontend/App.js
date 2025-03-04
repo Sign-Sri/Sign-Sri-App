@@ -17,7 +17,7 @@ import VerifyEmailScreen from './screens/SignIn_and_other/VerifyEmailScreen';
 import CreatePasswordScreen from './screens/SignIn_and_other/CreatePasswordScreen';
 import PasswordChangedScreen from './screens/SignIn_and_other/PasswordChangedScreen';
 
-import StackNavigator from './screens/Navigation/StackNavigator';
+import BottomTabNavigator from './screens/Navigation/BottomTabNavigator';
 
 const Stack = createStackNavigator();
 
@@ -46,7 +46,7 @@ export default function App() {
             <Stack.Screen name="PasswordChanged" component={PasswordChangedScreen} />
 
             {/* Main App Flow */}
-            <Stack.Screen name="MainApp" component={StackNavigator} />
+            <Stack.Screen name="Main" component={BottomTabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

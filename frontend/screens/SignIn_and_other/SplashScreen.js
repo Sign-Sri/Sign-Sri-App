@@ -20,7 +20,7 @@ const SplashScreen = () => {
             setUserDetail(userDoc.data());
 
           }
-          navigation.replace("Menu"); // Use `replace` to prevent going back to Splash
+          navigation.replace("Main"); // Use `replace` to prevent going back to Splash
         } catch (error) {
           console.error("Error fetching user data:", error);
           navigation.replace("SignIn");

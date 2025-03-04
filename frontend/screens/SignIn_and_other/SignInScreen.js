@@ -28,7 +28,7 @@ export default function SignInScreen({ navigation }) {
       console.log(user);
       await getUserDetail(user.uid);
       setLoading(false);
-      navigation.replace('Menu');
+      navigation.replace('Main');
 
     }).catch(e=>{
       setLoading(false);

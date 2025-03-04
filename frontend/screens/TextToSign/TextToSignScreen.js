@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 12,
     marginBottom: 15,
-    borderRadius: 8,
+    borderRadius: 50,
     fontSize: 16,
     borderColor: '#172937',
     backgroundColor: '#fff',
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   },
   speedButton: {
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 50,
     borderWidth: 1,
     borderColor: '#172937',
     backgroundColor:'#172937' ,
