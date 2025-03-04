@@ -23,15 +23,12 @@ const MenuScreen = ({ navigation }) => {
         } catch (error) {
           console.error("Logout Error:", error);
         }
-  };
+   };
   return (
     
       <SafeAreaView style={styles.container}>
         <View style={styles.welcomeBox}>
-          <Text style={styles.title}>Hello {userDetail?.firstName}</Text>
-            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                <Text style={styles.buttonText}>Sign Out</Text>
-            </TouchableOpacity>
+            
           <Text style={styles.welcomeText}>Welcome to Sign ශ්‍රී</Text>
         </View>
 
