@@ -61,7 +61,7 @@ export default function SignUpScreen({ navigation }) {
         console.log(user);
         await SaveUser(user);
         Alert.alert('Success', 'Account created successfully!');
-        navigation.navigate('SignIn'); // Navigate to sign-in screen
+        navigation.replace('SignIn'); // Navigate to sign-in screen
       })
       .catch((error) => {
         let errorMessage = 'Something went wrong. Please try again.';
