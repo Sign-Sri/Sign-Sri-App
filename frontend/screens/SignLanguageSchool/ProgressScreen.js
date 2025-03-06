@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { FontAwesome5 } from '@expo/vector-icons'; // For icons
+import ProgressBar from './components/ProgressBar'; // Assuming you have a ProgressBar component
 
 const ProgressScreen = ({ route }) => {
-  const { score = 0, totalQuestions = 1 } = route.params || {};
+  const { score = 0, wrongAnswers = 0, totalQuestions = 1 } = route.params || {};
   const progress = Math.round((score / totalQuestions) * 100);
-  const wrongAnswers = totalQuestions - score;
 
   let badges = [];
   if (score === totalQuestions) {
@@ -19,10 +20,37 @@ const ProgressScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Your Progress</Text>
-      <Text style={styles.progress}>Progress: {progress}%</Text>
-      <Text style={styles.score}>Correct Answers: {score}</Text>
-      <Text style={styles.score}>Wrong Answers: {wrongAnswers}</Text>
-      <Text style={styles.badges}>Badges: {badges.join(', ')}</Text>
+
+      {/* Progress Bar */}
+      <View style={styles.progressBarContainer}>
+        <ProgressBar progress={progress} />
+        <Text style={styles.progressText}>{progress}% Completed</Text>
+      </View>
+
+      {/* Correct and Wrong Answers */}
+      <View style={styles.statsContainer}>
+        <View style={styles.statItem}>
+          <FontAwesome5 name="check-circle" size={moderateScale(24)} color="#73E000" />
+          <Text style={styles.statText}>Correct Answers: {score}</Text>
+        </View>
+        <View style={styles.statItem}>
+          <FontAwesome5 name="times-circle" size={moderateScale(24)} color="#FF0000" />
+          <Text style={styles.statText}>Wrong Answers: {wrongAnswers}</Text>
+        </View>
+      </View>
+
+      {/* Badges */}
+      <View style={styles.badgesContainer}>
+        <Text style={styles.badgesTitle}>Badges Earned</Text>
+        <View style={styles.badgesList}>
+          {badges.map((badge, index) => (
+            <View key={index} style={styles.badgeItem}>
+              <FontAwesome5 name="medal" size={moderateScale(20)} color="#FFD700" />
+              <Text style={styles.badgeText}>{badge}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
     </View>
   );
 };
@@ -38,23 +66,66 @@ const styles = StyleSheet.create({
   title: {
     fontSize: moderateScale(24),
     fontWeight: 'bold',
-    marginBottom: verticalScale(16),
+    marginBottom: verticalScale(20),
     color: '#172937',
+    textAlign: 'center',
   },
-  progress: {
-    fontSize: moderateScale(18),
-    marginBottom: verticalScale(10),
+  progressBarContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: verticalScale(20),
+  },
+  progressText: {
+    fontSize: moderateScale(16),
     color: '#666',
+    marginTop: verticalScale(10),
   },
-  score: {
-    fontSize: moderateScale(18),
+  statsContainer: {
+    width: '100%',
+    marginBottom: verticalScale(20),
+  },
+  statItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: verticalScale(10),
-    color: '#666',
   },
-  badges: {
+  statText: {
+    fontSize: moderateScale(16),
+    color: '#666',
+    marginLeft: moderateScale(10),
+  },
+  badgesContainer: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  badgesTitle: {
     fontSize: moderateScale(18),
     fontWeight: 'bold',
-    color: '#73E000',
+    color: '#172937',
+    marginBottom: verticalScale(10),
+  },
+  badgesList: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
+  badgeItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: moderateScale(10),
+    borderRadius: moderateScale(8),
+    margin: moderateScale(5),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  badgeText: {
+    fontSize: moderateScale(14),
+    color: '#172937',
+    marginLeft: moderateScale(5),
   },
 });
 

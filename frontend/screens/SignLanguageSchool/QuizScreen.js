@@ -571,7 +571,8 @@ const QuizScreen = ({ navigation, route }) => {
   const [showTryAgain, setShowTryAgain] = useState(false);
   const [showIntroduction, setShowIntroduction] = useState(true);
 
-  const progress = ((currentQuestion + 1) / questions.length) * 100;
+  // Calculate progress based on the user's score
+  const progress = (score / questions.length) * 100;
   const questionType = lessonId === '1' ? 'letter' : lessonId === '2' ? 'number' : 'phrase';
 
   const handleAnswer = (isCorrect) => {
