@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { FontAwesome5 } from '@expo/vector-icons';
 import ProgressBar from './components/ProgressBar';
+
 const questionsByLesson = {
   '1': [
     {
@@ -559,13 +560,13 @@ const questionsByLesson = {
     // Add more shapes and colors as needed
   ],
 };
-
 const QuizScreen = ({ navigation, route }) => {
   const { lessonId } = route.params;
   const questions = questionsByLesson[lessonId];
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
+  const [wrongAnswers, setWrongAnswers] = useState(0); // State to track wrong answers
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [showTryAgain, setShowTryAgain] = useState(false);
@@ -588,10 +589,12 @@ const QuizScreen = ({ navigation, route }) => {
           setCurrentQuestion(currentQuestion + 1);
           setShowIntroduction(true);
         } else {
-          navigation.navigate('Progress', { score, totalQuestions: questions.length });
+          // Navigate to ProgressScreen with score, wrongAnswers, and totalQuestions
+          navigation.navigate('Progress', { score, wrongAnswers, totalQuestions: questions.length });
         }
       }, 1000);
     } else {
+      setWrongAnswers(wrongAnswers + 1); // Increment wrongAnswers count
       setIsCorrect(false);
       setShowFeedback(true);
       setShowTryAgain(true);
