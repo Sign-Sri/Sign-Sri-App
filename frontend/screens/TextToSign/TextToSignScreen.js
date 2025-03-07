@@ -1,5 +1,7 @@
-import { View, TextInput, StyleSheet, Text, Button, TouchableOpacity, Image, Modal, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Button, Image, TouchableOpacity, Modal, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 //import Slider from '@react-native-community/slider';
+import FastImage from 'react-native-fast-image';
+
 import React, { useState } from 'react';
 
 const TextToSignScreen = () => {
@@ -183,6 +185,7 @@ const TextToSignScreen = () => {
         ) : isPlaying ? (
           <>
             <Image source={aslGif} style={styles.gif} />
+
             <Text style={styles.outputText}>
               Entered Text: {text}
             </Text>
