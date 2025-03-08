@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet, Image, ScrollView, TouchableOpacity, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker'; // Updated import
 import axios from 'axios';
-import * as ImagePicker from 'expo-Image-picker';
+import * as ImagePicker from 'expo-image-picker';
 
 const CreatePost = ({ navigation }) => {
   const [content, setContent] = useState('');
@@ -18,6 +18,7 @@ const CreatePost = ({ navigation }) => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      allowsMultipleSelection: true,
     });
 
     if (!result.canceled) {
@@ -32,6 +33,7 @@ const CreatePost = ({ navigation }) => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      allowsMultipleSelection: true,
     });
 
     if (!result.canceled) {
