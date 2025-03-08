@@ -1,4 +1,5 @@
 // frontend/screens/Posts.js
+
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Picker } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
