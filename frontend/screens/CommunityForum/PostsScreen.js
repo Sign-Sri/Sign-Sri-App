@@ -17,7 +17,7 @@ const PostsScreen = () => {
   
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/posts');
+        const response = await axios.get('https://sign-sri-123.firebaseio.com/posts');
         setPosts(response.data);
       } catch (error) {
         console.error(error);
@@ -28,7 +28,7 @@ const PostsScreen = () => {
   // Handle liking a post
   const handleLike = async (postId) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/posts/${postId}/like`);
+      const response = await axios.post(`http://sign-sri-123.firebaseio.com/posts/${postId}/like`);
       const updatedPost = response.data;
       setPosts((prevPosts) =>
         prevPosts.map((post) => (post._id === updatedPost._id ? updatedPost : post))
