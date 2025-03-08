@@ -3,16 +3,24 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const authRoutes = require('./routes/auth.routes');
-const admin = require('./config/firebase-config');
-const communityRoutes = require('./routes/community.routes');
+const admin = require('./config/sign-sri-123-firebase-adminsdk-fbsvc-ae42f0a14d (2).json');
+const postRoutes = require('./routes/post.routes');
+
 
 const app = express();
 
 // Middleware
 app.use(cors());
-app.use('api/community', verifyToken ,communityRoutes);
+app.use('/api/posts', postRoutes);
 app.use(express.json());
 app.use(morgan('dev')); // Logging middleware
+
+//Firebase Admin Initialization
+const serviceAccount = require('./config/sign-sri-123-firebase-adminsdk-fbsvc-ae42f0a14d (2).json');
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://sign-sri-123.firebaseio.com',
+});
 
 // Firebase Auth Middleware
 const verifyToken = async (req, res, next) => {
