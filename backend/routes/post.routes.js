@@ -59,7 +59,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Create a new post with images and videos
-router.post('/', verifyToken, upload.fields([{ name: 'images', maxCount: 5 }, { name: 'videos', maxCount: 5 }]), async (req, res) => {
+router.post('/',  upload.fields([{ name: 'images', maxCount: 5 }, { name: 'videos', maxCount: 5 }]), async (req, res) => {
   const { content, feelings } = req.body;
   const images = req.files['images'] ? req.files['images'].map((file) => file.path) : [];
   const videos = req.files['videos'] ? req.files['videos'].map((file) => file.path) : [];
