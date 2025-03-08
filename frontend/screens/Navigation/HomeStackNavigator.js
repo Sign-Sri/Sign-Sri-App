@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 
@@ -6,11 +6,11 @@ import MenuScreen from '../MenuScreen';
 import SignToTextScreen from '../SignToText/SignToTextScreen';
 import TextToSignScreen from '../TextToSign/TextToSignScreen';
 import SchoolScreen from '../SignLanguageSchool/SignLanguageSchoolScreen';
-import CommunityForumScreen from '../CommunityForum/CommunityForumScreen';
-import LessonScreen from './../SignLanguageSchool/LessonScreen';
-import ProgressScreen from './../SignLanguageSchool/ProgressScreen';
-import QuizScreen from './../SignLanguageSchool/QuizScreen';
-
+import CreatePost from '../CommunityForum/CreatePost'; // Correct import
+import PostsScreen from '../CommunityForum/Posts';
+import LessonScreen from '../SignLanguageSchool/LessonScreen';
+import ProgressScreen from '../SignLanguageSchool/ProgressScreen';
+import QuizScreen from '../SignLanguageSchool/QuizScreen';
 
 const Stack = createStackNavigator();
 
@@ -36,23 +36,17 @@ const HomeStackNavigator = () => {
         name="Home" 
         component={MenuScreen} 
         options={{ 
-            title: 'Home',
-             
+          title: 'Home',
         }} 
       />
       <Stack.Screen name="Sign To Text" component={SignToTextScreen} />
       <Stack.Screen name="Text To Sign" component={TextToSignScreen} />
       <Stack.Screen name="Sign Language School" component={SchoolScreen} />
-      <Stack.Screen name="Community Forum" component={CommunityForumScreen} />
+      <Stack.Screen name="Community Forum" component={CreatePost} /> {/* Correctly registered */}
+      <Stack.Screen name="Posts" component={PostsScreen} />
       <Stack.Screen name="Lesson Screen" component={LessonScreen} />
       <Stack.Screen name="Progress" component={ProgressScreen} />
       <Stack.Screen name="Quiz" component={QuizScreen} />
-      
-
-    
-
-
-      
     </Stack.Navigator>
   );
 };
