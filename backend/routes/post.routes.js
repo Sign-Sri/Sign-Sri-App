@@ -2,6 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const admin = require("../config/firebase-config");
+
 const verifyToken = require('../middleware/verifyToken');
 const Post = require('../models/post.model');
 
