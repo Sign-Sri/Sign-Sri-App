@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const admin = require('../config/firebase-config');
+const admin = require('../config/sign-sri-123-firebase-adminsdk-fbsvc-ae42f0a14d (2).json');
 const { body, validationResult } = require('express-validator');
 
 // Validation middleware
