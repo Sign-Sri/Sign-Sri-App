@@ -1,7 +1,7 @@
 import { View, TextInput, StyleSheet, Text, Button, Image, TouchableOpacity, Modal, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 //import Slider from '@react-native-community/slider';
-import FastImage from 'react-native-fast-image';
-
+//import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
 import React, { useState } from 'react';
 
 const TextToSignScreen = () => {
@@ -50,7 +50,17 @@ const TextToSignScreen = () => {
       const data = await response.json();
       console.log('Response data:', data);
 
-      setAslGif({ uri: `http://192.168.1.29:3000${data.name}` });
+      if (!data.name) {
+        throw new Error('Invalid response: GIF name is missing');
+      }
+
+      //setAslGif({ uri: `http://192.168.1.29:3000${data.name}` });
+
+      const gifUrl = `http://192.168.1.29:3000${data.name}`;
+      console.log('GIF URL:', gifUrl); 
+
+      setAslGif({ uri: gifUrl });
+      console.log('aslGif state after setting:', { uri: gifUrl });
       setIsPlaying(true);
 
     }catch (error){
@@ -182,9 +192,16 @@ const TextToSignScreen = () => {
 
         ) : error ? (
           <Text style={styles.errorText}>{error}</Text>
-        ) : isPlaying ? (
+        ) : isPlaying && aslGif ? (
           <>
-            <Image source={aslGif} style={styles.gif} />
+            
+
+            <ExpoImage
+                source={aslGif}
+                style={styles.gif}
+                //resizeMode={FastImage.resizeMode.contain} 
+                contentFit="contain"
+            />
 
             <Text style={styles.outputText}>
               Entered Text: {text}

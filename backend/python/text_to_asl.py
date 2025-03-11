@@ -15,6 +15,7 @@ def text_to_asl_gif(preprocessed_text, asl_folder, output_file, frame_duration):
         if os.path.exists(image_path):
             img = Image.open(image_path)
             frames.append(img)
+            print(f"Added frame for character: {char}")
         else:
             print(f"Warning: No image found for '{char}'.", file=sys.stderr)
     
@@ -24,7 +25,8 @@ def text_to_asl_gif(preprocessed_text, asl_folder, output_file, frame_duration):
             save_all=True,
             append_images=frames[1:],
             duration=int(frame_duration),
-            loop=1
+            #loop=1,
+            disposal=2,
         )
         print(f"ASL animation saved as {output_file}")
         return True
