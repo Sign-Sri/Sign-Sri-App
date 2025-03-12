@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-native-vlc-media-player": "^1.0.80",
+    "video.js": "^8.21.0"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "A": [
+    {
+      "word": "Again",
+      "video": "https://www.handspeak.com/word/a/aga/again.mp4"
+    },
+    {
+      "word": "Ask",
+      "video": "assets/videos/ask.mp4"
+    },
+    {
+      "word": "After",
+      "video": " "
+    },
+    {
+      "word": "Against",
+      "video": " "
+    },
+    {
+      "word": "Arrive",
+      "video": " "
+    },
+    {
+      "word": "Any",
+      "video": " "
+    },
+    {
+      "word": "Accept",
+      "video": " "
+    },
+    {
+      "word": "Afternoon",
+      "video": " "
+    },
+    {
+      "word": "Allow",
+      "video": " "
+    },
+    {
+      "word": "Alone",
+      "video": " "
+    }
+  ],
+  "B": [{ "word": "bat", "video": " " }],
+  "C": [{ "word": "cat", "video": " " }]
+}
