@@ -1,9 +1,17 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { UserDetailContext } from '../../Context/UserDetailContext';
+
+
+
+
+
 
 // Dummy data for lessons
+
+
 const lessons = [
   {
     id: '1',
@@ -53,6 +61,8 @@ const LessonCard = ({ title, level, completed, gif, icon, onPress }) => (
 );
 
 const SignLanguageSchoolScreen = ({ navigation }) => {
+  const { userDetail, setUserDetail } = useContext(UserDetailContext);
+
   const renderLesson = ({ item }) => (
     <LessonCard
       title={item.title}
@@ -66,7 +76,7 @@ const SignLanguageSchoolScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Sign Language School</Text>
+      <Text style={styles.header}>Welcome,{userDetail?.firstName}</Text>
       <FlatList
         data={lessons}
         renderItem={renderLesson}
