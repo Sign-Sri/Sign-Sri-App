@@ -176,7 +176,7 @@ const TextToSignScreen = () => {
               </>
             ) : (
               <Text style={styles.instructionsText}>
-                To see the ASL output:
+                To view the ASL output:
                 {"\n\n"}
                 1. Enter text in the input field above.
                 {"\n"}
