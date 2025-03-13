@@ -136,6 +136,7 @@ const TextToSignScreen = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0} 
       style={styles.container}
     >
 
@@ -248,6 +249,7 @@ const TextToSignScreen = () => {
       </Modal>
 
     </View>
+    
     </KeyboardAvoidingView>
   );
 };
