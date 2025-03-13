@@ -4,6 +4,8 @@ import { View, TextInput, StyleSheet, Text, Button, Image, TouchableOpacity, Mod
 import { Image as ExpoImage } from 'expo-image';
 import React, { useState } from 'react';
 
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+
 const TextToSignScreen = () => {
   const [speed, setSpeed] = useState('Normal');
   const [text, setText] = useState('');
@@ -54,7 +56,7 @@ const TextToSignScreen = () => {
         throw new Error('Invalid response: GIF name is missing');
       }
 
-      //setAslGif({ uri: `http://192.168.1.29:3000${data.name}` });
+      //setAslGif({ uri: `http://172.20.10.3:3000${data.name}` });
 
       const gifUrl = `http://192.168.1.29:3000${data.name}`;
       console.log('GIF URL:', gifUrl); 
@@ -253,40 +255,40 @@ const TextToSignScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: moderateScale(20),
     justifyContent: 'center',
     alignItems: 'stretch',
     backgroundColor: '#ECF0F1',
   },
   input: {
     borderWidth: 1,
-    padding: 12,
-    marginBottom: 15,
-    borderRadius: 8,
-    fontSize: 16,
+    padding: moderateScale(12), 
+    marginBottom: verticalScale(15), 
+    borderRadius: moderateScale(8), 
+    fontSize: moderateScale(16), 
     borderColor: '#172937',
     backgroundColor: '#fff',
     color: '#2C3E50',
   },
   label: {
-    fontSize: 18,
-    marginBottom: 5,
+    fontSize: moderateScale(18), 
+    marginBottom: verticalScale(5),
     fontWeight: '600',
     color: '#2C3E50',
   },
   speedContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   speedButton: {
-    padding: 10,
-    borderRadius: 8,
+    padding: moderateScale(10),
+    borderRadius: moderateScale(8),
     borderWidth: 1,
     borderColor: '#172937',
     backgroundColor:'#172937' ,
     flex: 1,
-    marginHorizontal: 5,
+    marginHorizontal: moderateScale(5),
     alignItems: 'center',
   },
   selectedSpeedButton: {
@@ -297,6 +299,7 @@ const styles = StyleSheet.create({
   speedButtonText: {
     color: '#FFFFFF',
     fontWeight: '600',
+    fontSize: moderateScale(14),
   },
   selectedSpeedButtonText: {
     color: '#79dd09',
@@ -304,35 +307,35 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginTop: verticalScale(20),
   },
   outputContainer: {
-    marginTop: 30,
-    padding: 20,
+    marginTop: verticalScale(30),
+    padding: moderateScale(20),
     //backgroundColor: '#2980B9',
     backgroundColor: '#172937',
-    borderRadius: 10,
+    borderRadius: moderateScale(10),
     alignItems: 'center',
 
-    height: 300,
+    height: verticalScale(300),
     justifyContent: 'center',
     alignItems: 'center',
   },
   outputText: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: '600',
-    marginTop: 10,
+    marginTop: verticalScale(10),
     color: '#ECF0F1',
   },
   gif: {
-    width: 200,
-    height: 200,
-    marginBottom: 10,
+    width: moderateScale(200), 
+    height: moderateScale(200), 
+    marginBottom: verticalScale(10),
   },
 
   modalContainer: {
     flex: 1,
-    padding: 20,
+    padding: moderateScale(20),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ECF0F1', 
@@ -342,32 +345,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: 50,
-    paddingBottom: 50,
+    marginTop: verticalScale(50),
+    paddingBottom: verticalScale(50),
   },
   tile: {
-    width: 120,
-    height: 120,
+    width: moderateScale(120),
+    height: moderateScale(120),
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 5,
-    borderRadius: 8,
+    margin: moderateScale(5),
+    borderRadius: moderateScale(8),
     borderWidth: 1,
     borderColor: '#172937',
     backgroundColor: '#fff', 
   },
   tileImage: {
-    width: 110,
-    height: 110,
+    width: moderateScale(110),
+    height: moderateScale(110),
     resizeMode: 'contain',
   },
   
   instructionsText: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: '600',
     color: '#ECF0F1',
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: moderateScale(24),
   },
 
 });
