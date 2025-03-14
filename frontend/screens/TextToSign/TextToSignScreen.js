@@ -3,6 +3,8 @@ import { Image as ExpoImage } from 'expo-image';
 import React, { useState } from 'react';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
+import { FontAwesome } from '@expo/vector-icons';
+
 //const API_URL = 'http://192.168.1.29:3000';
 
 const TextToSignScreen = () => {
@@ -130,7 +132,7 @@ const TextToSignScreen = () => {
             onChangeText={handleTextInputChange}
             placeholder="Enter Text"
             style={styles.input}
-            placeholderTextColor="#2C3E50"
+            placeholderTextColor="#FFFFFF"
           />
 
           <Text style={styles.label}>
@@ -152,9 +154,19 @@ const TextToSignScreen = () => {
           </View>
 
           <View style={styles.buttonContainer}>
-            <Button title="Play" color="#3498DB" onPress={handlePlay} />
-            <Button title="View Alphabet" color="#2ECC71" onPress={handleViewAlphabet} />
-            <Button title="Stop" color="#E74C3C" onPress={handleStop} />
+
+            <TouchableOpacity onPress={handlePlay} style={styles.iconButton}>
+              <FontAwesome name="play" size={25} color="#3498DB" />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleViewAlphabet} style={styles.iconButton}>
+              <Text style={styles.iconText}>ABC</Text> 
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleStop} style={styles.iconButton}>
+              <FontAwesome name="stop" size={25} color="#E74C3C" />
+            </TouchableOpacity>
+
           </View>
 
           <View style={styles.outputContainer}>
@@ -184,7 +196,9 @@ const TextToSignScreen = () => {
                 {"\n"}
                 2. Select the desired speed (Slow, Normal, Fast).
                 {"\n"}
-                3. Press the "Play" button to generate the ASL output.
+                3. Press the < FontAwesome name="play" size={16} color="#3498DB" /> icon to generate the ASL output.
+                {"\n\n"}
+                If you'd like to view the ASL alphabet, Press the "ABC" button.
               </Text>
             )}
           </View>
@@ -212,7 +226,7 @@ const TextToSignScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ECF0F1',
+    backgroundColor: '#FFFFFF',
   },
   scrollContainer: {
     flexGrow: 1,
@@ -222,14 +236,14 @@ const styles = StyleSheet.create({
     padding: moderateScale(20),
   },
   input: {
-    borderWidth: 1,
+    borderWidth: 2,
     padding: moderateScale(12),
     marginBottom: verticalScale(15),
     borderRadius: moderateScale(8),
     fontSize: moderateScale(16),
-    borderColor: '#172937',
-    backgroundColor: '#fff',
-    color: '#2C3E50',
+    borderColor: '#79dd09',
+    backgroundColor: '#172937',
+    color: '#FFFFFF',
   },
   label: {
     fontSize: moderateScale(18),
@@ -245,7 +259,7 @@ const styles = StyleSheet.create({
   speedButton: {
     padding: moderateScale(10),
     borderRadius: moderateScale(8),
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: '#172937',
     backgroundColor: '#172937',
     flex: 1,
@@ -277,6 +291,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: verticalScale(300),
     justifyContent: 'center',
+    borderWidth: 2,        
+    borderColor: '#79dd09',
   },
   outputText: {
     fontSize: moderateScale(16),
@@ -320,12 +336,36 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   instructionsText: {
-    fontSize: moderateScale(16),
+    fontSize: moderateScale(14),
     fontWeight: '600',
     color: '#ECF0F1',
     textAlign: 'center',
-    lineHeight: moderateScale(24),
+    lineHeight: moderateScale(20),
   },
+  errorText: {
+    color: '#FFFFFF', 
+    fontSize: moderateScale(16),
+    fontWeight: '600',
+    textAlign: 'center',
+    marginTop: verticalScale(10),
+  },
+  iconButton: {
+    padding: moderateScale(5),
+    borderRadius: moderateScale(8),
+    backgroundColor: '#172937',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: moderateScale(40),  
+    height: moderateScale(40), 
+    borderWidth: 2,        
+    borderColor: '#79dd09',
+  },
+  iconText: {
+    color: '#2ECC71', 
+    fontWeight: '600',
+    fontSize: moderateScale(12),
+  }
+
 });
 
 export default TextToSignScreen;
