@@ -227,6 +227,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+    
   },
   scrollContainer: {
     flexGrow: 1,
@@ -254,7 +255,9 @@ const styles = StyleSheet.create({
   speedContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(17),
+    alignItems: 'center',
+    width: '100%',
   },
   speedButton: {
     padding: moderateScale(10),
@@ -265,6 +268,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: moderateScale(5),
     alignItems: 'center',
+    justifyContent: 'center',
   },
   selectedSpeedButton: {
     backgroundColor: '#172937',
