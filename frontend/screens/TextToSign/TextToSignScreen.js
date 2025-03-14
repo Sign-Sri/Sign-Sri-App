@@ -30,6 +30,7 @@ const TextToSignScreen = () => {
     setError(null);
 
     try {
+      console.log('Sending request to backend');
       const response = await fetch('http://192.168.1.29:3000/convert', {
         method: 'POST',
         headers: {
@@ -41,22 +42,30 @@ const TextToSignScreen = () => {
         }),
       });
 
+      console.log('Response status:', response.status);
       if (!response.ok) {
         throw new Error('Failed');
       }
 
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (!data.name) {
         throw new Error('Invalid response: GIF name is missing');
       }
 
       const gifUrl = `http://192.168.1.29:3000${data.name}`;
+      console.log('GIF URL:', gifUrl);
+
       setAslGif({ uri: gifUrl });
+      console.log('aslGif state after setting:', { uri: gifUrl });
       setIsPlaying(true);
+
     } catch (error) {
       console.error('Error:', error);
+      console.error('Error:', error);
       setError('Failed to generate ASL GIF. Please try again.');
+
     } finally {
       setIsLoading(false);
     }
@@ -68,10 +77,12 @@ const TextToSignScreen = () => {
   };
 
   const handleViewAlphabet = () => {
+    console.log("Alphabet Opened");
     setShowAlphabetPanel(true);
   };
 
   const handleCloseAlphabetPanel = () => {
+    console.log("Close button pressed");
     setShowAlphabetPanel(false);
   };
 
