@@ -3,6 +3,8 @@ import { Image as ExpoImage } from 'expo-image';
 import React, { useState } from 'react';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
+//const API_URL = 'http://192.168.1.29:3000';
+
 const TextToSignScreen = () => {
   const [speed, setSpeed] = useState('Normal');
   const [text, setText] = useState('');
