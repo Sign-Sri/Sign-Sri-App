@@ -2,14 +2,15 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const authRoutes = require('./routes/auth.routes');
-const admin = require('./config/firebase-config');
+const authRoutes = require('../backend/routes/auth.routes');
+const communityRoutes = require('../backend/routes/communitypage')
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/community', communityRoutes);
 app.use(morgan('dev')); // Logging middleware
 
 // Firebase Auth Middleware
