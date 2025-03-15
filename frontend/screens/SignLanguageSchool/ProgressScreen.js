@@ -6,14 +6,22 @@ import ProgressBar from './components/ProgressBar'; // Assuming you have a Progr
 
 const ProgressScreen = ({ route }) => {
   const { score = 0, wrongAnswers = 0, totalQuestions = 1 } = route.params || {};
-  const progress = Math.round((score / totalQuestions) * 100);
+  const progress = 100; // Always show 100% completion
+
+  // Calculate Your Score based on the formula: (correctAnswers / wrongAnswers) * 10%
+  let yourScore;
+  if (wrongAnswers === 0) {
+    yourScore = 100; // If no wrong answers, score is 100%
+  } else {
+    yourScore = Math.min(Math.round((score / wrongAnswers) * 10), 100); // Cap score at 100%
+  }
 
   let badges = [];
-  if (score === totalQuestions) {
+  if (wrongAnswers >= 0 && wrongAnswers <= 3) {
     badges.push('Expert Badge');
-  } else if (score >= totalQuestions / 2) {
+  } else if (wrongAnswers >= 4 && wrongAnswers <= 6) {
     badges.push('Intermediate Badge');
-  } else {
+  } else if (wrongAnswers >= 7 && wrongAnswers <= 10) {
     badges.push('Beginner Badge');
   }
 
@@ -24,7 +32,12 @@ const ProgressScreen = ({ route }) => {
       {/* Progress Bar */}
       <View style={styles.progressBarContainer}>
         <ProgressBar progress={progress} />
-        <Text style={styles.progressText}>{progress}% Completed</Text>
+        {/* Removed the duplicate "100% Completed" text here */}
+      </View>
+
+      {/* Your Score */}
+      <View style={styles.scoreContainer}>
+        <Text style={styles.scoreText}>Your Score: {yourScore}%</Text>
       </View>
 
       {/* Correct and Wrong Answers */}
@@ -75,10 +88,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: verticalScale(20),
   },
-  progressText: {
-    fontSize: moderateScale(16),
-    color: '#666',
-    marginTop: verticalScale(10),
+  scoreContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: verticalScale(20),
+  },
+  scoreText: {
+    fontSize: moderateScale(18),
+    fontWeight: 'bold',
+    color: '#172937',
   },
   statsContainer: {
     width: '100%',
