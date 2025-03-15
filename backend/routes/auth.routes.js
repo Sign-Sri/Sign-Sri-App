@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const admin = require('../config/firebase-config');
+const admin = require('../config/firebase-admin');
 const { body, validationResult } = require('express-validator');
+const { credential, database } = require('firebase-admin');
 
 // Validation middleware
 const validateSignUp = [
@@ -30,7 +31,8 @@ router.post('/signup', validateSignUp, async (req, res) => {
         phoneNumber: phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`,
       });
   
-      // Store additional user data in your database if needed
+      // Store additional user data in Firestore
+     
       // You might want to create a users collection in Firestore
   
       res.status(201).json({
@@ -43,3 +45,4 @@ router.post('/signup', validateSignUp, async (req, res) => {
     }
   });
   
+  module.exports = router;
