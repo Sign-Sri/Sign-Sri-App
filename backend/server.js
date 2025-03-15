@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const authRoutes = require('../backend/routes/auth.routes');
+const admin = require('../backend/config/firebase-admin');
 const communityRoutes = require('../backend/routes/communitypage')
 
 const app = express();
