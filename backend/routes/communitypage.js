@@ -29,3 +29,15 @@ router.post('/createPost',async (req, res) => {
     }
 });
 
+// Like a post
+router.post('/likePost',async (req, res) => {
+    const { postId } = req.body;
+    try{
+        const postRef = db.collection('posts').doc(postId);
+        await postRef.update({ likes: admin.firestore.FieldValue.increment(1) });
+        res.status(200).send({ message: 'Post Liked' });
+    }
+    catch (error) {
+        res.status(500).send(error);
+    }
+});
