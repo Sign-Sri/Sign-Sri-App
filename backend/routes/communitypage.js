@@ -1,12 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const admin = require('firebase-admin');
+const admin = require('../config/firebase-admin');
 const serviceAccount = require('../config/serviceAccountKey.json');
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL:'https://sign-sri-123.firebaseio.com'
-});
 
 const db = admin.firestore();
 
@@ -41,3 +37,21 @@ router.post('/likePost',async (req, res) => {
         res.status(500).send(error);
     }
 });
+
+// Fetch all posts
+router.get('/posts', async (req, res) => {
+    try{
+        const snapshot = await db.collection('posts').get();
+        const posts =[];
+        snapshot.forEach(doc => {
+            posts.push({ id:doc.id, ...doc.data() })
+        });
+        res.status(200).json(posts);
+    } 
+    catch (error) {
+        console.error('Erroe fetching posts:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+module.exports = router;
