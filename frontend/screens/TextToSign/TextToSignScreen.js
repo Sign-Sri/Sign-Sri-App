@@ -8,6 +8,7 @@ import { FontAwesome } from '@expo/vector-icons';
 //const API_URL = 'http://192.168.1.29:3000';
 
 const TextToSignScreen = () => {
+  // State variables to manage component state
   const [speed, setSpeed] = useState('Normal');
   const [text, setText] = useState('');
   const [aslGif, setAslGif] = useState(null);
@@ -16,10 +17,12 @@ const TextToSignScreen = () => {
   const [error, setError] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  // Handles changes in the text input field
   const handleTextInputChange = (inputText) => {
     setText(inputText);
   };
 
+  // Handles the "Play" button click to generate the ASL GIF
   const handlePlay = async () => {
     if (!text) {
       setError('Please enter the text');
@@ -30,6 +33,7 @@ const TextToSignScreen = () => {
     setError(null);
 
     try {
+      // Send a POST request to the backend to generate the ASL GIF
       console.log('Sending request to backend');
       const response = await fetch('http://192.168.1.29:3000/convert', {
         method: 'POST',
@@ -54,6 +58,7 @@ const TextToSignScreen = () => {
         throw new Error('Invalid response: GIF name is missing');
       }
 
+      // Construct the URL for the generated GIF and update state
       const gifUrl = `http://192.168.1.29:3000${data.name}`;
       console.log('GIF URL:', gifUrl);
 
@@ -71,23 +76,28 @@ const TextToSignScreen = () => {
     }
   };
 
+  // Handles the "Stop" button click to reset the ASL GIF
   const handleStop = () => {
     setAslGif(null);
     setIsPlaying(false);
   };
 
+  // Handles the "View Alphabet" button click to show the alphabet modal
   const handleViewAlphabet = () => {
     console.log("Alphabet Opened");
     setShowAlphabetPanel(true);
   };
 
+  // Handles closing the alphabet modal
   const handleCloseAlphabetPanel = () => {
     console.log("Close button pressed");
     setShowAlphabetPanel(false);
   };
 
+  // Array of characters for the alphabet panel
   const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789'.split('');
 
+  // Helper function to get the corresponding image for a character
   const getImageForCharacter = (char) => {
     switch (char) {
       case 'a': return require('../../assets/ASLimages/a.png');
@@ -138,6 +148,7 @@ const TextToSignScreen = () => {
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.innerContainer}>
+          {/* Text input for user to enter text */}
           <TextInput
             value={text}
             onChangeText={handleTextInputChange}
@@ -146,10 +157,12 @@ const TextToSignScreen = () => {
             placeholderTextColor="#FFFFFF"
           />
 
+          {/* Label for speed selection */}
           <Text style={styles.label}>
             Speed
           </Text>
 
+          {/* Speed selection buttons */}
           <View style={styles.speedContainer}>
             {['Slow', 'Normal', 'Fast'].map((option) => (
               <TouchableOpacity
@@ -164,6 +177,7 @@ const TextToSignScreen = () => {
             ))}
           </View>
 
+          {/* Buttons for Play, View Alphabet, and Stop */}
           <View style={styles.buttonContainer}>
 
             <TouchableOpacity onPress={handlePlay} style={styles.iconButton}>
@@ -180,6 +194,7 @@ const TextToSignScreen = () => {
 
           </View>
 
+          {/* Output container for displaying the ASL GIF or instructions */}
           <View style={styles.outputContainer}>
             {isLoading ? (
               <ActivityIndicator size='large' color='#0000ff' />
@@ -187,11 +202,15 @@ const TextToSignScreen = () => {
               <Text style={styles.errorText}>{error}</Text>
             ) : isPlaying && aslGif ? (
               <>
+
+                {/* Display the generated ASL GIF */}
                 <ExpoImage
                   source={aslGif}
                   style={styles.gif}
                   contentFit="contain"
                 />
+
+                {/* Display the entered text and speed */}
                 <Text style={styles.outputText}>
                   Entered Text: {text}
                 </Text>
@@ -216,6 +235,7 @@ const TextToSignScreen = () => {
         </View>
       </ScrollView>
 
+      {/* Modal for displaying the ASL alphabet */}
       <Modal visible={showAlphabetPanel} transparent={true} animationType="slide" onRequestClose={handleCloseAlphabetPanel}>
         <View style={styles.modalContainer}>
           <View>
@@ -234,11 +254,11 @@ const TextToSignScreen = () => {
   );
 };
 
+// Styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    
   },
   scrollContainer: {
     flexGrow: 1,
