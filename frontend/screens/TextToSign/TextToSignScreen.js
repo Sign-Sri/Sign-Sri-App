@@ -1,5 +1,5 @@
 import { View, TextInput, StyleSheet, Text, Button, Image, TouchableOpacity, Modal, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
-//import { Image as ExpoImage } from 'expo-image';
+import { Image as ExpoImage } from 'expo-image';
 import React, { useState } from 'react';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
@@ -60,7 +60,7 @@ const TextToSignScreen = () => {
       }
 
       // Construct the URL for the generated GIF and update state
-      const gifUrl = `http://192.168.8.177:3000/convert${data.name}`;
+      const gifUrl = `http://192.168.8.177:3000${data.name}`;
       console.log('GIF URL:', gifUrl);
 
       setAslGif({ uri: gifUrl });
@@ -205,20 +205,15 @@ const TextToSignScreen = () => {
               <>
 
                 {/* Display the generated ASL GIF */}
-                {/*
-                  <ExpoImage
-                  source={aslGif}
-                  style={styles.gif}
-                  contentFit="contain"
-                />
                 
-                */}
-                <Image
-                  source={aslGif}
-                  style={styles.gif}
-                  resizeMode="contain"
-                  //onError={(e) => console.log('Regular Image error:', e.nativeEvent.error)}
-                />
+                  <ExpoImage
+                    source={aslGif}
+                    style={styles.gif}
+                    contentFit="contain"
+                  />
+                
+                
+                
 
                 {/* Display the entered text and speed */}
                 <Text style={styles.outputText}>
