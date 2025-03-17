@@ -17,7 +17,6 @@ app.get('/', (req, res) => {
     res.send('Running');
 });
 
-
 // Creating outputs directory, if it is not created
 const outputsDir = path.join(__dirname, 'outputs');
 if (!fs.existsSync(outputsDir)) {
@@ -26,10 +25,10 @@ if (!fs.existsSync(outputsDir)) {
 
 // Endpoint for text-to-ASL conversion
 app.post('/convert', async (req, res) => {
-    try{
+    try {
         const { text, speed = 'Normal' } = req.body;
         if (!text) {
-            return res.status(400).json({ error: 'Text is required' }); 
+            return res.status(400).json({ error: 'Text is required' });
         }
 
         // Generate a unique filename for the gif
@@ -38,48 +37,54 @@ app.post('/convert', async (req, res) => {
         const outputPath = path.join(outputsDir, outputFileName);
 
         // First, Running the text preprocessing script
-        const preprocessedText = await runPythonScript('preprocess.py',[text]);
+        const preprocessedText = await runPythonScript('preprocess.py', [text]);
 
         // Assigning the frame duration to go with the speed
         let frameDuration = 1500; // Normal Speed
-        if (speed == 'Slow') frameDuration = 2000;
-        if (speed == 'Fast') frameDuration = 1000;
+        if (speed === 'Slow') frameDuration = 2000;
+        if (speed === 'Fast') frameDuration = 1000;
 
         // Second, Running the GIF generation script
         await runPythonScript('text_to_asl.py', [
             preprocessedText,
-            path.join(__dirname, 'ASLimages'), // add loction
+            path.join(__dirname, 'ASLimages'),
             outputPath,
             frameDuration.toString()
         ]);
 
-        //Return
-        //res.join({
-            res.json({
+        // Return
+        res.json({
             success: true,
             name: `/outputs/${outputFileName}`,
             processedText: preprocessedText,
         });
 
-    }catch (error){
+    } catch (error) {
         console.error('Conversion error:', error);
         res.status(500).json({ error: 'Conversion failed', details: error.message });
     }
 });
 
 // Function to run python scripts
-function runPythonScript(scriptName, args){
+function runPythonScript(scriptName, args) {
     return new Promise((resolve, reject) => {
-        const pythonProcess = spawn('./venv/bin/python', [
+        const pythonExecutable = process.platform === 'win32'
+            ? path.join(__dirname, 'venv', 'Scripts', 'python.exe')
+            : path.join(__dirname, 'venv', 'bin', 'python');
+
+        const pythonProcess = spawn(pythonExecutable, [
             path.join(__dirname, 'python', scriptName),
             ...args
         ]);
-        
+
         let outputData = '';
         let errorData = '';
 
+        pythonProcess.stdout.setEncoding('utf8');
+        pythonProcess.stderr.setEncoding('utf8');
+
         pythonProcess.stdout.on('data', (data) => {
-            outputData = outputData + data.toString();
+            outputData += data.toString();
         });
 
         pythonProcess.stderr.on('data', (data) => {
@@ -93,7 +98,6 @@ function runPythonScript(scriptName, args){
                 resolve(outputData.trim());
             }
         });
-
     });
 }
 

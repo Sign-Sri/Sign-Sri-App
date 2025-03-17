@@ -35,7 +35,7 @@ const TextToSignScreen = () => {
     try {
       // Send a POST request to the backend to generate the ASL GIF
       console.log('Sending request to backend');
-      const response = await fetch('http://192.168.1.29:3000/convert', {
+      const response = await fetch('http://192.168.8.177:3000/convert', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ const TextToSignScreen = () => {
       }
 
       // Construct the URL for the generated GIF and update state
-      const gifUrl = `http://192.168.1.29:3000${data.name}`;
+      const gifUrl = `http://192.168.8.177:3000/convert${data.name}`;
       console.log('GIF URL:', gifUrl);
 
       setAslGif({ uri: gifUrl });
