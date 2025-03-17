@@ -205,16 +205,12 @@ const TextToSignScreen = () => {
               <>
 
                 {/* Display the generated ASL GIF */}
-                
                   <ExpoImage
                     source={aslGif}
                     style={styles.gif}
                     contentFit="contain"
                   />
-                
-                
-                
-
+            
                 {/* Display the entered text and speed */}
                 <Text style={styles.outputText}>
                   Entered Text: {text}
