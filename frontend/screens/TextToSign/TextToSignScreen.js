@@ -1,7 +1,8 @@
 import { View, TextInput, StyleSheet, Text, Button, Image, TouchableOpacity, Modal, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
-import { Image as ExpoImage } from 'expo-image';
+//import { Image as ExpoImage } from 'expo-image';
 import React, { useState } from 'react';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+
 
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -204,10 +205,19 @@ const TextToSignScreen = () => {
               <>
 
                 {/* Display the generated ASL GIF */}
-                <ExpoImage
+                {/*
+                  <ExpoImage
                   source={aslGif}
                   style={styles.gif}
                   contentFit="contain"
+                />
+                
+                */}
+                <Image
+                  source={aslGif}
+                  style={styles.gif}
+                  resizeMode="contain"
+                  //onError={(e) => console.log('Regular Image error:', e.nativeEvent.error)}
                 />
 
                 {/* Display the entered text and speed */}
