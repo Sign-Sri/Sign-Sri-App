@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
+import { AuthProvider } from '../frontend/Context/AuthContext';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { UserDetailContext } from './Context/UserDetailContext';
