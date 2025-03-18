@@ -649,7 +649,7 @@ const QuizScreen = ({ navigation, route }) => {
         </>
       )}
     </View>
-  );
+  ); 
 };
 
 const styles = StyleSheet.create({
@@ -727,18 +727,19 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   feedbackContainer: {
-    marginTop: verticalScale(20),
-    padding: moderateScale(10),
+    marginTop: verticalScale(-6),
+    padding: moderateScale(40),
     backgroundColor: '#fff',
     borderRadius: moderateScale(8),
     alignItems: 'center',
   },
   feedbackText: {
     fontSize: moderateScale(18),
+    bottom: verticalScale(30), // Position above the bottom navigation
     fontWeight: 'bold',
   },
   tryAgainButton: {
-    marginTop: verticalScale(10),
+    marginTop: verticalScale(-20),
     backgroundColor: '#FF0000',
     padding: moderateScale(10),
     borderRadius: moderateScale(8),

@@ -84,12 +84,7 @@ const SignLanguageSchoolScreen = ({ navigation }) => {
         numColumns={2} // Display 2 items per row
         contentContainerStyle={styles.grid}
       />
-      <TouchableOpacity
-        style={styles.progressButton}
-        onPress={() => navigation.navigate('Progress')}
-      >
-        <Text style={styles.progressButtonText}>View Progress</Text>
-      </TouchableOpacity>
+      
     </View>
   );
 };

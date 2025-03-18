@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 
@@ -10,7 +10,6 @@ import CommunityForumScreen from '../CommunityForum/CommunityForumScreen';
 import LessonScreen from './../SignLanguageSchool/LessonScreen';
 import ProgressScreen from './../SignLanguageSchool/ProgressScreen';
 import QuizScreen from './../SignLanguageSchool/QuizScreen';
-
 
 const Stack = createStackNavigator();
 
@@ -36,8 +35,7 @@ const HomeStackNavigator = () => {
         name="Home" 
         component={MenuScreen} 
         options={{ 
-            title: 'Home',
-             
+          title: 'Home',
         }} 
       />
       <Stack.Screen name="Sign To Text" component={SignToTextScreen} />
@@ -46,13 +44,14 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="Community Forum" component={CommunityForumScreen} />
       <Stack.Screen name="Lesson Screen" component={LessonScreen} />
       <Stack.Screen name="Progress" component={ProgressScreen} />
-      <Stack.Screen name="Quiz" component={QuizScreen} />
-      
-
-    
-
-
-      
+      <Stack.Screen 
+        name="Quiz" 
+        component={QuizScreen} 
+        options={{
+          gestureEnabled: false, // Disable swipe back gesture (iOS)
+          headerLeft: () => null, // Hide the back button in the header
+        }}
+      />
     </Stack.Navigator>
   );
 };
