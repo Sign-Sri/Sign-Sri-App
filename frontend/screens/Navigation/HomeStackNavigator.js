@@ -6,7 +6,7 @@ import MenuScreen from '../MenuScreen';
 import SignToTextScreen from '../SignToText/SignToTextScreen';
 import TextToSignScreen from '../TextToSign/TextToSignScreen';
 import SchoolScreen from '../SignLanguageSchool/SignLanguageSchoolScreen';
-import CommunityForumScreen from '../CommunityForum/CommunityForumScreen';
+import CommunityForumScreen from '../CommunityForum/CommunityScreen';
 import LessonScreen from './../SignLanguageSchool/LessonScreen';
 import ProgressScreen from './../SignLanguageSchool/ProgressScreen';
 import QuizScreen from './../SignLanguageSchool/QuizScreen';
