@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, Button, ActivityIndicator } from "react-native";
+import { View, Text, FlatList, Button, ActivityIndicator, StyleSheet } from "react-native";
 import { getPosts, likePost } from "../../CommunityAPI/community";
 
 const CommunityForum = () => {
@@ -14,6 +14,7 @@ const CommunityForum = () => {
         setPosts(data);
       } catch (err) {
         setError('Failed to load posts');
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -24,14 +25,15 @@ const CommunityForum = () => {
   const handleLike = async (postId) => {
     try {
       await likePost(postId);
-      // Optionally, you can update the local state after liking a post
+      // Update the local state after liking a post
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
-          post.id === postId ? { ...post, liked: true } : post
+          post.id === postId ? { ...post, liked: true, likes: (post.likes || 0) + 1 } : post
         )
       );
     } catch (err) {
       setError('Failed to like the post');
+      console.error(err);
     }
   };
 
@@ -42,32 +44,25 @@ const CommunityForum = () => {
 
   if (error) {
     return (
-      <View>
+      <View style={styles.center}>
         <Text>{error}</Text>
       </View>
     );
   }
 
   return (
-    <View style={{ padding: 10 }}>
-      <Text style={{ fontSize: 24, marginBottom: 10 }}>Community Forum</Text>
+    <View style={styles.container}>
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id.toString()} // Ensure id is a string
         renderItem={({ item }) => (
-          <View
-            style={{
-              padding: 10,
-              marginBottom: 10,
-              borderBottomWidth: 1,
-              borderBottomColor: "#ddd",
-            }}
-          >
-            <Text style={{ fontWeight: "bold" }}>{item.username}</Text>
+          <View style={styles.postContainer}>
+            <Text style={styles.username}>{item.username}</Text>
             <Text>{item.content}</Text>
             <Button
-              title={item.liked ? "Liked" : "Like"}
+              title={item.liked ? `Liked (${item.likes || 0})` : `Like (${item.likes || 0})`}
               onPress={() => handleLike(item.id)}
+              disabled={item.liked}
             />
           </View>
         )}
@@ -75,5 +70,26 @@ const CommunityForum = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  postContainer: {
+    padding: 10,
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+  },
+  username: {
+    fontWeight: "bold",
+  },
+});
 
 export default CommunityForum;
