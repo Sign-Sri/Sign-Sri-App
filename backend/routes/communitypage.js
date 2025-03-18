@@ -1,5 +1,5 @@
 const express = require("express");
-const admin = require("../config/firebaseConfig");  // Import Firebase config
+const admin = require("../config/firebase-Config");  // Import Firebase config
 
 const router = express.Router();
 
