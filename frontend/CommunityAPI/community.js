@@ -1,12 +1,12 @@
 const API_URL = "http://localhost:5000";
 
 // Create a new post 
-export const createPost = async (userId, username, content, imageUrl) => {
+export const createPost = async (uid, firstName, lastName, content, imageUrl) => {
     try {
         const response = await fetch(`${API_URL}/createPost`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, username, content, imageUrl }),
+      body: JSON.stringify({ uid, firstName, lastName,  content, imageUrl }),
     });
     return await response.json(); // Return the response as JSON
   } catch (error) {
