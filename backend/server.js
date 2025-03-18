@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const authRoutes = require('./routes/auth.routes');
+const communityRoutes = require ("./routes/communitypage")
 const admin = require('./config/firebase-config');
 
 const app = express();
@@ -30,7 +31,8 @@ const verifyToken = async (req, res, next) => {
 };
 
 // Routes
-app.use('/api/auth', authRoutes);
+app.use("/auth",require("./routes/auth.routes"));
+app.use("/community", communityRoutes);
 
 // Protected Route Example
 app.get('/api/protected', verifyToken, (req, res) => {
