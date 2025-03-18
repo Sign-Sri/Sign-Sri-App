@@ -4,9 +4,17 @@ const cors = require('cors');
 const morgan = require('morgan');
 const authRoutes = require('./routes/auth.routes');
 const communityRoutes = require('./routes/communitypage')
-const admin = require('./config/firebase-config');
+const admin = require('firebase-admin');
+const serviceAccount = require('../backend/config/ServiceAccount.json')
+
 
 const app = express();
+
+const serviceAccount = require ('../backend/config/ServiceAccount.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 // Middleware
 app.use(cors());
