@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const authRoutes = require('./routes/auth.routes');
+const communityRoutes = require('./routes/communitypage')
 const admin = require('./config/firebase-config');
 
 const app = express();
@@ -11,6 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev')); // Logging middleware
+app.use('/api/community', communityRoutes);
 
 // Firebase Auth Middleware
 const verifyToken = async (req, res, next) => {
