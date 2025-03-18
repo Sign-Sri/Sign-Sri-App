@@ -62,7 +62,7 @@ const MenuScreen = ({ navigation }) => {
 
           <TouchableOpacity
             style={styles.card}
-            onPress={() => navigation.navigate("Community Forum")}
+            onPress={() => navigation.navigate("Community Screen")}
           >
             <FontAwesome5 name="users" size={moderateScale(30)} color="#73E000" />
             <Text style={styles.cardTitle}>Community Forum</Text>
