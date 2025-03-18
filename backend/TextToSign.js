@@ -68,22 +68,8 @@ app.post('/convert', async (req, res) => {
 // Function to run python scripts
 function runPythonScript(scriptName, args) {
     return new Promise((resolve, reject) => {
-        // Option 1: Use system's Python directly
-        const pythonExecutable = 'python'; // or 'python3' depending on your system
-       
-        // Option 2: If you still want to use virtual environment
-        // but with more robust path handling
-        /*
-        const pythonExecutable = process.platform === 'win32'
-            ? path.join(__dirname, 'venv', 'Scripts', 'python.exe')
-            : path.join(__dirname, 'venv', 'bin', 'python');
-       
-        // Check if the virtual environment Python exists
-        if (!fs.existsSync(pythonExecutable)) {
-            console.warn(`Python executable not found at ${pythonExecutable}, falling back to system Python`);
-            pythonExecutable = 'python'; // or 'python3'
-        }
-        */
+
+        const pythonExecutable = 'python'; 
 
         const pythonProcess = spawn(pythonExecutable, [
             path.join(__dirname, 'python', scriptName),
