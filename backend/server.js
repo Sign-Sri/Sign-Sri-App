@@ -4,6 +4,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const authRoutes = require('./routes/auth.routes');
 const admin = require('./config/firebase-config');
+const communityRoutes = require("./routes/communitypage")
 
 const app = express();
 
