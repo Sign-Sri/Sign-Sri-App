@@ -43,3 +43,4 @@ router.post('/signup', validateSignUp, async (req, res) => {
     }
   });
   
+module.exports = router;
