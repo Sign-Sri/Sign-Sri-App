@@ -1,6 +1,8 @@
 const express = require("express");
 const admin = require("../config/firebase-config");
 const cors = require("cors");
+const app= express();
+const port =5000;
 
 const router = express.Router();
 
@@ -10,17 +12,18 @@ router.use(cors()); // Allow requests from the frontend
 
 router.post("/createPost", async (req, res) => {
     try{
-        const { userId, username, content, imageUrl} =req.body;
+        const { uid, firstName, lastName, content, imageUrl} =req.body;
 
-        if(!userId || !content) {
+        if(!uid || !content || !firstName || !lastName) {
             return res.status(400).json({ error: "Missing required fields" 
             });
         }
 
         const db = admin.firestore();
         await db.collection("posts").add({
-            userId,
-            username,
+            uid,
+            firstName,
+            lastName,
             content,
             imageUrl,
             createdAt: admin.firestore.FieldValue.serverTimestamp()
