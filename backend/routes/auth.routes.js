@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const admin = require('../config/firebase-config');
+const admin = require('../config/firebase-Config');
 const { body, validationResult } = require('express-validator');
 
 // Validation middleware
@@ -43,3 +43,4 @@ router.post('/signup', validateSignUp, async (req, res) => {
     }
   });
   
+  module.exports = router;
