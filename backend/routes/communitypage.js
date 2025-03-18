@@ -2,6 +2,7 @@ const express = require ("express");
 const router = express.Router();
 const admin = require('firebase-admin');
 const db = admin.firestore();
+const authMiddleware = require('../middleware/auth')
 
 // Get all posts in the community forum
 router.get('/posts', async (req, res) =>{
@@ -27,16 +28,17 @@ router.get('/posts', async (req, res) =>{
 });
 
 // Create a new post 
-router.post('/posts', async (req, res) => {
+router.post('/posts', authMiddleware, async (req, res) => {
     try{
-        const { uid, firstName, lastName, content, title } = req.body;
+        const userId = req.user.uid;
+        const { firstName, lastName, content, title } = req.body;
         
-        if ( !uid || !firstName || !lastName ||!content ||!title) {
+        if (  !firstName || !lastName ||!content ||!title) {
             return res.status(400).json({error: 'Missing required fields' });
         }
         
         const newPost = {
-            uid,
+            userId,
             firstName,
             lastName,
             title,
