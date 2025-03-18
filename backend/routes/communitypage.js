@@ -1,25 +1,30 @@
 const express = require("express");
-const admin = require("../config/firebase-Config");  // Import Firebase config
+const admin = require("../config/firebase-Config"); // Import Firebase
+
 
 const router = express.Router();
 
-// Example: Middleware to verify Firebase JWT tokens
-async function authenticateToken(req, res, next) {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ error: "Unauthorized" });
-
-  try {
-    const decodedToken = await admin.auth().verifyIdToken(token);
-    req.user = decodedToken;  // Attach user info to request
-    next();
-  } catch (error) {
-    res.status(403).json({ error: "Invalid token" });
-  }
-}
-
 // Example: Protected route
-router.get("/protected", authenticateToken, (req, res) => {
-  res.json({ message: "This is a protected route!", user: req.user });
+router.post("/createPost", async (req, res) => {
+  try {
+    const { uid, content } = req.body;
+
+    if (!uid || !content) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const db = admin.firestore();
+    await db.collection("posts").add({
+      uid,
+      content,
+      createdAt: admin.firestore.FieldValue.serverTimestamp()
+    });
+
+    res.status(201).json({ message: "Post created successfully" });
+  } catch (error) {
+    console.error("Error creating post:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 module.exports = router;
