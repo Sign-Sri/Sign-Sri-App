@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const authRoutes = require('./routes/auth.routes');
-const communityRoutes = require ("./routes/communitypage")
+const communityRoutes = require('./routes/communitypage');  // This should correctly import the router
 const admin = require('./config/firebase-config');
 
 const app = express();
@@ -31,8 +31,8 @@ const verifyToken = async (req, res, next) => {
 };
 
 // Routes
-app.use("/auth",require("./routes/auth.routes"));
-app.use("/community", communityRoutes);
+app.use("/auth", authRoutes);  // Make sure authRoutes is correct
+app.use("/community", communityRoutes);  // This line should work if communityRoutes is properly defined
 
 // Protected Route Example
 app.get('/api/protected', verifyToken, (req, res) => {
