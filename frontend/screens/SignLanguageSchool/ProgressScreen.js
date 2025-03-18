@@ -1,149 +1,231 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-import { FontAwesome5 } from '@expo/vector-icons'; // For icons
-import ProgressBar from './components/ProgressBar'; // Assuming you have a ProgressBar component
+import { FontAwesome5 } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import ProgressBar from './components/ProgressBar';
 
 const ProgressScreen = ({ route }) => {
+  const navigation = useNavigation();
   const { score = 0, wrongAnswers = 0, totalQuestions = 1 } = route.params || {};
-  const progress = 100; // Always show 100% completion
+  const progress = 100;
 
-  // Calculate Your Score based on the formula: (correctAnswers / wrongAnswers) * 10%
   let yourScore;
   if (wrongAnswers === 0) {
-    yourScore = 100; // If no wrong answers, score is 100%
+    yourScore = 100;
   } else {
-    yourScore = Math.min(Math.round((score / wrongAnswers) * 10), 100); // Cap score at 100%
+    yourScore = Math.min(Math.round((score / wrongAnswers) * 10), 100);
   }
 
   let badges = [];
-  if (wrongAnswers >= 0 && wrongAnswers <= 3) {
-    badges.push('Expert Badge');
-  } else if (wrongAnswers >= 4 && wrongAnswers <= 6) {
-    badges.push('Intermediate Badge');
-  } else if (wrongAnswers >= 7 && wrongAnswers <= 10) {
-    badges.push('Beginner Badge');
-  }
+  if (wrongAnswers <= 3) badges.push('Expert Badge');
+  else if (wrongAnswers <= 6) badges.push('Intermediate Badge');
+  else if (wrongAnswers <= 10) badges.push('Beginner Badge');
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Your Progress</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Your Progress Report</Text>
 
-      {/* Progress Bar */}
-      <View style={styles.progressBarContainer}>
-        <ProgressBar progress={progress} />
-        {/* Removed the duplicate "100% Completed" text here */}
+      <View style={styles.progressContainer}>
+        <ProgressBar 
+          progress={progress} 
+          color="#73E000" 
+          trackColor="#f0f0f0"
+          height={verticalScale(12)}
+        />
+        <Text style={styles.progressText}>Lesson Completed!</Text>
       </View>
 
-      {/* Your Score */}
       <View style={styles.scoreContainer}>
-        <Text style={styles.scoreText}>Your Score: {yourScore}%</Text>
+        <Text style={styles.scoreValue}>{yourScore}%</Text>
+        <Text style={styles.scoreLabel}>Overall Score</Text>
       </View>
 
-      {/* Correct and Wrong Answers */}
       <View style={styles.statsContainer}>
-        <View style={styles.statItem}>
-          <FontAwesome5 name="check-circle" size={moderateScale(24)} color="#73E000" />
-          <Text style={styles.statText}>Correct Answers: {score}</Text>
+        <View style={styles.statCard}>
+          <FontAwesome5 
+            name="check-circle" 
+            size={moderateScale(28)} 
+            color="#73E000" 
+            style={styles.statIcon}
+          />
+          <Text style={styles.statNumber}>{score}</Text>
+          <Text style={styles.statLabel}>Correct</Text>
         </View>
-        <View style={styles.statItem}>
-          <FontAwesome5 name="times-circle" size={moderateScale(24)} color="#FF0000" />
-          <Text style={styles.statText}>Wrong Answers: {wrongAnswers}</Text>
+
+        <View style={styles.divider}/>
+
+        <View style={styles.statCard}>
+          <FontAwesome5 
+            name="times-circle" 
+            size={moderateScale(28)} 
+            color="#FF5252" 
+            style={styles.statIcon}
+          />
+          <Text style={styles.statNumber}>{wrongAnswers}</Text>
+          <Text style={styles.statLabel}>Incorrect</Text>
         </View>
       </View>
 
-      {/* Badges */}
-      <View style={styles.badgesContainer}>
-        <Text style={styles.badgesTitle}>Badges Earned</Text>
-        <View style={styles.badgesList}>
-          {badges.map((badge, index) => (
-            <View key={index} style={styles.badgeItem}>
-              <FontAwesome5 name="medal" size={moderateScale(20)} color="#FFD700" />
-              <Text style={styles.badgeText}>{badge}</Text>
-            </View>
-          ))}
+      {badges.length > 0 && (
+        <View style={styles.badgesContainer}>
+          <Text style={styles.sectionTitle}>Achievements Unlocked</Text>
+          <View style={styles.badgesGrid}>
+            {badges.map((badge, index) => (
+              <View key={index} style={styles.badgeCard}>
+                <FontAwesome5 
+                  name="medal" 
+                  size={moderateScale(24)} 
+                  color="#FFD700" 
+                  style={styles.badgeIcon}
+                />
+                <Text style={styles.badgeText}>{badge}</Text>
+              </View>
+            ))}
+          </View>
         </View>
-      </View>
-    </View>
+      )}
+
+      {/* Continue Other Lessons Button */}
+      <TouchableOpacity 
+        style={styles.continueButton} 
+        onPress={() => navigation.navigate('Sign Language School')}
+      >
+        <Text style={styles.continueButtonText}>Continue Other Lessons</Text>
+      </TouchableOpacity>
+      
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: moderateScale(16),
-    backgroundColor: '#f5f5f5',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexGrow: 1,
+    backgroundColor: '#FFFFFF',
+    padding: moderateScale(20),
+    paddingBottom: verticalScale(80), // Extra padding to avoid navigation bar
   },
   title: {
     fontSize: moderateScale(24),
-    fontWeight: 'bold',
-    marginBottom: verticalScale(20),
+    fontWeight: '700',
     color: '#172937',
     textAlign: 'center',
+    marginVertical: verticalScale(20),
   },
-  progressBarContainer: {
-    width: '100%',
-    alignItems: 'center',
+  progressContainer: {
+    backgroundColor: '#FFFFFF',
+    padding: moderateScale(15),
+    borderRadius: moderateScale(12),
     marginBottom: verticalScale(20),
-  },
-  scoreContainer: {
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: verticalScale(20),
-  },
-  scoreText: {
-    fontSize: moderateScale(18),
-    fontWeight: 'bold',
-    color: '#172937',
-  },
-  statsContainer: {
-    width: '100%',
-    marginBottom: verticalScale(20),
-  },
-  statItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: verticalScale(10),
-  },
-  statText: {
-    fontSize: moderateScale(16),
-    color: '#666',
-    marginLeft: moderateScale(10),
-  },
-  badgesContainer: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  badgesTitle: {
-    fontSize: moderateScale(18),
-    fontWeight: 'bold',
-    color: '#172937',
-    marginBottom: verticalScale(10),
-  },
-  badgesList: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-  },
-  badgeItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: moderateScale(10),
-    borderRadius: moderateScale(8),
-    margin: moderateScale(5),
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 3,
+    shadowRadius: 6,
     elevation: 3,
+  },
+  progressText: {
+    fontSize: moderateScale(14),
+    color: '#666',
+    textAlign: 'center',
+    marginTop: verticalScale(10),
+  },
+  scoreContainer: {
+    alignItems: 'center',
+    marginBottom: verticalScale(25),
+  },
+  scoreValue: {
+    fontSize: moderateScale(48),
+    fontWeight: '700',
+    color: '#172937',
+  },
+  scoreLabel: {
+    fontSize: moderateScale(16),
+    color: '#666',
+    marginTop: verticalScale(-5),
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+    borderRadius: moderateScale(12),
+    padding: moderateScale(20),
+    marginBottom: verticalScale(20),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  statCard: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  statIcon: {
+    marginBottom: verticalScale(8),
+  },
+  statNumber: {
+    fontSize: moderateScale(24),
+    fontWeight: '600',
+    color: '#172937',
+  },
+  statLabel: {
+    fontSize: moderateScale(14),
+    color: '#666',
+  },
+  divider: {
+    width: 1,
+    backgroundColor: '#e0e0e0',
+    marginHorizontal: moderateScale(10),
+  },
+  badgesContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: moderateScale(12),
+    padding: moderateScale(20),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  sectionTitle: {
+    fontSize: moderateScale(18),
+    fontWeight: '600',
+    color: '#172937',
+    marginBottom: verticalScale(15),
+  },
+  badgesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  badgeCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f8f8f8',
+    borderRadius: moderateScale(8),
+    padding: moderateScale(12),
+    marginVertical: verticalScale(5),
+    width: '48%',
+  },
+  badgeIcon: {
+    marginRight: moderateScale(8),
   },
   badgeText: {
     fontSize: moderateScale(14),
     color: '#172937',
-    marginLeft: moderateScale(5),
+    fontWeight: '500',
+  },
+  continueButton: {
+    backgroundColor: '#1E90FF',
+    paddingVertical: verticalScale(15),
+    borderRadius: moderateScale(10),
+    alignItems: 'center',
+    marginTop: verticalScale(20),
+  },
+  continueButtonText: {
+    color: '#FFFFFF',
+    fontSize: moderateScale(16),
+    fontWeight: '600',
   },
 });
 

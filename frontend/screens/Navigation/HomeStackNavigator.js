@@ -43,12 +43,19 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="Sign Language School" component={SchoolScreen} />
       <Stack.Screen name="Community Forum" component={CommunityForumScreen} />
       <Stack.Screen name="Lesson Screen" component={LessonScreen} />
-      <Stack.Screen name="Progress" component={ProgressScreen} />
+      <Stack.Screen 
+        name="Progress" 
+        component={ProgressScreen}
+        options={{
+          gestureEnabled: false, // Disable swipe back gesture 
+          headerLeft: () => null, // Hide the back button in the header 
+        }}
+      />
       <Stack.Screen 
         name="Quiz" 
         component={QuizScreen} 
         options={{
-          gestureEnabled: false, // Disable swipe back gesture (iOS)
+          gestureEnabled: false, // Disable swipe back gesture 
           headerLeft: () => null, // Hide the back button in the header
         }}
       />
