@@ -312,6 +312,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
     fontSize: moderateScale(14),
+    
   },
   selectedSpeedButtonText: {
     color: '#79dd09',
