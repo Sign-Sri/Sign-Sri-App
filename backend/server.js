@@ -2,8 +2,16 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const admin = require('firebase-admin');
 const authRoutes = require('./routes/auth.routes');
-const admin = require('./config/firebase-config');
+const forumRoutes = require('./routes/forumRoutes');
+
+// Check if Firebase is already initialized
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(require('./config/serviceAccountKey.json'))
+  });
+}
 
 const app = express();
 
@@ -29,8 +37,18 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
-// Routes
-app.use('/api/auth', authRoutes);
+// Ensure imported routes are valid Express routers
+if (typeof authRoutes === 'function') {
+  app.use('/api/auth', authRoutes);
+} else {
+  console.error("Error: authRoutes is not a valid Express router.");
+}
+
+if (typeof forumRoutes === 'function') {
+  app.use('/api/forum', forumRoutes);
+} else {
+  console.error("Error: forumRoutes is not a valid Express router.");
+}
 
 // Protected Route Example
 app.get('/api/protected', verifyToken, (req, res) => {
