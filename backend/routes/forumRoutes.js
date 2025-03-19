@@ -31,3 +31,39 @@ router.get("/posts", async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   });
+
+  // Add a comment to a post
+router.post("/posts/:postId/comments", async (req, res) => {
+    try {
+      const { postId } = req.params;
+      const { userId, content } = req.body;
+  
+      const newComment = {
+        postId,
+        userId,
+        content,
+        timestamp: Date.now()
+      };
+  
+      const commentRef = await db.collection("comments").add(newComment);
+      res.status(201).json({ commentId: commentRef.id, ...newComment });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Get comments for a specific post
+router.get("/posts/:postId/comments", async (req, res) => {
+    try {
+      const { postId } = req.params;
+      const commentsSnapshot = await db.collection("comments")
+        .where("postId", "==", postId)
+        .orderBy("timestamp", "asc")
+        .get();
+  
+      const comments = commentsSnapshot.docs.map(doc => ({ commentId: doc.id, ...doc.data() }));
+      res.status(200).json(comments);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
