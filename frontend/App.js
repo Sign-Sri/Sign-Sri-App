@@ -1,13 +1,9 @@
-
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
-import { AuthProvider } from '../frontend/Context/AuthContext';
-
 import { createStackNavigator } from '@react-navigation/stack';
-import { UserDetailContext } from './Context/UserDetailContext';
+import { AuthProvider, useAuth } from './Context/AuthContext'; // Import the AuthProvider
 
 // Import Screens
 import SplashScreen from './screens/SignIn_and_other/SplashScreen';
@@ -23,10 +19,9 @@ import BottomTabNavigator from './screens/Navigation/BottomTabNavigator';
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [userDetail, setUserDetail] = useState("");
-
   return (
-    <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
+    // Wrap the entire app with AuthProvider
+    <AuthProvider>
       <SafeAreaProvider>
         <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
         <NavigationContainer>
@@ -51,6 +46,6 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>
-    </UserDetailContext.Provider>
+    </AuthProvider>
   );
 }
