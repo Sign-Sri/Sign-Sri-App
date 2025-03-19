@@ -1,8 +1,8 @@
 const express = require ("express");
 const router = express.Router();
-const admin = require('firebase-admin');
+const admin = require('../config/firebase-admin');
 const db = admin.firestore();
-const authMiddleware = require('../middleware/auth')
+const authMiddleware = require('../middleware/auth');
 
 // Get all posts in the community forum
 router.get('/posts', async (req, res) =>{
