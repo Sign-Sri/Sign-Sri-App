@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
   letterButtonText: { color: "#172937", fontSize: 20, fontWeight: "bold" },
 });
 
-export { LetterScreen, AlphabetList };
+export default  LetterScreen;
