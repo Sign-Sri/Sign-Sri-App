@@ -75,6 +75,8 @@ const TextToSignScreen = () => {
     } finally {
       setIsLoading(false);
     }
+
+  
   };
 
   // Handles the "Stop" button click to reset the ASL GIF
