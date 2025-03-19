@@ -6,7 +6,9 @@ import MenuScreen from '../MenuScreen';
 import SignToTextScreen from '../SignToText/SignToTextScreen';
 import TextToSignScreen from '../TextToSign/TextToSignScreen';
 import SchoolScreen from '../SignLanguageSchool/SignLanguageSchoolScreen';
-import CommunityForumScreen from '../CommunityForum/CommunityForumScreen';
+import ForumScreen from '../CommunityForum/ForumScreen';
+import CreatePostScreen from '../CommunityForum/CreatePostScreen';
+import PostDetailScreen from '../CommunityForum/PostDetailScreen';
 import LessonScreen from './../SignLanguageSchool/LessonScreen';
 import ProgressScreen from './../SignLanguageSchool/ProgressScreen';
 import QuizScreen from './../SignLanguageSchool/QuizScreen';
@@ -43,7 +45,10 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="Sign To Text" component={SignToTextScreen} />
       <Stack.Screen name="Text To Sign" component={TextToSignScreen} />
       <Stack.Screen name="Sign Language School" component={SchoolScreen} />
-      <Stack.Screen name="Community Forum" component={CommunityForumScreen} />
+      <Stack.Screen name="Community Forum" component={ForumScreen} />
+      <Stack.Screen name="Create Post" component={CreatePostScreen} />
+      <Stack.Screen name="Post Detail" component={PostDetailScreen} />
+      
       <Stack.Screen name="Lesson Screen" component={LessonScreen} />
       <Stack.Screen name="Progress" component={ProgressScreen} />
       <Stack.Screen name="Quiz" component={QuizScreen} />
