@@ -4,17 +4,21 @@ const cors = require('cors');
 const morgan = require('morgan');
 const authRoutes = require('./routes/auth.routes');
 const communityRoutes = require('./routes/communitypage')
-const admin = require('firebase-admin');
-const serviceAccount = require('../backend/config/ServiceAccount.json')
+const admin = require('../backend/config/firebase-admin');
+const serviceAccount = require('../backend/config/serviceAccount.json');
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    }),
+  });
+}
 
 
 const app = express();
-
-const serviceAccount = require ('../backend/config/ServiceAccount.json');
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
 
 // Middleware
 app.use(cors());
