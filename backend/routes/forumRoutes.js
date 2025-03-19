@@ -67,3 +67,30 @@ router.get("/posts/:postId/comments", async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   });
+
+  // Like a post
+router.post("/posts/:postId/like", async (req, res) => {
+    try {
+      const { postId } = req.params;
+      const { userId } = req.body;
+  
+      const postRef = db.collection("posts").doc(postId);
+      const postDoc = await postRef.get();
+  
+      if (!postDoc.exists) {
+        return res.status(404).json({ error: "Post not found" });
+      }
+  
+      let likes = postDoc.data().likes || [];
+      if (!likes.includes(userId)) {
+        likes.push(userId);
+      } else {
+        likes = likes.filter(id => id !== userId); // Unlike if already liked
+      }
+  
+      await postRef.update({ likes });
+      res.status(200).json({ message: "Post liked/unliked successfully" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
