@@ -89,14 +89,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: "#79dd09",
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 50,
   },
   
   fastButton: {
     marginTop: 40,
     backgroundColor: "#79dd09",
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 50,
   },
 
   buttonText: { color: "black", fontSize: 18, fontWeight: "bold" },
