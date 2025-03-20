@@ -19,7 +19,7 @@ const ForumScreen = () => {
     });
 
     return unsubscribe;
-  };
+  } ;
 
   // Fetch posts using Axios
   const fetchPostsAxios = async () => {
@@ -54,7 +54,7 @@ const ForumScreen = () => {
   return (
     <View style={styles.container}>
       {/* Button to create a post */}
-      <Button title="Create Post" onPress={navigateToCreatePost} />
+      <Button title="Create Post" onPress={navigateToCreatePost} style={styles.createPostButton} />
 
       {loading ? (
         <ActivityIndicator size="large" color="blue" />
