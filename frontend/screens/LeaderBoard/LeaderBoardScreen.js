@@ -80,24 +80,38 @@ export default LeaderBoardScreen;
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
   header: {
-    flexDirection: "row",
     alignItems: "center",
-    padding: 16,
-    backgroundColor: "#fff",
+    padding: 35,
+    backgroundColor: "#182a38",
     elevation: 4,
+    justifyContent: "center",
+    borderBottomRightRadius: 125,
   },
-  backButton: { fontSize: 24, color: "#333" },
-  title: { fontSize: 20, fontWeight: "bold", marginLeft: 16 },
+  backButton: { 
+    fontSize: 28, 
+    color: "#fff",
+    marginRight:190, 
+
+  },
+
+  title: { 
+    fontSize: 28, 
+    fontWeight: "bold", 
+    marginLeft: 24,
+    color: "#fff", 
+  },
+  
   podiumContainer: {
     marginTop: 16,
     alignItems: "center",
   },
+
   podium: {
     flexDirection: "row",
     alignItems: "flex-end",
     justifyContent: "center",
     width: "90%",
-    backgroundColor: "#245248",
+    backgroundColor: "#182a38",
     borderRadius: 20,
     paddingBottom: 10,
     paddingTop: 10,
@@ -135,7 +149,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#245248",
+    backgroundColor: "#182a38",
     marginBottom: 8,
     padding: 10,
     borderRadius: 18,
