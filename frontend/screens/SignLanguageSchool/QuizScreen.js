@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { FontAwesome5 } from '@expo/vector-icons';
 import ProgressBar from './components/ProgressBar';
+
 const questionsByLesson = {
   '1': [
     {
@@ -559,19 +560,20 @@ const questionsByLesson = {
     // Add more shapes and colors as needed
   ],
 };
-
 const QuizScreen = ({ navigation, route }) => {
   const { lessonId } = route.params;
   const questions = questionsByLesson[lessonId];
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
+  const [wrongAnswers, setWrongAnswers] = useState(0); // State to track wrong answers
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [showTryAgain, setShowTryAgain] = useState(false);
   const [showIntroduction, setShowIntroduction] = useState(true);
 
-  const progress = ((currentQuestion + 1) / questions.length) * 100;
+  // Calculate progress based on the user's score
+  const progress = (score / questions.length) * 100;
   const questionType = lessonId === '1' ? 'letter' : lessonId === '2' ? 'number' : 'phrase';
 
   const handleAnswer = (isCorrect) => {
@@ -587,10 +589,12 @@ const QuizScreen = ({ navigation, route }) => {
           setCurrentQuestion(currentQuestion + 1);
           setShowIntroduction(true);
         } else {
-          navigation.navigate('Progress', { score, totalQuestions: questions.length });
+          // Navigate to ProgressScreen with score, wrongAnswers, and totalQuestions
+          navigation.navigate('Progress', { score, wrongAnswers, totalQuestions: questions.length });
         }
       }, 1000);
     } else {
+      setWrongAnswers(wrongAnswers + 1); // Increment wrongAnswers count
       setIsCorrect(false);
       setShowFeedback(true);
       setShowTryAgain(true);
@@ -645,7 +649,7 @@ const QuizScreen = ({ navigation, route }) => {
         </>
       )}
     </View>
-  );
+  ); 
 };
 
 const styles = StyleSheet.create({
@@ -723,18 +727,19 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   feedbackContainer: {
-    marginTop: verticalScale(20),
-    padding: moderateScale(10),
+    marginTop: verticalScale(-6),
+    padding: moderateScale(40),
     backgroundColor: '#fff',
     borderRadius: moderateScale(8),
     alignItems: 'center',
   },
   feedbackText: {
     fontSize: moderateScale(18),
+    bottom: verticalScale(30), // Position above the bottom navigation
     fontWeight: 'bold',
   },
   tryAgainButton: {
-    marginTop: verticalScale(10),
+    marginTop: verticalScale(-20),
     backgroundColor: '#FF0000',
     padding: moderateScale(10),
     borderRadius: moderateScale(8),
