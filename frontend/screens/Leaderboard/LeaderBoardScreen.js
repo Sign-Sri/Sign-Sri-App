@@ -1,4 +1,4 @@
-mport React from "react";
+import React from "react";
 import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet } from "react-native";
 
 const LeaderBoardItem = ({ item }) => (
