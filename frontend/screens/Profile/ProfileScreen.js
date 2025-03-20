@@ -62,7 +62,7 @@ const ProfileScreen = () => {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1, 1],
-        quality: 1,
+        quality: 0.7, // Reduced for better performance
       });
   
       if (!result.canceled) {
@@ -79,14 +79,19 @@ const ProfileScreen = () => {
   
         // Get Image URL
         const downloadURL = await getDownloadURL(storageRef);
-        setProfilePicture(downloadURL);
-  
-        // Save URL in Firestore
+        
+        // Save URL in Firestore - make sure to await this
         await setDoc(doc(db, "users", user.uid), { profilePicture: downloadURL }, { merge: true });
+        
+        // Update state AFTER everything is done
+        setProfilePicture(downloadURL);
+        
+        // Provide feedback to the user
+        alert("Profile picture updated successfully!");
       }
     } catch (error) {
       console.error("Error uploading image:", error);
-      alert("Failed to upload image. Please try again.");
+      alert(`Failed to upload image: ${error.message}`);
     } finally {
       setUpdating(false);
     }
@@ -123,10 +128,10 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleImagePick} style={styles.imageContainer}>
-        <Image
-          source={profilePicture ? { uri: profilePicture } : require("../../assets/default-profile.png")}
-          style={styles.profileImage}
-        />
+      <Image
+        source={profilePicture ? { uri: `${profilePicture}?t=${new Date().getTime()}` } : require("../../assets/default-profile.png")}
+        style={styles.profileImage}
+      />
       </TouchableOpacity>
       <Text style={styles.email}>{email}</Text>
 
