@@ -4,7 +4,10 @@ import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet } from "react
 import { LinearGradient } from 'expo-linear-gradient';
 
 const LeaderBoardItem = ({ item }) => (
-  <View style={styles.itemContainer}>
+  <LinearGradient
+    colors={['#2c3e50', '#182a38']} 
+    style={styles.itemContainer} 
+  >
     <Text style={styles.rank}>{item.rank}</Text>
     <Image source={item.avatar} style={styles.avatar} />
     <View style={styles.info}>
@@ -14,7 +17,7 @@ const LeaderBoardItem = ({ item }) => (
     <Text style={item.change.startsWith("+") ? styles.positiveChange : styles.negativeChange}>
       {item.change}
     </Text>
-  </View>
+  </LinearGradient>
 );
 
 const LeaderBoardScreen = () => {
