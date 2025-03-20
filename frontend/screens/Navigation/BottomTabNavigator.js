@@ -3,6 +3,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { View, StyleSheet } from 'react-native'; // Import View and StyleSheet
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+
 
 import HomeStackNavigator from './HomeStackNavigator'; // We'll create this
 import PhrasebookScreen from '../SignLanguagePraseBook/SignLanguagePhraseBookScreen'; // Create this screen
@@ -13,6 +15,17 @@ import ProfileScreen from '../Profile/ProfileScreen'; // Create this screen
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
+  
+
+  const BackButton = () => {
+    const navigation = useNavigation();
+    return (
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Ionicons name="arrow-back" size={moderateScale(24)} color="#FFFFFF" />
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -63,6 +76,9 @@ const BottomTabNavigator = () => {
           letterSpacing: moderateScale(1),
           fontSize: moderateScale(22),
         },
+        
+
+        
       })}
     >
       <Tab.Screen
@@ -70,7 +86,7 @@ const BottomTabNavigator = () => {
         component={HomeStackNavigator}
         options={{ headerShown: false }} // Hide header for the Home tab
       />
-      <Tab.Screen name="Phrasebook" component={PhrasebookScreen} />
+      
       <Tab.Screen name="Dictionary" component={DictionaryScreen} />
       <Tab.Screen name="Leaderboard" component={LeaderboardScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />

@@ -1,41 +1,106 @@
-import { View, TextInput, StyleSheet, Text, Button, TouchableOpacity, Image, Modal, ScrollView } from 'react-native';
-//import Slider from '@react-native-community/slider';
+import { View, TextInput, StyleSheet, Text, Button, Image, TouchableOpacity, Modal, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import { Image as ExpoImage } from 'expo-image';
 import React, { useState } from 'react';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+
+
+import { FontAwesome } from '@expo/vector-icons';
+
+//const API_URL = 'http://192.168.1.29:3000';
 
 const TextToSignScreen = () => {
+  // State variables to manage component state
   const [speed, setSpeed] = useState('Normal');
   const [text, setText] = useState('');
   const [aslGif, setAslGif] = useState(null);
   const [showAlphabetPanel, setShowAlphabetPanel] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  // Handles changes in the text input field
   const handleTextInputChange = (inputText) => {
     setText(inputText);
   };
 
-  const handlePlay = () => {
-    setAslGif(require('../../assets/ASLimages/ASL_output.gif'));
-    setIsPlaying(true);
+  // Handles the "Play" button click to generate the ASL GIF
+  const handlePlay = async () => {
+    if (!text) {
+      setError('Please enter the text');
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Send a POST request to the backend to generate the ASL GIF
+      console.log('Sending request to backend');
+      const response = await fetch('http://192.168.8.177:3000/convert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: text,
+          speed: speed,
+        }),
+      });
+
+      console.log('Response status:', response.status);
+      if (!response.ok) {
+        throw new Error('Failed');
+      }
+
+      const data = await response.json();
+      console.log('Response data:', data);
+
+      if (!data.name) {
+        throw new Error('Invalid response: GIF name is missing');
+      }
+
+      // Construct the URL for the generated GIF and update state
+      const gifUrl = `http://192.168.8.177:3000${data.name}`;
+      console.log('GIF URL:', gifUrl);
+
+      setAslGif({ uri: gifUrl });
+      console.log('aslGif state after setting:', { uri: gifUrl });
+      setIsPlaying(true);
+
+    } catch (error) {
+      console.error('Error:', error);
+      console.error('Error:', error);
+      setError('Failed to generate ASL GIF. Please try again.');
+
+    } finally {
+      setIsLoading(false);
+    }
+
+  
   };
 
+  // Handles the "Stop" button click to reset the ASL GIF
   const handleStop = () => {
     setAslGif(null);
     setIsPlaying(false);
   };
 
+  // Handles the "View Alphabet" button click to show the alphabet modal
   const handleViewAlphabet = () => {
     console.log("Alphabet Opened");
     setShowAlphabetPanel(true);
   };
 
+  // Handles closing the alphabet modal
   const handleCloseAlphabetPanel = () => {
     console.log("Close button pressed");
     setShowAlphabetPanel(false);
   };
 
+  // Array of characters for the alphabet panel
   const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789'.split('');
 
+  // Helper function to get the corresponding image for a character
   const getImageForCharacter = (char) => {
     switch (char) {
       case 'a': return require('../../assets/ASLimages/a.png');
@@ -79,91 +144,106 @@ const TextToSignScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        value={text}
-        onChangeText={handleTextInputChange}
-        placeholder="Enter Text"
-        style={styles.input}
-        placeholderTextColor="#2C3E50"
-      />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
+      style={styles.container}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.innerContainer}>
+          {/* Text input for user to enter text */}
+          <TextInput
+            value={text}
+            onChangeText={handleTextInputChange}
+            placeholder="Enter Text"
+            style={styles.input}
+            placeholderTextColor="#FFFFFF"
+          />
 
-      <Text style={styles.label}>
-        Speed
-      </Text>
-
-      <View style={styles.speedContainer}>
-        {['Slow', 'Normal', 'Fast'].map((option) => (
-          <TouchableOpacity
-            key={option}
-            style={[styles.speedButton, speed === option && styles.selectedSpeedButton]}
-            onPress={() => setSpeed(option)}
-          >
-            <Text style={[styles.speedButtonText, speed === option && styles.selectedSpeedButtonText]}>
-              {option}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <Button title="Play" color="#3498DB" onPress={handlePlay} />
-
-        <Button title="View Alphabet" color="#2ECC71" onPress={handleViewAlphabet} />
-
-        <Button title="Stop" color="#E74C3C" onPress={handleStop} />
-      </View>
-
-      {/* {aslGif && (
-        <View style={styles.outputContainer}>
-          <Image source={aslGif} style={styles.gif} />
-
-          <Text style={styles.outputText}>
-            Entered Text: {text}
+          {/* Label for speed selection */}
+          <Text style={styles.label}>
+            Speed
           </Text>
 
-          <Text style={styles.outputText}>
-            Speed: {speed}
-          </Text>
-        </View>
-      )} */}
-
-      <View style={styles.outputContainer}>
-        {isPlaying ? (
-          <>
-            <Image source={aslGif} style={styles.gif} />
-            <Text style={styles.outputText}>
-              Entered Text: {text}
-            </Text>
-            <Text style={styles.outputText}>
-              Speed: {speed}
-            </Text>
-          </>
-        ) : (
-          <Text style={styles.instructionsText}>
-            To see the ASL output:
-            {"\n\n"}
-            1. Enter text in the input field above.
-            {"\n"}
-            2. Select the desired speed (Slow, Normal, Fast).
-            {"\n"}
-            3. Press the "Play" button to generate the ASL output.
-          </Text>
-        )}
-      </View>
-
-      <Modal visible={showAlphabetPanel} transparent={true} animationType="slide" onRequestClose={handleCloseAlphabetPanel}>
-        <View style={styles.modalContainer}>
-
-          {/* <Button style={styles.closeButton}
-            title="Close" 
-            onPress={handleCloseAlphabetPanel}
-          />   */}
-
-          <View >
-            <Button title="Close" color="#d4d8d9" onPress={handleCloseAlphabetPanel} />
+          {/* Speed selection buttons */}
+          <View style={styles.speedContainer}>
+            {['Slow', 'Normal', 'Fast'].map((option) => (
+              <TouchableOpacity
+                key={option}
+                style={[styles.speedButton, speed === option && styles.selectedSpeedButton]}
+                onPress={() => setSpeed(option)}
+              >
+                <Text style={[styles.speedButtonText, speed === option && styles.selectedSpeedButtonText]}>
+                  {option}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
 
+          {/* Buttons for Play, View Alphabet, and Stop */}
+          <View style={styles.buttonContainer}>
+
+            <TouchableOpacity onPress={handlePlay} style={styles.iconButton}>
+              <FontAwesome name="play" size={25} color="#3498DB" />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleViewAlphabet} style={styles.iconButton}>
+              <Text style={styles.iconText}>ABC</Text> 
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleStop} style={styles.iconButton}>
+              <FontAwesome name="stop" size={25} color="#E74C3C" />
+            </TouchableOpacity>
+
+          </View>
+
+          {/* Output container for displaying the ASL GIF or instructions */}
+          <View style={styles.outputContainer}>
+            {isLoading ? (
+              <ActivityIndicator size='large' color='#0000ff' />
+            ) : error ? (
+              <Text style={styles.errorText}>{error}</Text>
+            ) : isPlaying && aslGif ? (
+              <>
+
+                {/* Display the generated ASL GIF */}
+                  <ExpoImage
+                    source={aslGif}
+                    style={styles.gif}
+                    contentFit="contain"
+                  />
+            
+                {/* Display the entered text and speed */}
+                <Text style={styles.outputText}>
+                  Entered Text: {text}
+                </Text>
+                <Text style={styles.outputText}>
+                  Speed: {speed}
+                </Text>
+              </>
+            ) : (
+              <Text style={styles.instructionsText}>
+                To view the ASL output:
+                {"\n\n"}
+                1. Enter text in the input field above.
+                {"\n"}
+                2. Select the desired speed (Slow, Normal, Fast).
+                {"\n"}
+                3. Press the < FontAwesome name="play" size={16} color="#3498DB" /> icon to generate the ASL output.
+                {"\n\n"}
+                If you'd like to view the ASL alphabet, Press the "ABC" button.
+              </Text>
+            )}
+          </View>
+        </View>
+      </ScrollView>
+
+      {/* Modal for displaying the ASL alphabet */}
+      <Modal visible={showAlphabetPanel} transparent={true} animationType="slide" onRequestClose={handleCloseAlphabetPanel}>
+        <View style={styles.modalContainer}>
+          <View>
+            <Button title="Close" color="#d4d8d9" onPress={handleCloseAlphabetPanel} />
+          </View>
           <ScrollView contentContainerStyle={styles.gridContainer}>
             {alphabet.map((char, index) => (
               <View key={index} style={styles.tile}>
@@ -173,58 +253,66 @@ const TextToSignScreen = () => {
           </ScrollView>
         </View>
       </Modal>
-
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
+// Styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    backgroundColor: '#FFFFFF',
+  },
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: 'center',
-    alignItems: 'stretch',
-    backgroundColor: '#ECF0F1',
+  },
+  innerContainer: {
+    padding: moderateScale(20),
   },
   input: {
-    borderWidth: 1,
-    padding: 12,
-    marginBottom: 15,
-    borderRadius: 50,
-    fontSize: 16,
-    borderColor: '#172937',
-    backgroundColor: '#fff',
-    color: '#2C3E50',
+    borderWidth: 2,
+    padding: moderateScale(12),
+    marginBottom: verticalScale(15),
+    borderRadius: moderateScale(50),
+    fontSize: moderateScale(16),
+    borderColor: '#79dd09',
+    backgroundColor: '#172937',
+    color: '#FFFFFF',
   },
   label: {
-    fontSize: 18,
-    marginBottom: 5,
+    fontSize: moderateScale(18),
+    marginBottom: verticalScale(5),
     fontWeight: '600',
     color: '#2C3E50',
   },
   speedContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: verticalScale(17),
+    alignItems: 'center',
+    width: '100%',
   },
   speedButton: {
-    padding: 10,
-    borderRadius: 50,
-    borderWidth: 1,
+    padding: moderateScale(10),
+    borderRadius: moderateScale(50),
+    borderWidth: 2,
     borderColor: '#172937',
-    backgroundColor:'#172937' ,
+    backgroundColor: '#172937',
     flex: 1,
-    marginHorizontal: 5,
+    marginHorizontal: moderateScale(5),
     alignItems: 'center',
+    justifyContent: 'center',
   },
   selectedSpeedButton: {
-    //backgroundColor: '#3498DB',
     backgroundColor: '#172937',
     borderColor: '#79dd09',
   },
   speedButtonText: {
     color: '#FFFFFF',
     fontWeight: '600',
+    fontSize: moderateScale(14),
+    
   },
   selectedSpeedButtonText: {
     color: '#79dd09',
@@ -232,71 +320,90 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginTop: verticalScale(20),
   },
   outputContainer: {
-    marginTop: 30,
-    padding: 20,
-    //backgroundColor: '#2980B9',
+    marginTop: verticalScale(15),
+    padding: moderateScale(20),
     backgroundColor: '#172937',
-    borderRadius: 10,
+    borderRadius: moderateScale(10),
     alignItems: 'center',
-
-    height: 300,
+    height: verticalScale(270),
     justifyContent: 'center',
-    alignItems: 'center',
+    borderWidth: 2,        
+    borderColor: '#79dd09',
   },
   outputText: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: '600',
-    marginTop: 10,
+    marginTop: verticalScale(10),
     color: '#ECF0F1',
   },
   gif: {
-    width: 200,
-    height: 200,
-    marginBottom: 10,
+    width: moderateScale(200),
+    height: moderateScale(200),
+    marginBottom: verticalScale(10),
   },
-
   modalContainer: {
     flex: 1,
-    padding: 20,
+    padding: moderateScale(20),
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ECF0F1', 
+    backgroundColor: '#ECF0F1',
   },
-
   gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: 50,
-    paddingBottom: 50,
+    marginTop: verticalScale(50),
+    paddingBottom: verticalScale(50),
   },
   tile: {
-    width: 120,
-    height: 120,
+    width: moderateScale(120),
+    height: moderateScale(120),
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 5,
-    borderRadius: 8,
+    margin: moderateScale(5),
+    borderRadius: moderateScale(8),
     borderWidth: 1,
     borderColor: '#172937',
-    backgroundColor: '#fff', 
+    backgroundColor: '#fff',
   },
   tileImage: {
-    width: 110,
-    height: 110,
+    width: moderateScale(110),
+    height: moderateScale(110),
     resizeMode: 'contain',
   },
-  
   instructionsText: {
-    fontSize: 16,
+    fontSize: moderateScale(14),
     fontWeight: '600',
     color: '#ECF0F1',
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: moderateScale(20),
   },
+  errorText: {
+    color: '#FFFFFF', 
+    fontSize: moderateScale(16),
+    fontWeight: '600',
+    textAlign: 'center',
+    marginTop: verticalScale(10),
+  },
+  iconButton: {
+    padding: moderateScale(5),
+    borderRadius: moderateScale(8),
+    backgroundColor: '#172937',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: moderateScale(40),  
+    height: moderateScale(40), 
+    borderWidth: 2,        
+    borderColor: '#79dd09',
+  },
+  iconText: {
+    color: '#2ECC71', 
+    fontWeight: '600',
+    fontSize: moderateScale(12),
+  }
 
 });
 
