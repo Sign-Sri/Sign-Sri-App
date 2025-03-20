@@ -78,7 +78,7 @@ const LeaderBoardScreen = () => {
 export default LeaderBoardScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#143D60" },
+  container: { flex: 1, backgroundColor: "#03382e" },
   header: {
     flexDirection: "row",
     alignItems: "center",
