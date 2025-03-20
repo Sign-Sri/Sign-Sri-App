@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { Image } from 'expo-image'; // Import expo-image for GIF support
 import ProgressBar from './components/ProgressBar';
 
 const ProgressScreen = ({ route }) => {
@@ -24,6 +25,15 @@ const ProgressScreen = ({ route }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {/* Add the GIF at the top */}
+      <View style={styles.gifContainer}>
+        <Image
+          source={require('../../assets/Gif/celebration.gif')} // Path to your GIF
+          style={styles.gif}
+          contentFit="contain" // Ensure the GIF fits within the container
+        />
+      </View>
+
       <Text style={styles.title}>Your Progress Report</Text>
 
       <View style={styles.progressContainer}>
@@ -93,7 +103,6 @@ const ProgressScreen = ({ route }) => {
       >
         <Text style={styles.continueButtonText}>Continue Other Lessons</Text>
       </TouchableOpacity>
-      
     </ScrollView>
   );
 };
@@ -105,12 +114,20 @@ const styles = StyleSheet.create({
     padding: moderateScale(20),
     paddingBottom: verticalScale(80), // Extra padding to avoid navigation bar
   },
+  gifContainer: {
+    alignItems: 'center',
+    marginBottom: verticalScale(20),
+  },
+  gif: {
+    width: scale(200), // Adjust the size of the GIF
+    height: verticalScale(200), // Adjust the size of the GIF
+  },
   title: {
     fontSize: moderateScale(24),
     fontWeight: '700',
     color: '#172937',
     textAlign: 'center',
-    marginVertical: verticalScale(20),
+    marginVertical: verticalScale(10),
   },
   progressContainer: {
     backgroundColor: '#FFFFFF',

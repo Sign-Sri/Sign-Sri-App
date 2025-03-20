@@ -1,53 +1,50 @@
-import React,{useContext} from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Image } from 'expo-image'; // Use expo-image for animated GIFs
 import { UserDetailContext } from '../../Context/UserDetailContext';
 
-
-
-
-
+// Import the GIF
+const happyStarGif = require('../../assets/Gif/happy_star.gif'); // Adjust the path to your GIF
 
 // Dummy data for lessons
-
-
 const lessons = [
   {
     id: '1',
     title: 'Alphabet',
     level: 'Beginner',
     completed: true,
-    videoUrl: 'https://example.com/alphabet-video', // Example video URL
-    gif: require('../../assets/FirstPage/Alphabet.png'), // Path to Alphabet GIF
-    icon: 'font', // FontAwesome5 icon name
+    videoUrl: 'https://example.com/alphabet-video',
+    gif: require('../../assets/FirstPage/Alphabet.png'),
+    icon: 'font',
   },
   {
     id: '2',
     title: 'Numbers',
     level: 'Beginner',
     completed: false,
-    videoUrl: 'https://example.com/numbers-video', // Example video URL
-    gif: require('../../assets/FirstPage/Numbers.png'), // Path to Numbers GIF
-    icon: 'sort-numeric-up', // FontAwesome5 icon name
+    videoUrl: 'https://example.com/numbers-video',
+    gif: require('../../assets/FirstPage/Numbers.png'),
+    icon: 'sort-numeric-up',
   },
   {
     id: '3',
     title: 'Phrases',
     level: 'Beginner',
     completed: false,
-    videoUrl: 'https://example.com/phrases-video', // Example video URL
-    gif: require('../../assets/FirstPage/Phrases.png'), // Path to Phrases GIF
-    icon: 'comment-dots', // FontAwesome5 icon name
+    videoUrl: 'https://example.com/phrases-video',
+    gif: require('../../assets/FirstPage/Phrases.png'),
+    icon: 'comment-dots',
   },
   {
     id: '4',
     title: 'Shapes & Colors',
     level: 'Beginner',
     completed: false,
-    videoUrl: 'https://example.com/phrases-video', // Example video URL
-    gif: require('../../assets/FirstPage/Shapes & Colors.png'), // Path to Phrases GIF
-    icon: 'shapes', // FontAwesome5 icon name
+    videoUrl: 'https://example.com/phrases-video',
+    gif: require('../../assets/FirstPage/Shapes & Colors.png'),
+    icon: 'shapes',
   },
 ];
 
@@ -76,7 +73,7 @@ const SignLanguageSchoolScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Welcome,{userDetail?.firstName}</Text>
+      <Text style={styles.header}>Welcome, {userDetail?.firstName}</Text>
       <FlatList
         data={lessons}
         renderItem={renderLesson}
@@ -84,7 +81,15 @@ const SignLanguageSchoolScreen = ({ navigation }) => {
         numColumns={2} // Display 2 items per row
         contentContainerStyle={styles.grid}
       />
-      
+
+      {/* Add the happy star GIF at the bottom */}
+      <View style={styles.gifContainer}>
+        <Image
+          source={happyStarGif}
+          style={styles.gif}
+          contentFit="contain" // Ensures the GIF fits within the container
+        />
+      </View>
     </View>
   );
 };
@@ -105,6 +110,7 @@ const styles = StyleSheet.create({
   grid: {
     justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: verticalScale(120), // Add padding to avoid overlap with the GIF
   },
   card: {
     width: scale(140),
@@ -137,17 +143,14 @@ const styles = StyleSheet.create({
     color: '#73E000', // Green text for completed status
     marginTop: verticalScale(5),
   },
-  progressButton: {
-    marginTop: verticalScale(20),
-    padding: moderateScale(15),
-    backgroundColor: '#73E000', // Green background for button
-    borderRadius: moderateScale(50),
-    alignItems: 'center',
+  gifContainer: {
+    position: 'absolute',
+    bottom: verticalScale(-70), // Position the GIF at the bottom
+    alignSelf: 'center',
   },
-  progressButtonText: {
-    color: '#FFFFFF', // White text for button
-    fontSize: moderateScale(16),
-    fontWeight: 'bold',
+  gif: {
+    width: scale(400), // Make the GIF larger
+    height: verticalScale(300), // Make the GIF larger
   },
 });
 
