@@ -107,9 +107,10 @@ const styles = StyleSheet.create({
     width: 90,
     alignItems: "center",
     justifyContent: "flex-end",
-    borderRadius: 10,
+    borderRadius: 20,
     marginHorizontal: 9,
     elevation: 10,
+    
   },
   podiumRank: {
     fontSize: 20,
@@ -134,16 +135,17 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFEFC8",
+    backgroundColor: "#a2f2b5",
     marginBottom: 8,
     padding: 10,
     borderRadius: 18,
     elevation: 5,
+    borderWidth: 2,
   },
   rank: { fontSize: 18, fontWeight: "bold", marginRight: 20 },
   info: { flex: 5 ,marginLeft: 10},
   name: { fontSize: 16, fontWeight: "bold", color: "#333" },
   points: { fontSize: 14, color: "#888" },
-  positiveChange: { fontSize: 18, color: "green", fontWeight: "bold" },
-  negativeChange: { fontSize: 18, color: "red", fontWeight: "bold" },
+  positiveChange: { fontSize: 18, color: "#115446", fontWeight: "bold" },
+  negativeChange: { fontSize: 18, color: "#942566", fontWeight: "bold" },
 });
