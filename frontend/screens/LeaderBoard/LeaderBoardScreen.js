@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet } from "react-native";
 
+import { LinearGradient } from 'expo-linear-gradient';
+
 const LeaderBoardItem = ({ item }) => (
   <View style={styles.itemContainer}>
     <Text style={styles.rank}>{item.rank}</Text>
@@ -32,13 +34,16 @@ const LeaderBoardScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
+      {/* Header with Gradient Background */}
+      <LinearGradient
+        colors={['#182a38', '#2c3e50']}
+        style={styles.header}
+      >
         <TouchableOpacity onPress={() => console.log("Go Back")}>
           <Text style={styles.backButton}>←</Text>
         </TouchableOpacity>
         <Text style={styles.title}>Leader Board</Text>
-      </View>
+      </LinearGradient>
 
       {/* Podium Section */}
       <View style={styles.podiumContainer}>
@@ -82,11 +87,12 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 55,
+    padding: 45,
     backgroundColor: "#182a38",
     elevation: 4,
     justifyContent: "flex-start",
     borderBottomRightRadius: 125,
+    borderBottomRightWidth:10,
   },
   backButton: { 
     fontWeight: "bold",
@@ -117,6 +123,11 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingTop: 10,
     borderWidth: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 10,
   },
   podiumStep: {
     width: 90,
@@ -126,6 +137,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 9,
     elevation: 10,
     borderWidth: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
   },
   podiumRank: {
     fontSize: 20,
