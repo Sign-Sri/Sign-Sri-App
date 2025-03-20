@@ -65,6 +65,7 @@ const LeaderBoardScreen = () => {
         <View style={styles.podium}>
           {/* 2nd Place */}
           <View style={[styles.podiumStep, { height: 180, backgroundColor: podiumData[0].bgColor }]}>
+          <Text style={styles.secondPlace}>🥈</Text>
             <Image source={podiumData[0].avatar} style={styles.avatar} />
             <Text style={styles.podiumRank}>2</Text>
             <Text style={styles.podiumName}>{podiumData[0].name}</Text>
@@ -154,6 +155,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#888",
   },
+
+  secondPlace: {
+    fontSize: 40,
+    marginTop: 8,
+  },
+
 
   crown: {
     fontSize: 46,
