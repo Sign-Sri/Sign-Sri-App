@@ -34,9 +34,9 @@ const LeaderBoardItem = ({ item }) => (
 
 const LeaderBoardScreen = () => {
   const podiumData = [
-    { rank: 2, name: "Alex", avatar: require("../../assets/LeaderBoardImages/2nd_place.jpg"), bgColor: "#FFD700" },
-    { rank: 1, name: "Chris", avatar: require("../../assets/LeaderBoardImages/winner.jpg"), bgColor: "#CD7F32" },
-    { rank: 3, name: "Taylor", avatar: require("../../assets/LeaderBoardImages/3rd_place.jpg"), bgColor: "#C0C0C0" },
+    { rank: 2, name: "Alex", avatar: require("../../assets/LeaderBoardImages/2nd_place.jpg"), bgColor: "#C0C0C0" },
+    { rank: 1, name: "Chris", avatar: require("../../assets/LeaderBoardImages/winner.jpg"), bgColor: "#FFD700" },
+    { rank: 3, name: "Taylor", avatar: require("../../assets/LeaderBoardImages/3rd_place.jpg"), bgColor: "#CD7F32" },
   ];
 
   const leaderboardData = [
@@ -73,7 +73,7 @@ const LeaderBoardScreen = () => {
           </View>
           {/* 1st Place */}
           <View style={[styles.podiumStep, { height: 200, backgroundColor: podiumData[1].bgColor }]}>
-            <Text style={styles.crown}>👑</Text>
+            <Text style={styles.crown}>🥇</Text>
             <Image source={podiumData[1].avatar} style={styles.avatar} />
             <Text style={styles.podiumRank}>1</Text>
             <Text style={styles.podiumName}>{podiumData[1].name}</Text>
@@ -160,12 +160,15 @@ const styles = StyleSheet.create({
   secondPlace: {
     fontSize: 40,
     marginTop: 8,
+    paddingLeft:45,
   },
 
 
   crown: {
     fontSize: 46,
     marginBottom: 8,
+    paddingLeft: 40,
+    paddingTop: 10,
   },
   
   thirdPlace: {
