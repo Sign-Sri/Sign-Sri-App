@@ -727,9 +727,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   feedbackContainer: {
-    marginTop: verticalScale(-6),
+    marginTop: verticalScale(-15),
     padding: moderateScale(40),
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f5f5',
     borderRadius: moderateScale(8),
     alignItems: 'center',
   },
@@ -739,10 +739,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   tryAgainButton: {
-    marginTop: verticalScale(-20),
+    marginTop: verticalScale(-25),
     backgroundColor: '#FF0000',
     padding: moderateScale(10),
-    borderRadius: moderateScale(8),
+    borderRadius: moderateScale(50),
   },
   tryAgainText: {
     color: '#fff',

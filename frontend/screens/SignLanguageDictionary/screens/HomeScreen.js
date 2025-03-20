@@ -29,7 +29,7 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", alignItems: "center", paddingTop: 50 },
+  container: { flex: 1, backgroundColor: "#fff", alignItems: "center", paddingTop: 30 },
 
   title: { fontSize: 32, fontWeight: "bold", color: "#0A369D" },
 

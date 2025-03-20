@@ -83,13 +83,14 @@ const styles = StyleSheet.create({
     height: verticalScale(300), // Adjust the size of the GIF
   },
   quizButton: {
-    backgroundColor: '#73E000',
+    backgroundColor: '#182a38',
     padding: moderateScale(12),
     borderRadius: moderateScale(50),
     alignItems: 'center',
+    //
   },
   quizButtonText: {
-    color: '#fff',
+    color: '#ffffff',
     fontSize: moderateScale(18),
     fontWeight: 'bold',
   },

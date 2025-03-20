@@ -16,14 +16,7 @@ const MenuScreen = ({ navigation }) => {
   
    const {userDetail,setUserDetail} = useContext(UserDetailContext);
    
-   const handleLogout = async () => {
-        try {
-          await signOut(auth);
-          navigation.replace("SignIn"); // Redirect to SignIn screen after logout
-        } catch (error) {
-          console.error("Logout Error:", error);
-        }
-   };
+   
   return (
     
       <SafeAreaView style={styles.container}>
@@ -84,7 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     padding: moderateScale(30),
     borderRadius: moderateScale(12),
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(35),
     width: '85%',
     shadowColor: "#000",
     shadowOffset: {

@@ -271,12 +271,10 @@ const styles = StyleSheet.create({
     padding: moderateScale(20),
   },
   input: {
-    borderWidth: 2,
     padding: moderateScale(12),
     marginBottom: verticalScale(15),
     borderRadius: moderateScale(50),
     fontSize: moderateScale(16),
-    borderColor: '#79dd09',
     backgroundColor: '#172937',
     color: '#FFFFFF',
   },
@@ -330,8 +328,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: verticalScale(270),
     justifyContent: 'center',
-    borderWidth: 2,        
-    borderColor: '#79dd09',
   },
   outputText: {
     fontSize: moderateScale(16),
@@ -355,8 +351,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: verticalScale(50),
-    paddingBottom: verticalScale(50),
+    marginTop: verticalScale(40),
+    paddingBottom: verticalScale(40),
   },
   tile: {
     width: moderateScale(120),
@@ -396,8 +392,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: moderateScale(40),  
     height: moderateScale(40), 
-    borderWidth: 2,        
-    borderColor: '#79dd09',
   },
   iconText: {
     color: '#2ECC71', 

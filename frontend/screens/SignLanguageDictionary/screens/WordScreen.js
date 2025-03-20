@@ -81,12 +81,12 @@ const styles = StyleSheet.create({
 
   backText: { fontSize: 30, color: "white" },
 
-  word: { fontSize: 50, fontWeight: "bold", color: "#172937", marginBottom: 20 },
+  word: { fontSize: 50, fontWeight: "bold", color: "#172937", marginBottom: 10 },
 
-  videoContainer: { width: 300, height: 300,borderRadius:50 },
+  videoContainer: { width: 300, height: 300,borderRadius:20 },
 
   slowButton: {
-    marginTop: 20,
+    marginTop: 10,
     backgroundColor: "#79dd09",
     padding: 10,
     borderRadius: 50,

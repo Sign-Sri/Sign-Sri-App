@@ -51,7 +51,7 @@ const BottomTabNavigator = () => {
             </View>
           );
         },
-        tabBarActiveTintColor: '#FFFFFF',
+        tabBarActiveTintColor: '#73E000',
         tabBarInactiveTintColor: '#FFFFFF',
         tabBarStyle: {
           backgroundColor: '#172937',//
@@ -60,7 +60,7 @@ const BottomTabNavigator = () => {
           paddingBottom: verticalScale(5),
         },
         tabBarLabelStyle: {
-          fontSize: moderateScale(10),
+          fontSize: moderateScale(11),
           fontWeight: 'bold',
           marginBottom: verticalScale(5),
         },
@@ -97,7 +97,7 @@ const BottomTabNavigator = () => {
 // Define styles for the active tab circle
 const styles = StyleSheet.create({
   activeTab: {
-    backgroundColor: '#D3D3D3', // Light grey color
+    backgroundColor: '#172938', // Light grey color
     borderRadius: moderateScale(20), // Circular shape
     width: moderateScale(50), // Fixed width for the circle
     height: moderateScale(33), // Fixed height for the circle
