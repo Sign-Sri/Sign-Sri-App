@@ -80,22 +80,23 @@ export default LeaderBoardScreen;
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
   header: {
+    flexDirection: "row",
     alignItems: "center",
-    padding: 35,
+    padding: 55,
     backgroundColor: "#182a38",
     elevation: 4,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     borderBottomRightRadius: 125,
   },
   backButton: { 
-    fontSize: 28, 
+    fontWeight: "bold",
+    fontSize: 38, 
     color: "#fff",
-    marginRight:190, 
-
+    
   },
 
   title: { 
-    fontSize: 28, 
+    fontSize: 26, 
     fontWeight: "bold", 
     marginLeft: 24,
     color: "#fff", 
