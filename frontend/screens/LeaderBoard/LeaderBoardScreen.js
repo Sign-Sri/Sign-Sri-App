@@ -78,7 +78,7 @@ const LeaderBoardScreen = () => {
 export default LeaderBoardScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#03382e" },
+  container: { flex: 1, backgroundColor: "#fff" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginHorizontal: 9,
     elevation: 10,
-    
+    borderWidth: 2,
   },
   podiumRank: {
     fontSize: 20,
@@ -135,17 +135,17 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#a2f2b5",
+    backgroundColor: "#245248",
     marginBottom: 8,
     padding: 10,
     borderRadius: 18,
     elevation: 5,
     borderWidth: 2,
   },
-  rank: { fontSize: 18, fontWeight: "bold", marginRight: 20 },
+  rank: { fontSize: 20, fontWeight: "bold", marginRight: 20 },
   info: { flex: 5 ,marginLeft: 10},
-  name: { fontSize: 16, fontWeight: "bold", color: "#333" },
+  name: { fontSize: 16, color: "white" },
   points: { fontSize: 14, color: "#888" },
-  positiveChange: { fontSize: 18, color: "#115446", fontWeight: "bold" },
-  negativeChange: { fontSize: 18, color: "#942566", fontWeight: "bold" },
+  positiveChange: { fontSize: 18, color: "#d3f207", fontWeight: "bold" },
+  negativeChange: { fontSize: 18, color: "#de691b", fontWeight: "bold" },
 });

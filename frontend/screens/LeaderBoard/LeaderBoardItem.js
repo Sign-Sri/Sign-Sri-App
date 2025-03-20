@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
   avatar: { width: 50, height: 50, borderRadius: 25, borderWidth: 2, marginRight: 16 },
   info: { flex: 1 },
   name: { fontSize: 20, fontWeight: "bold" },
-  points: { fontSize: 14, color: "#666" },
+  points: { fontSize: 14, color: "#b8b6b6" },
   changeContainer: { justifyContent: "center", alignItems: "center" },
-  positiveChange: { fontSize: 14, color: "#115446" },
-  negativeChange: { fontSize: 14, color: "#942566" },
+  positiveChange: { fontSize: 14, color: "#d3f207" },
+  negativeChange: { fontSize: 14, color: "#de691b" },
 });
