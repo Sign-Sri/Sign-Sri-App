@@ -6,14 +6,26 @@ import { LinearGradient } from 'expo-linear-gradient';
 const LeaderBoardItem = ({ item }) => (
   <LinearGradient
     colors={['#2c3e50', '#182a38']} 
-    style={styles.itemContainer} 
+    style={styles.itemContainer}
   >
-    <Text style={styles.rank}>{item.rank}</Text>
+    {/* Rank with Medal for Top 3 */}
+    <View style={styles.rankContainer}>
+      <Text style={styles.rank}>{item.rank}</Text>
+      {item.rank === 1 && <Text style={styles.medal}>🥇</Text>}
+      {item.rank === 2 && <Text style={styles.medal}>🥈</Text>}
+      {item.rank === 3 && <Text style={styles.medal}>🥉</Text>}
+    </View>
+
+    {/* Avatar */}
     <Image source={item.avatar} style={styles.avatar} />
+
+    {/* Name and Points */}
     <View style={styles.info}>
       <Text style={styles.name}>{item.name}</Text>
       <Text style={styles.points}>{item.points} pts</Text>
     </View>
+
+    {/* Change Indicator */}
     <Text style={item.change.startsWith("+") ? styles.positiveChange : styles.negativeChange}>
       {item.change}
     </Text>
@@ -22,9 +34,9 @@ const LeaderBoardItem = ({ item }) => (
 
 const LeaderBoardScreen = () => {
   const podiumData = [
-    { rank: 2, name: "Alex", avatar: require("../../assets/LeaderBoardImages/2nd_place.jpg"), bgColor: "#FF9D23" },
-    { rank: 1, name: "Chris", avatar: require("../../assets/LeaderBoardImages/winner.jpg"), bgColor: "#DDEB9D" },
-    { rank: 3, name: "Taylor", avatar: require("../../assets/LeaderBoardImages/3rd_place.jpg"), bgColor: "#FFD95F" },
+    { rank: 2, name: "Alex", avatar: require("../../assets/LeaderBoardImages/2nd_place.jpg"), bgColor: "#FFD700" },
+    { rank: 1, name: "Chris", avatar: require("../../assets/LeaderBoardImages/winner.jpg"), bgColor: "#CD7F32" },
+    { rank: 3, name: "Taylor", avatar: require("../../assets/LeaderBoardImages/3rd_place.jpg"), bgColor: "#C0C0C0" },
   ];
 
   const leaderboardData = [
@@ -56,12 +68,16 @@ const LeaderBoardScreen = () => {
             <Image source={podiumData[0].avatar} style={styles.avatar} />
             <Text style={styles.podiumRank}>2</Text>
             <Text style={styles.podiumName}>{podiumData[0].name}</Text>
+            
           </View>
           {/* 1st Place */}
           <View style={[styles.podiumStep, { height: 200, backgroundColor: podiumData[1].bgColor }]}>
+            <Text style={styles.crown}>👑</Text>
             <Image source={podiumData[1].avatar} style={styles.avatar} />
             <Text style={styles.podiumRank}>1</Text>
             <Text style={styles.podiumName}>{podiumData[1].name}</Text>
+            
+             
           </View>
           {/* 3rd Place */}
           <View style={[styles.podiumStep, { height: 155, backgroundColor: podiumData[2].bgColor }]}>
@@ -123,6 +139,7 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: "#182a38",
     borderRadius: 20,
+    paddingVertical: 20,
     paddingBottom: 10,
     paddingTop: 10,
     borderWidth: 3,
@@ -132,6 +149,18 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 10,
   },
+
+  podiumPoints: {
+    fontSize: 14,
+    color: "#888",
+  },
+
+  crown: {
+    fontSize: 46,
+    marginBottom: 8,
+  },
+  
+ 
   podiumStep: {
     width: 90,
     alignItems: "center",
@@ -175,7 +204,20 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderWidth: 2,
   },
-  rank: { fontSize: 20, fontWeight: "bold", marginRight: 20 },
+  rankContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  rank: { 
+    fontSize: 20, 
+    fontWeight: "bold", 
+    marginRight: 20 
+  },
+
+  medal: {
+    fontSize: 24,
+  },
+
   info: { flex: 5 ,marginLeft: 10},
   name: { fontSize: 16, color: "white" },
   points: { fontSize: 14, color: "#888" },
