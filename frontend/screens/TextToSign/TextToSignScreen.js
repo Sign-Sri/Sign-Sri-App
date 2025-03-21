@@ -242,7 +242,7 @@ const TextToSignScreen = () => {
       <Modal visible={showAlphabetPanel} transparent={true} animationType="slide" onRequestClose={handleCloseAlphabetPanel}>
         <View style={styles.modalContainer}>
           <View>
-            <Button title="Close" color="#d4d8d9" onPress={handleCloseAlphabetPanel} />
+            <Button title="Close" color="#FF0000" onPress={handleCloseAlphabetPanel}  />
           </View>
           <ScrollView contentContainerStyle={styles.gridContainer}>
             {alphabet.map((char, index) => (
@@ -272,11 +272,13 @@ const styles = StyleSheet.create({
   },
   input: {
     padding: moderateScale(12),
-    marginBottom: verticalScale(15),
+    marginTop: verticalScale(-10),
+    marginBottom: verticalScale(20),
     borderRadius: moderateScale(50),
     fontSize: moderateScale(16),
     backgroundColor: '#172937',
     color: '#FFFFFF',
+    letterSpacing: moderateScale(0.5),
   },
   label: {
     fontSize: moderateScale(18),
@@ -318,7 +320,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: verticalScale(20),
+    marginTop: verticalScale(5),
   },
   outputContainer: {
     marginTop: verticalScale(15),
@@ -372,6 +374,7 @@ const styles = StyleSheet.create({
   },
   instructionsText: {
     fontSize: moderateScale(14),
+    letterSpacing: moderateScale(0.5),
     fontWeight: '600',
     color: '#ECF0F1',
     textAlign: 'center',

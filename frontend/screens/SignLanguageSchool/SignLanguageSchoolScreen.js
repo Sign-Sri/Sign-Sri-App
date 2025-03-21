@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
   gif: {
     width: scale(400), // Make the GIF larger
     height: verticalScale(300), // Make the GIF larger
+    marginBottom: verticalScale(50),
   },
 });
 

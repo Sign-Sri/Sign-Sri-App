@@ -56,8 +56,10 @@ const BottomTabNavigator = () => {
         tabBarStyle: {
           backgroundColor: '#172937',//
           borderTopWidth: 0,
-          height: verticalScale(55),
+          height: verticalScale(50),
           paddingBottom: verticalScale(5),
+          borderRadius: moderateScale(),
+          position: 'absolute',
         },
         tabBarLabelStyle: {
           fontSize: moderateScale(11),
