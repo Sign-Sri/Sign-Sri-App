@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, Button, Alert } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, Button, Alert, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { collection, query, orderBy, onSnapshot, doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../config/firebaseConfig";
@@ -57,7 +57,10 @@ const ForumScreen = () => {
               style={styles.post}
               onPress={() => navigation.navigate("PostDetail", { postId: item.id || item.postId })}
             >
-              <Text style={styles.username}>{item.username || `User: ${item.userId}`}</Text>
+              <View style={styles.header}>
+                <Image source={{ uri: item.photoURL || "https://example.com/default-profile.png" }} style={styles.profilePic} />
+                <Text style={styles.username}>{item.username || `User: ${item.userId}`}</Text>
+              </View>
               <Text style={styles.content}>{item.content}</Text>
               <Text style={styles.timestamp}>
                 {item.timestamp ? new Date(item.timestamp.seconds * 1000).toLocaleString() : "N/A"}
@@ -77,6 +80,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 10, backgroundColor: "#f5f5f5" },
   createPostButton: { backgroundColor: "blue", padding: 10, borderRadius: 5, marginBottom: 10 },
   post: { backgroundColor: "#fff", padding: 15, borderRadius: 8, marginBottom: 10, elevation: 2 },
+  header: { flexDirection: "row", alignItems: "center", marginBottom: 5 },
+  profilePic: { width: 40, height: 40, borderRadius: 20, marginRight: 10 },
   username: { fontWeight: "bold", color: "#333" },
   content: { marginTop: 5, color: "#555" },
   timestamp: { marginTop: 5, fontSize: 12, color: "gray" },
