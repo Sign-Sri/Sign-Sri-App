@@ -8,9 +8,10 @@ import {
   StyleSheet,
   Button,
   Alert,
+  Share,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/MaterialIcons"; // Import the icon library
+import Icon from "react-native-vector-icons/Feather"; // Use Feather icons
 import {
   collection,
   query,
@@ -180,10 +181,7 @@ const ForumScreen = () => {
           data={posts}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.post}
-              onPress={() => navigateToPostDetail(item.id, item.content, item.username)}
-            >
+            <View style={styles.post}>
               <View style={styles.header}>
                 <Text style={styles.username}>
                   {item.username || `User: ${item.userId || "Unknown"}`}
@@ -199,38 +197,36 @@ const ForumScreen = () => {
                 {item.timestamp ? new Date(item.timestamp.seconds * 1000).toLocaleString() : "N/A"}
               </Text>
 
-              {/* Display the number of likes */}
-              <TouchableOpacity style={styles.likeButton} onPress={() => handleLike(item.id)}>
-                <Text style={styles.likeText}>👍 {item.likes || 0}</Text>
-              </TouchableOpacity>
-
-              {/* Display the number of comments */}
-              <Text style={styles.commentCount}>
-                Comments: {item.commentCount || 0}
-              </Text>
-
-              {/* Display the number of reshares */}
-              <Text style={styles.reshareCount}>
-                Reshares: {item.reshares || 0}
-              </Text>
-
-              {/* Share/Reshare button with an icon */}
-              <TouchableOpacity
-                style={styles.shareButton}
-                onPress={() => handleShareOrReshare(item.id, item.content, item.username)}
-              >
-                <Icon name="share" size={24} color="blue" />
-              </TouchableOpacity>
-
+              {/* Interaction buttons in one line */}
               <View style={styles.interactionContainer}>
+                {/* Like button */}
                 <TouchableOpacity
-                  style={styles.commentButton}
+                  style={styles.interactionButton}
+                  onPress={() => handleLike(item.id)}
+                >
+                  <Icon name="thumbs-up" size={20} color="#666" />
+                  <Text style={styles.interactionText}>{item.likes || 0}</Text>
+                </TouchableOpacity>
+
+                {/* Comment button */}
+                <TouchableOpacity
+                  style={styles.interactionButton}
                   onPress={() => navigateToPostDetail(item.id, item.content, item.username)}
                 >
-                  <Text style={styles.commentText}>💬 {item.commentCount || 0}</Text>
+                  <Icon name="message-circle" size={20} color="#666" />
+                  <Text style={styles.interactionText}>{item.commentCount || 0}</Text>
+                </TouchableOpacity>
+
+                {/* Share button */}
+                <TouchableOpacity
+                  style={styles.interactionButton}
+                  onPress={() => handleShareOrReshare(item.id, item.content, item.username)}
+                >
+                  <Icon name="share-2" size={20} color="#666" />
+                  <Text style={styles.interactionText}>{item.reshares || 0}</Text>
                 </TouchableOpacity>
               </View>
-            </TouchableOpacity>
+            </View>
           )}
         />
       )}
@@ -247,14 +243,23 @@ const styles = StyleSheet.create({
   feeling: { marginLeft: 5, color: "#555", fontSize: 14, fontStyle: "bold" },
   content: { marginTop: 5, color: "#555" },
   timestamp: { marginTop: 5, fontSize: 12, color: "gray" },
-  likeButton: { padding: 5, backgroundColor: "#eee", borderRadius: 5, marginRight: 10 },
-  likeText: { fontSize: 14 },
-  commentCount: { marginTop: 5, fontSize: 14, color: "#555" },
-  reshareCount: { marginTop: 5, fontSize: 14, color: "#555" },
-  interactionContainer: { flexDirection: "row", marginTop: 10 },
-  commentButton: { padding: 5, backgroundColor: "#eee", borderRadius: 5 },
-  commentText: { fontSize: 14 },
-  shareButton: { padding: 5, marginTop: 5 },
+  interactionContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#eee",
+    paddingTop: 10,
+  },
+  interactionButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  interactionText: {
+    marginLeft: 5,
+    color: "#666",
+    fontSize: 14,
+  },
 });
 
 export default ForumScreen;
