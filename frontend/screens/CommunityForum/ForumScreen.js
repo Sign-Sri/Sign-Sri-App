@@ -25,29 +25,18 @@ const ForumScreen = () => {
     return () => unsubscribe();
   }, []);
 
-  // Handle post like 
-  
-  // Fetch posts using Axios
-  const fetchPostsAxios = async () => {
+  // Handle post like
+  const handleLike = async (postId) => {
     try {
-      const response = await axios.get("http://localhost:5000/api/forum/posts");
-      setPosts(response.data);
+      const postRef = doc(db, "forumPosts", postId);
+      await updateDoc(postRef, {
+        likes: increment(1),
+      });
     } catch (error) {
-      console.error("Error fetching posts:", error);
-      Alert.alert("Error", "Failed to fetch posts.");
-    } finally {
-      setLoading(false);
+      console.error("Error liking post:", error);
+      Alert.alert("Error", "Failed to like the post.");
     }
   };
-
-  useEffect(() => {
-    // Uncomment the method you want to use
-    const unsubscribe = fetchPostsFirebase();
-    return () => unsubscribe();
-
-    // Alternative method using Axios
-    // fetchPostsAxios();
-  }, []);
 
   // Navigate to CreatePost screen
   const navigateToCreatePost = () => {
@@ -73,6 +62,9 @@ const ForumScreen = () => {
               <Text style={styles.timestamp}>
                 {item.timestamp ? new Date(item.timestamp.seconds * 1000).toLocaleString() : "N/A"}
               </Text>
+              <TouchableOpacity style={styles.likeButton} onPress={() => handleLike(item.id)}>
+                <Text style={styles.likeText}>👍 {item.likes || 0}</Text>
+              </TouchableOpacity>
             </TouchableOpacity>
           )}
         />
@@ -88,6 +80,8 @@ const styles = StyleSheet.create({
   username: { fontWeight: "bold", color: "#333" },
   content: { marginTop: 5, color: "#555" },
   timestamp: { marginTop: 5, fontSize: 12, color: "gray" },
+  likeButton: { padding: 5, marginTop: 5, backgroundColor: "#eee", borderRadius: 5 },
+  likeText: { fontSize: 14 },
 });
 
 export default ForumScreen;
