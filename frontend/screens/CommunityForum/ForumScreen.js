@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, Button, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
-import axios from "axios";
+import { collection, query, orderBy, onSnapshot, doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../config/firebaseConfig";
 
 const ForumScreen = () => {
@@ -21,6 +20,13 @@ const ForumScreen = () => {
     return unsubscribe;
   };
 
+  useEffect(() => {
+    const unsubscribe = fetchPostsFirebase();
+    return () => unsubscribe();
+  }, []);
+
+  // Handle post like 
+  
   // Fetch posts using Axios
   const fetchPostsAxios = async () => {
     try {
