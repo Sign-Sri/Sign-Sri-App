@@ -149,9 +149,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   gif: {
-    width: scale(400), // Make the GIF larger
+    width: scale(250), // Make the GIF larger
     height: verticalScale(300), // Make the GIF larger
-    marginBottom: verticalScale(50),
+    marginBottom: verticalScale(53),
   },
 });
 
