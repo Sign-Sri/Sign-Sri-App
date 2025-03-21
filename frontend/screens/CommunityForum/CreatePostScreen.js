@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, Modal
+  View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, Modal,  KeyboardAvoidingView, Platform
 } from "react-native";
 import { Picker } from "@react-native-picker/picker"; // Import the Picker
 import { useNavigation } from "@react-navigation/native";
@@ -109,20 +109,23 @@ const CreatePostScreen = () => {
       {/* Modal for custom feeling input */}
       <Modal visible={isModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
-          <Text>Enter your custom feeling:</Text>
+          <Text style={styles.modelTitle}>Enter your feeling:</Text>
           <TextInput
             style={styles.input}
-            placeholder="Feeling..."
+            placeholder="Type your feeling..."
             value={customFeeling}
             onChangeText={setCustomFeeling}
+            autoFocus={true}
           />
-          <TouchableOpacity style={styles.modalButton} onPress={handleCustomFeeling}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.modalButton} onPress={() => setIsModalVisible(false)}>
-            <Text style={styles.buttonText}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
+           <View style={styles.modalButtonContainer}>
+            <TouchableOpacity style={styles.modalButton} onPress={handleCustomFeeling}>
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalButton} onPress={() => setIsModalVisible(false)}>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+          </View>
       </Modal>
     </View>
   );
@@ -130,7 +133,7 @@ const CreatePostScreen = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#fff" },
-  input: { borderWidth: 1, borderColor: "#ccc", padding: 10, borderRadius: 5, height: 100, marginBottom: 10 },
+  input: { borderWidth: 1, borderColor: "#ccc", padding: 10, borderRadius: 10, height: 100, marginBottom: 20, fontSize: 16 },
   dropdownContainer: { marginBottom: 10 },
   label: { fontSize: 16, marginBottom: 5 },
   dropdown: { backgroundColor: "#f5f5f5", borderRadius: 5 },
