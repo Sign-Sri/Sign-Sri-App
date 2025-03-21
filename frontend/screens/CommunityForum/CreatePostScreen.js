@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, Modal
 } from "react-native";
+import { Picker } from "@react-native-picker/picker"; // Import the Picker
 import { useNavigation } from "@react-navigation/native";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../../config/firebaseConfig";
@@ -32,10 +33,13 @@ const CreatePostScreen = () => {
         return;
       }
 
+      // Determine the feeling to save (selected or custom)
+      const feelingToSave = selectedFeeling === "Other+" ? customFeeling : selectedFeeling;
+
       await addDoc(collection(db, "forumPosts"), {
         userId: user.uid,
         content: content,
-        feeling: selectedFeeling || null, // Add the selected feeling (or null if none)
+        feeling: feelingToSave || null, // Save the feeling (or null if none)
         timestamp: serverTimestamp(),
       });
 
@@ -68,27 +72,30 @@ const CreatePostScreen = () => {
         onChangeText={setContent}
       />
 
-      {/* Feeling selection buttons */}
-      <View style={styles.feelingsContainer}>
-        {predefinedFeelings.map((feeling, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.feelingButton}
-            onPress={() => {
-              if (feeling === "Other+") {
-                setIsModalVisible(true); // Open modal for custom feeling
-              } else {
-                setSelectedFeeling(feeling); // Set predefined feeling
-              }
-            }}
-          >
-            <Text style={styles.feelingText}>{feeling}</Text>
-          </TouchableOpacity>
-        ))}
+      {/* Dropdown for feelings */}
+      <View style={styles.dropdownContainer}>
+        
+        <Picker
+          selectedValue={selectedFeeling}
+          onValueChange={(itemValue) => {
+            if (itemValue === "Other+") {
+              setIsModalVisible(true); // Open modal for custom feeling
+            } else {
+              setSelectedFeeling(itemValue); // Set predefined feeling
+            }
+          }}
+          style={styles.dropdown}
+          mode="dropdown" // Android-specific prop
+        >
+          <Picker.Item label="Select a feeling..." value="" />
+          {predefinedFeelings.map((feeling, index) => (
+            <Picker.Item key={index} label={feeling} value={feeling} />
+          ))}
+        </Picker>
       </View>
 
       {/* Display selected feeling */}
-      {selectedFeeling && (
+      {selectedFeeling && selectedFeeling !== "Other+" && (
         <Text style={styles.selectedFeeling}>
           Selected Feeling: {selectedFeeling}
         </Text>
@@ -123,12 +130,12 @@ const CreatePostScreen = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#fff" },
-  input: { borderWidth: 1, borderColor: "#ccc", padding: 10, borderRadius: 5, height: 100 },
-  feelingsContainer: { flexDirection: "row", flexWrap: "wrap", marginTop: 10 },
-  feelingButton: { padding: 10, margin: 5, backgroundColor: "#ddd", borderRadius: 5 },
-  feelingText: { fontSize: 16 },
-  selectedFeeling: { marginTop: 10, fontSize: 16, color: "#555" },
-  postButton: { backgroundColor: "blue", padding: 10, marginTop: 10, borderRadius: 5 },
+  input: { borderWidth: 1, borderColor: "#ccc", padding: 10, borderRadius: 5, height: 100, marginBottom: 10 },
+  dropdownContainer: { marginBottom: 10 },
+  label: { fontSize: 16, marginBottom: 5 },
+  dropdown: { backgroundColor: "#f5f5f5", borderRadius: 5 },
+  selectedFeeling: { fontSize: 16, color: "#555", marginBottom: 10 },
+  postButton: { backgroundColor: "blue", padding: 10, borderRadius: 5 },
   buttonText: { color: "white", textAlign: "center", fontSize: 16 },
   modalContainer: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.5)" },
   modalButton: { backgroundColor: "blue", padding: 10, margin: 5, borderRadius: 5 },
