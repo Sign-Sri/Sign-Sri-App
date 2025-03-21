@@ -36,7 +36,7 @@ const CreatePostScreen = () => {
   // Function to handle image selection
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images, // Allow only images
+      mediaTypes: ImagePicker.MediaType.Images, // Use MediaType instead of MediaTypeOptions
       allowsMultipleSelection: true, // Allow multiple selections
       quality: 0.5, // Reduce image quality for faster uploads
     });
@@ -56,7 +56,7 @@ const CreatePostScreen = () => {
         const blob = await response.blob();
 
         // Generate a unique filename using a timestamp
-        const filename = `forumPosts/${Date.now()}_${image.fileName || "image"}`;
+        const filename = `forumPosts/${Date.now()}_${image.uri.split("/").pop()}`;
 
         // Create a reference to the Firebase Storage path
         const storageRef = ref(storage, filename);
