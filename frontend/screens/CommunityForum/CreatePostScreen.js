@@ -1,13 +1,11 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState } from "react";
 import {
-  View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, Modal, ScrollView, Image
+  View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, Modal, ScrollView
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { auth, db, storage } from "../../config/firebaseConfig";
-import * as ImagePicker from "expo-image-picker";
+import { auth, db } from "../../config/firebaseConfig";
 
 const predefinedFeelings = [
   "😊 Happy", "🎉 Celebrate", "😞 Disappointment",
@@ -19,76 +17,7 @@ const CreatePostScreen = () => {
   const [selectedFeeling, setSelectedFeeling] = useState("");
   const [customFeeling, setCustomFeeling] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [images, setImages] = useState([]); // State to store selected images
-  const [uploading, setUploading] = useState(false); // State to track image upload progress
   const navigation = useNavigation();
-
-  // Request media library permissions on component mount
-  useEffect(() => {
-    (async () => {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Permission Denied", "Please allow access to your photos to upload images.");
-      }
-    })();
-  }, []);
-
-  // Function to handle image selection
-  const pickImage = async () => {
-    console.log("Add Image Button Pressed");
-    try{
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaType.Images, // Use MediaType instead of MediaTypeOptions
-        allowsMultipleSelection: true, // Allow multiple selections
-        quality: 0.5, // Reduce image quality for faster uploads
-      });
-
-      console.log("Image picker result:", result);
-
-      if (!result.canceled) {
-        setImages([...images, ...result.assets]); // Add selected images to the state
-        console.log("Selected Images.", result.assets);
-      }
-    } catch (error) {
-      console.error("Error picking images:", error);
-      Alert.alert("Error", "Failed to pick images.");
-    }
-  };
-
-  //Debugging: Log images state when it changes
-  useEffect(() => {
-    console.log("Images state updated: ", images);
-  }, [images]);
-
-  // Function to upload images to Firebase Storage
-  const uploadImages = async () => {
-    const imageUrls = [];
-    for (const image of images) {
-      try {
-        // Fetch the image file
-        const response = await fetch(image.uri);
-        const blob = await response.blob();
-
-        // Generate a unique filename using a timestamp
-        const filename = `forumPosts/${Date.now()}_${image.uri.split("/").pop()}`;
-
-        // Create a reference to the Firebase Storage path
-        const storageRef = ref(storage, filename);
-
-        // Upload the file to Firebase Storage
-        await uploadBytes(storageRef, blob);
-
-        // Get the download URL of the uploaded file
-        const downloadURL = await getDownloadURL(storageRef);
-        imageUrls.push(downloadURL);
-      } catch (error) {
-        console.error("Error uploading image:", error);
-        Alert.alert("Error", "Failed to upload images.");
-        return null;
-      }
-    }
-    return imageUrls;
-  };
 
   // Function to handle post creation using Firebase
   const handleCreatePost = async () => {
@@ -104,11 +33,6 @@ const CreatePostScreen = () => {
         return;
       }
 
-      setUploading(true); // Start uploading images
-
-      // Upload images and get their URLs
-      const imageUrls = images.length > 0 ? await uploadImages() : [];
-
       // Determine the feeling to save (selected or custom)
       const feelingToSave = selectedFeeling === "Other +" ? customFeeling : selectedFeeling;
 
@@ -117,17 +41,14 @@ const CreatePostScreen = () => {
         userId: user.uid,
         content: content,
         feeling: feelingToSave || null, // Save the feeling (or null if none)
-        images: imageUrls, // Save image URLs
         timestamp: serverTimestamp(),
       });
 
-      setUploading(false); // Stop uploading images
       Alert.alert("Success", "Post created!");
       navigation.goBack();
     } catch (error) {
       console.error("Error creating post:", error);
       Alert.alert("Error", "Failed to create post.");
-      setUploading(false); // Stop uploading images
     }
   };
 
@@ -180,27 +101,12 @@ const CreatePostScreen = () => {
         </Text>
       )}
 
-      {/* Image upload section */}
-      <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
-        <Text style={styles.buttonText}>Add Image </Text>
-      </TouchableOpacity>
-
-      {/* Display selected images */}
-      <View style={styles.imageContainer}>
-        {images.map((image, index) => (
-          <Image key={index} source={{ uri: image.uri }} style={styles.image} />
-        ))}
-      </View>
-
       {/* Post button */}
       <TouchableOpacity
         style={styles.postButton}
         onPress={handleCreatePost}
-        disabled={uploading} // Disable button while uploading
       >
-        <Text style={styles.buttonText}>
-          {uploading ? "Uploading..." : "Post"}
-        </Text>
+        <Text style={styles.buttonText}>Post</Text>
       </TouchableOpacity>
 
       {/* Modal for custom feeling input */}
@@ -247,24 +153,6 @@ const styles = StyleSheet.create({
     color: "#555",
     marginBottom: 20,
     fontStyle: "italic",
-  },
-  imageButton: {
-    backgroundColor: "green",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  imageContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginBottom: 20,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-    margin: 5,
   },
   postButton: {
     backgroundColor: "blue",
