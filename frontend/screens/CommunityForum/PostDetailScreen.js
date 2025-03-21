@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator, Alert } from "react-native";
-import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc  } from "firebase/firestore";
-import{ auth, db } from "../../config/firebaseConfig";
+import {
+  View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator, Alert, Image
+} from "react-native";
+import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "../../config/firebaseConfig";
 import { useRoute } from "@react-navigation/native";
 
 const PostDetailScreen = () => {
   const route = useRoute();
-  const { postId, postContent, postUsername } = route.params;
+  const { postId, postContent, postUsername, postImage } = route.params; // Add postImage to route.params
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(true);
@@ -17,12 +19,12 @@ const PostDetailScreen = () => {
       setComments(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
       setLoading(false);
     });
-      return unsubscribe;
+    return unsubscribe;
   }, [postId]);
 
   const handleAddComment = async () => {
     if (!comment.trim()) {
-      Alert.alert("Error", "Comment cannot be empty .");
+      Alert.alert("Error", "Comment cannot be empty.");
       return;
     }
 
@@ -30,17 +32,17 @@ const PostDetailScreen = () => {
       const user = auth.currentUser;
       if (!user) {
         Alert.alert("Error", "You must be logged in to comment.");
-        return;;
+        return;
       }
 
-      await addDoc(collection(db, "forumPosts", postId, "comments"),{
+      await addDoc(collection(db, "forumPosts", postId, "comments"), {
         userId: user.uid,
         username: postUsername,
         comment: comment,
         timestamp: serverTimestamp(),
       });
 
-      setComment(""); // Clear input after posting 
+      setComment(""); // Clear input after posting
     } catch (error) {
       console.error("Error adding comment:", error);
       Alert.alert("Error", "Failed to add comment.");
@@ -49,40 +51,58 @@ const PostDetailScreen = () => {
 
   if (loading) return <ActivityIndicator size="large" color="blue" />;
 
-  return(
+  return (
     <View style={styles.container}>
       <Text style={styles.postTitle}>{postUsername}:</Text>
       <Text style={styles.postContent}>{postContent}</Text>
 
+      {/* Display the post image if available */}
+      {postImage ? (
+        <Image source={{ uri: postImage }} style={styles.postImage} />
+      ) : (
+        <Text style={styles.noImageText}>No image available</Text>
+      )}
+
       <FlatList
-          data={comments}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style= {styles.commentBox}>
-              <Text style={styles.commentUser}>{item.username}:</Text>
-              <Text>{item.comment}</Text>
-              </View>
-          )}
-          />
+        data={comments}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.commentBox}>
+            <Text style={styles.commentUser}>{item.username}:</Text>
+            <Text>{item.comment}</Text>
+          </View>
+        )}
+      />
 
-          <TextInput
-            style={styles.input}
-            placeholder="Write a comment..."
-            value={comment}
-            onChangeText={setComment}
-          />
+      <TextInput
+        style={styles.input}
+        placeholder="Write a comment..."
+        value={comment}
+        onChangeText={setComment}
+      />
 
-          <TouchableOpacity style={styles.commentButton} onPress={handleAddComment}>
-            <Text style={styles.buttonText}>Comment</Text>
-          </TouchableOpacity>
-        </View>
-      );
+      <TouchableOpacity style={styles.commentButton} onPress={handleAddComment}>
+        <Text style={styles.buttonText}>Comment</Text>
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#fff" },
   postTitle: { fontWeight: "bold", fontSize: 18 },
   postContent: { fontSize: 16, marginBottom: 10 },
+  postImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  noImageText: {
+    fontSize: 16,
+    color: "#888",
+    marginBottom: 10,
+  },
   commentBox: { borderBottomWidth: 1, padding: 5, marginBottom: 5 },
   commentUser: { fontWeight: "bold" },
   input: { borderWidth: 1, borderColor: "#ccc", padding: 10, borderRadius: 5, marginTop: 10 },
@@ -91,6 +111,3 @@ const styles = StyleSheet.create({
 });
 
 export default PostDetailScreen;
-
-
-  
