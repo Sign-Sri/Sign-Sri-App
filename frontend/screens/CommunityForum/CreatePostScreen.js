@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, Modal, ScrollView, Image
 } from "react-native";
-import { Picker } from "@react-native-picker/picker"; // Import the Picker
+import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, db, storage } from "../../config/firebaseConfig";
-import * as ImagePicker from "expo-image-picker"; // For image selection
+import * as ImagePicker from "expo-image-picker";
 
 const predefinedFeelings = [
   "😊 Happy", "🎉 Celebrate", "😞 Disappointment",
@@ -23,17 +23,21 @@ const CreatePostScreen = () => {
   const [uploading, setUploading] = useState(false); // State to track image upload progress
   const navigation = useNavigation();
 
+  // Request media library permissions on component mount
+  useEffect(() => {
+    (async () => {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permission Denied", "Please allow access to your photos to upload images.");
+      }
+    })();
+  }, []);
+
   // Function to handle image selection
   const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert("Permission Denied", "Please allow access to your photos to upload images.");
-      return;
-    }
-
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaType.Images, // Use MediaType instead of MediaTypeOptions
-      allowsMultipleSelection: true, // Allow multiple image selection
+      mediaTypes: ImagePicker.MediaTypeOptions.Images, // Allow only images
+      allowsMultipleSelection: true, // Allow multiple selections
       quality: 0.5, // Reduce image quality for faster uploads
     });
 
@@ -51,8 +55,11 @@ const CreatePostScreen = () => {
         const response = await fetch(image.uri);
         const blob = await response.blob();
 
+        // Generate a unique filename using a timestamp
+        const filename = `forumPosts/${Date.now()}_${image.fileName || "image"}`;
+
         // Create a reference to the Firebase Storage path
-        const storageRef = ref(storage, `forumPosts/${Date.now()}_${image.fileName || "image"}`);
+        const storageRef = ref(storage, filename);
 
         // Upload the file to Firebase Storage
         await uploadBytes(storageRef, blob);
