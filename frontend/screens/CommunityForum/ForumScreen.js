@@ -1,13 +1,27 @@
 import React, { useState, useEffect } from "react";
 import {
-  View, Text, FlatList, TouchableOpacity, ActivityIndicator,
-  StyleSheet, Button, Alert
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+  Button,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
-  collection, query, orderBy, onSnapshot, doc, updateDoc, increment
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  doc,
+  updateDoc,
+  increment,
+  arrayUnion,
+  getDoc,
 } from "firebase/firestore";
-import { db } from "../../config/firebaseConfig";
+import { db, auth } from "../../config/firebaseConfig";
 
 const ForumScreen = () => {
   const [posts, setPosts] = useState([]);
@@ -28,8 +42,29 @@ const ForumScreen = () => {
   // Handle post like
   const handleLike = async (postId) => {
     try {
+      const user = auth.currentUser;
+      if (!user) {
+        Alert.alert("Error", "You must be logged in to like a post.");
+        return;
+      }
+
       const postRef = doc(db, "forumPosts", postId);
-      await updateDoc(postRef, { likes: increment(1) });
+      const postSnapshot = await getDoc(postRef);
+      const postData = postSnapshot.data();
+
+      // Check if the user has already liked the post
+      if (postData.likedBy && postData.likedBy.includes(user.uid)) {
+        Alert.alert("Error", "You have already liked this post.");
+        return;
+      }
+
+      // Update the likes and likedBy array
+      await updateDoc(postRef, {
+        likes: increment(1),
+        likedBy: arrayUnion(user.uid), // Add the user's ID to the likedBy array
+      });
+
+      console.log("Post liked successfully!");
     } catch (error) {
       console.error("Error liking post:", error);
       Alert.alert("Error", "Failed to like the post.");
@@ -83,10 +118,18 @@ const ForumScreen = () => {
               <Text style={styles.timestamp}>
                 {item.timestamp ? new Date(item.timestamp.seconds * 1000).toLocaleString() : "N/A"}
               </Text>
+
+              {/* Display the number of likes */}
+              <TouchableOpacity style={styles.likeButton} onPress={() => handleLike(item.id)}>
+                <Text style={styles.likeText}>👍 {item.likes || 0}</Text>
+              </TouchableOpacity>
+
+              {/* Display the number of comments */}
+              <Text style={styles.commentCount}>
+                Comments: {item.commentCount || 0}
+              </Text>
+
               <View style={styles.interactionContainer}>
-                <TouchableOpacity style={styles.likeButton} onPress={() => handleLike(item.id)}>
-                  <Text style={styles.likeText}>👍 {item.likes || 0}</Text>
-                </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.commentButton}
                   onPress={() => navigateToPostDetail(item.id, item.content, item.username)}
@@ -111,9 +154,10 @@ const styles = StyleSheet.create({
   feeling: { marginLeft: 5, color: "#555", fontSize: 14, fontStyle: "bold" },
   content: { marginTop: 5, color: "#555" },
   timestamp: { marginTop: 5, fontSize: 12, color: "gray" },
-  interactionContainer: { flexDirection: "row", marginTop: 10 },
   likeButton: { padding: 5, backgroundColor: "#eee", borderRadius: 5, marginRight: 10 },
   likeText: { fontSize: 14 },
+  commentCount: { marginTop: 5, fontSize: 14, color: "#555" },
+  interactionContainer: { flexDirection: "row", marginTop: 10 },
   commentButton: { padding: 5, backgroundColor: "#eee", borderRadius: 5 },
   commentText: { fontSize: 14 },
 });
