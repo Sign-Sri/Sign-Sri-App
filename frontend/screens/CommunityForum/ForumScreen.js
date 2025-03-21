@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { 
   View, Text, FlatList, TouchableOpacity, ActivityIndicator, 
-  StyleSheet, Button, Alert, Image, TextInput, Modal 
+  StyleSheet, Button, Alert, Image 
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { 
@@ -9,17 +9,9 @@ import {
 } from "firebase/firestore";
 import { db } from "../../config/firebaseConfig";
 
-const predefinedFeelings = [
-  "😊 Happy", "🎉 Celebrate", "😞 Disappointment", 
-  "❤️ Love", "😡 Angry", "😢 Sad", "🎂 Birthday", "Other+"
-];
-
 const ForumScreen = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [customFeeling, setCustomFeeling] = useState("");
-  const [selectedFeeling, setSelectedFeeling] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const navigation = useNavigation();
 
   // Fetch posts from Firebase
@@ -44,21 +36,9 @@ const ForumScreen = () => {
     }
   };
 
-  // Handle custom feeling submission
-  const handleCustomFeeling = () => {
-    if (customFeeling.trim()) {
-      setSelectedFeeling(customFeeling);
-      setIsModalVisible(false);
-    }
-  };
-
   // Navigate to CreatePost screen
   const navigateToCreatePost = () => {
-    if (selectedFeeling) {
-      navigation.navigate("CreatePost", { feeling: selectedFeeling });
-    } else {
-      Alert.alert("Error", "Please select a feeling before creating a post.");
-    }
+    navigation.navigate("CreatePost");
   };
 
   return (
@@ -88,8 +68,11 @@ const ForumScreen = () => {
                 <Text style={styles.username}>
                   {item.username || `User: ${item.userId || "Unknown"}`}
                 </Text>
-                {item.feeling && <Text style={styles.feeling}>{item.feeling}</Text>}
               </View>
+              {/* Display the feeling if it exists */}
+              {item.feeling && (
+                <Text style={styles.feeling}>Feeling {item.feeling}</Text>
+              )}
               <Text style={styles.content}>{item.content || "No content available"}</Text>
               <Text style={styles.timestamp}>
                 {item.timestamp ? new Date(item.timestamp.seconds * 1000).toLocaleString() : "N/A"}
@@ -101,20 +84,6 @@ const ForumScreen = () => {
           )}
         />
       )}
-
-      {/* Modal for entering a custom feeling */}
-      <Modal visible={isModalVisible} transparent={true} animationType="slide">
-        <View style={styles.modalContainer}>
-          <Text>Enter your custom feeling:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Feeling..."
-            value={customFeeling}
-            onChangeText={setCustomFeeling}
-          />
-          <Button title="Submit" onPress={handleCustomFeeling} />
-        </View>
-      </Modal>
     </View>
   );
 };
@@ -126,13 +95,11 @@ const styles = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", marginBottom: 5 },
   profilePic: { width: 40, height: 40, borderRadius: 20, marginRight: 10 },
   username: { fontWeight: "bold", color: "#333" },
-  feeling: { marginLeft: 5, color: "#555", fontSize: 14 },
+  feeling: { marginLeft: 5, color: "#555", fontSize: 14, fontStyle: "Bold" }, // Style for feeling text
   content: { marginTop: 5, color: "#555" },
   timestamp: { marginTop: 5, fontSize: 12, color: "gray" },
   likeButton: { padding: 5, marginTop: 5, backgroundColor: "#eee", borderRadius: 5 },
   likeText: { fontSize: 14 },
-  modalContainer: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.5)" },
-  input: { backgroundColor: "#fff", padding: 10, margin: 20, width: "80%", borderRadius: 5 },
 });
 
 export default ForumScreen;
