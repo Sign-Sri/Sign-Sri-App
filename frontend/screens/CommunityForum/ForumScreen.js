@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { 
-  View, Text, FlatList, TouchableOpacity, ActivityIndicator, 
-  StyleSheet, Button, Alert, Image 
+import {
+  View, Text, FlatList, TouchableOpacity, ActivityIndicator,
+  StyleSheet, Button, Alert, Image, ScrollView
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { 
-  collection, query, orderBy, onSnapshot, doc, updateDoc, increment 
+import {
+  collection, query, orderBy, onSnapshot, doc, updateDoc, increment
 } from "firebase/firestore";
 import { db } from "../../config/firebaseConfig";
 
@@ -43,10 +43,10 @@ const ForumScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Button 
-        title="Create Post" 
-        onPress={navigateToCreatePost} 
-        style={styles.createPostButton} 
+      <Button
+        title="Create Post"
+        onPress={navigateToCreatePost}
+        style={styles.createPostButton}
       />
 
       {loading ? (
@@ -61,9 +61,9 @@ const ForumScreen = () => {
               onPress={() => navigation.navigate("PostDetail", { postId: item.id })}
             >
               <View style={styles.header}>
-                <Image 
-                  source={{ uri: item.photoURL || "https://example.com/default-profile.png" }} 
-                  style={styles.profilePic} 
+                <Image
+                  source={{ uri: item.photoURL || "https://example.com/default-profile.png" }}
+                  style={styles.profilePic}
                 />
                 <Text style={styles.username}>
                   {item.username || `User: ${item.userId || "Unknown"}`}
@@ -74,6 +74,20 @@ const ForumScreen = () => {
                 <Text style={styles.feeling}>Feeling {item.feeling}</Text>
               )}
               <Text style={styles.content}>{item.content || "No content available"}</Text>
+
+              {/* Display images if they exist */}
+              {item.images && item.images.length > 0 && (
+                <ScrollView horizontal style={styles.imageContainer}>
+                  {item.images.map((imageUrl, index) => (
+                    <Image
+                      key={index}
+                      source={{ uri: imageUrl }}
+                      style={styles.image}
+                    />
+                  ))}
+                </ScrollView>
+              )}
+
               <Text style={styles.timestamp}>
                 {item.timestamp ? new Date(item.timestamp.seconds * 1000).toLocaleString() : "N/A"}
               </Text>
@@ -95,11 +109,21 @@ const styles = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", marginBottom: 5 },
   profilePic: { width: 40, height: 40, borderRadius: 20, marginRight: 10 },
   username: { fontWeight: "bold", color: "#333" },
-  feeling: { marginLeft: 5, color: "#555", fontSize: 14, fontStyle: "Bold" }, // Style for feeling text
+  feeling: { marginLeft: 5, color: "#555", fontSize: 14, fontStyle: "bold" }, // Style for feeling text
   content: { marginTop: 5, color: "#555" },
   timestamp: { marginTop: 5, fontSize: 12, color: "gray" },
   likeButton: { padding: 5, marginTop: 5, backgroundColor: "#eee", borderRadius: 5 },
   likeText: { fontSize: 14 },
+  imageContainer: {
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    marginRight: 10,
+  },
 });
 
 export default ForumScreen;
