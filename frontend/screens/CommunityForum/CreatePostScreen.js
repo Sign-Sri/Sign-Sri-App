@@ -6,7 +6,7 @@ import { Picker } from "@react-native-picker/picker"; // Import the Picker
 import { useNavigation } from "@react-navigation/native";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { auth, db } from "../../config/firebaseConfig";
+import { auth, db, storage } from "../../config/firebaseConfig";
 import * as ImagePicker from "expo-image-picker"; // For image selection
 
 const predefinedFeelings = [
@@ -22,7 +22,6 @@ const CreatePostScreen = () => {
   const [images, setImages] = useState([]); // State to store selected images
   const [uploading, setUploading] = useState(false); // State to track image upload progress
   const navigation = useNavigation();
-  const storage = getStorage(); // Firebase Storage instance
 
   // Function to handle image selection
   const pickImage = async () => {
@@ -33,7 +32,7 @@ const CreatePostScreen = () => {
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaType.Images,
+      mediaTypes: ImagePicker.MediaType.Images, // Use MediaType instead of MediaTypeOptions
       allowsMultipleSelection: true, // Allow multiple image selection
       quality: 0.5, // Reduce image quality for faster uploads
     });
@@ -47,12 +46,18 @@ const CreatePostScreen = () => {
   const uploadImages = async () => {
     const imageUrls = [];
     for (const image of images) {
-      const response = await fetch(image.uri);
-      const blob = await response.blob();
-      const storageRef = ref(storage, `forumPosts/${Date.now()}_${image.fileName}`);
-
       try {
+        // Fetch the image file
+        const response = await fetch(image.uri);
+        const blob = await response.blob();
+
+        // Create a reference to the Firebase Storage path
+        const storageRef = ref(storage, `forumPosts/${Date.now()}_${image.fileName || "image"}`);
+
+        // Upload the file to Firebase Storage
         await uploadBytes(storageRef, blob);
+
+        // Get the download URL of the uploaded file
         const downloadURL = await getDownloadURL(storageRef);
         imageUrls.push(downloadURL);
       } catch (error) {
@@ -128,7 +133,6 @@ const CreatePostScreen = () => {
 
       {/* Dropdown for feelings */}
       <View style={styles.dropdownContainer}>
-        
         <Picker
           selectedValue={selectedFeeling}
           onValueChange={(itemValue) => {
@@ -157,7 +161,7 @@ const CreatePostScreen = () => {
 
       {/* Image upload section */}
       <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
-        <Text style={styles.buttonText}>Add Images</Text>
+        <Text style={styles.buttonText}>Add Image </Text>
       </TouchableOpacity>
 
       {/* Display selected images */}
