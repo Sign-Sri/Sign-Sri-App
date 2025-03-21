@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   View, Text, FlatList, TouchableOpacity, ActivityIndicator,
-  StyleSheet, Button, Alert, Image, ScrollView
+  StyleSheet, Button, Alert
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -41,6 +41,15 @@ const ForumScreen = () => {
     navigation.navigate("CreatePost");
   };
 
+  // Navigate to PostDetail screen
+  const navigateToPostDetail = (postId, postContent, postUsername) => {
+    navigation.navigate("PostDetail", {
+      postId,
+      postContent,
+      postUsername,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Button
@@ -58,13 +67,9 @@ const ForumScreen = () => {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.post}
-              onPress={() => navigation.navigate("PostDetail", { postId: item.id })}
+              onPress={() => navigateToPostDetail(item.id, item.content, item.username)}
             >
               <View style={styles.header}>
-                <Image
-                  source={{ uri: item.photoURL || "https://example.com/default-profile.png" }}
-                  style={styles.profilePic}
-                />
                 <Text style={styles.username}>
                   {item.username || `User: ${item.userId || "Unknown"}`}
                 </Text>
@@ -75,25 +80,20 @@ const ForumScreen = () => {
               )}
               <Text style={styles.content}>{item.content || "No content available"}</Text>
 
-              {/* Display images if they exist */}
-              {item.images && item.images.length > 0 && (
-                <ScrollView horizontal style={styles.imageContainer}>
-                  {item.images.map((imageUrl, index) => (
-                    <Image
-                      key={index}
-                      source={{ uri: imageUrl }}
-                      style={styles.image}
-                    />
-                  ))}
-                </ScrollView>
-              )}
-
               <Text style={styles.timestamp}>
                 {item.timestamp ? new Date(item.timestamp.seconds * 1000).toLocaleString() : "N/A"}
               </Text>
-              <TouchableOpacity style={styles.likeButton} onPress={() => handleLike(item.id)}>
-                <Text style={styles.likeText}>👍 {item.likes || 0}</Text>
-              </TouchableOpacity>
+              <View style={styles.interactionContainer}>
+                <TouchableOpacity style={styles.likeButton} onPress={() => handleLike(item.id)}>
+                  <Text style={styles.likeText}>👍 {item.likes || 0}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.commentButton}
+                  onPress={() => navigateToPostDetail(item.id, item.content, item.username)}
+                >
+                  <Text style={styles.commentText}>💬 {item.commentCount || 0}</Text>
+                </TouchableOpacity>
+              </View>
             </TouchableOpacity>
           )}
         />
@@ -107,23 +107,15 @@ const styles = StyleSheet.create({
   createPostButton: { backgroundColor: "blue", padding: 10, borderRadius: 5, marginBottom: 10 },
   post: { backgroundColor: "#fff", padding: 15, borderRadius: 8, marginBottom: 10, elevation: 2 },
   header: { flexDirection: "row", alignItems: "center", marginBottom: 5 },
-  profilePic: { width: 40, height: 40, borderRadius: 20, marginRight: 10 },
   username: { fontWeight: "bold", color: "#333" },
-  feeling: { marginLeft: 5, color: "#555", fontSize: 14, fontStyle: "bold" }, // Style for feeling text
+  feeling: { marginLeft: 5, color: "#555", fontSize: 14, fontStyle: "bold" },
   content: { marginTop: 5, color: "#555" },
   timestamp: { marginTop: 5, fontSize: 12, color: "gray" },
-  likeButton: { padding: 5, marginTop: 5, backgroundColor: "#eee", borderRadius: 5 },
+  interactionContainer: { flexDirection: "row", marginTop: 10 },
+  likeButton: { padding: 5, backgroundColor: "#eee", borderRadius: 5, marginRight: 10 },
   likeText: { fontSize: 14 },
-  imageContainer: {
-    flexDirection: "row",
-    marginTop: 10,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-    marginRight: 10,
-  },
+  commentButton: { padding: 5, backgroundColor: "#eee", borderRadius: 5 },
+  commentText: { fontSize: 14 },
 });
 
 export default ForumScreen;
