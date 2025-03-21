@@ -10,6 +10,7 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/MaterialIcons"; // Import the icon library
 import {
   collection,
   query,
@@ -20,6 +21,8 @@ import {
   increment,
   arrayUnion,
   getDoc,
+  addDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db, auth } from "../../config/firebaseConfig";
 
@@ -68,6 +71,83 @@ const ForumScreen = () => {
     } catch (error) {
       console.error("Error liking post:", error);
       Alert.alert("Error", "Failed to like the post.");
+    }
+  };
+
+  // Handle sharing or resharing a post
+  const handleShareOrReshare = async (postId, postContent, postUsername) => {
+    Alert.alert(
+      "Share or Reshare",
+      "Choose an option:",
+      [
+        {
+          text: "Share",
+          onPress: () => handleSharePost(postId),
+        },
+        {
+          text: "Reshare",
+          onPress: () => handleResharePost(postId, postContent, postUsername),
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  // Handle sharing a post (generate a shareable link)
+  const handleSharePost = async (postId) => {
+    try {
+      // Generate a shareable link
+      const shareableLink = `https://yourapp.com/posts/${postId}`; // Replace with your app's domain
+
+      // Use React Native's Share API to share the link
+      await Share.share({
+        message: `Check out this post: ${shareableLink}`,
+        title: "Share Post",
+      });
+
+      console.log("Post shared successfully!");
+    } catch (error) {
+      console.error("Error sharing post:", error);
+      Alert.alert("Error", "Failed to share the post.");
+    }
+  };
+
+  // Handle resharing a post
+  const handleResharePost = async (postId, postContent, postUsername) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        Alert.alert("Error", "You must be logged in to reshare a post.");
+        return;
+      }
+
+      // Create a new post with a reference to the original post
+      await addDoc(collection(db, "forumPosts"), {
+        userId: user.uid,
+        username: user.displayName || "Anonymous",
+        content: `Reshared: ${postContent}`,
+        originalPostId: postId, // Reference to the original post
+        timestamp: serverTimestamp(),
+        likes: 0,
+        likedBy: [],
+        commentCount: 0,
+      });
+
+      // Increment the reshares count for the original post
+      const postRef = doc(db, "forumPosts", postId);
+      await updateDoc(postRef, {
+        reshares: increment(1),
+      });
+
+      console.log("Post reshared successfully!");
+      Alert.alert("Success", "Post reshared successfully!");
+    } catch (error) {
+      console.error("Error resharing post:", error);
+      Alert.alert("Error", "Failed to reshare the post.");
     }
   };
 
@@ -129,6 +209,19 @@ const ForumScreen = () => {
                 Comments: {item.commentCount || 0}
               </Text>
 
+              {/* Display the number of reshares */}
+              <Text style={styles.reshareCount}>
+                Reshares: {item.reshares || 0}
+              </Text>
+
+              {/* Share/Reshare button with an icon */}
+              <TouchableOpacity
+                style={styles.shareButton}
+                onPress={() => handleShareOrReshare(item.id, item.content, item.username)}
+              >
+                <Icon name="share" size={24} color="blue" />
+              </TouchableOpacity>
+
               <View style={styles.interactionContainer}>
                 <TouchableOpacity
                   style={styles.commentButton}
@@ -157,9 +250,11 @@ const styles = StyleSheet.create({
   likeButton: { padding: 5, backgroundColor: "#eee", borderRadius: 5, marginRight: 10 },
   likeText: { fontSize: 14 },
   commentCount: { marginTop: 5, fontSize: 14, color: "#555" },
+  reshareCount: { marginTop: 5, fontSize: 14, color: "#555" },
   interactionContainer: { flexDirection: "row", marginTop: 10 },
   commentButton: { padding: 5, backgroundColor: "#eee", borderRadius: 5 },
   commentText: { fontSize: 14 },
+  shareButton: { padding: 5, marginTop: 5 },
 });
 
 export default ForumScreen;
