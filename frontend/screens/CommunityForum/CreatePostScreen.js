@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, Modal,  KeyboardAvoidingView, Platform
+  View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, Modal, KeyboardAvoidingView, Platform
 } from "react-native";
 import { Picker } from "@react-native-picker/picker"; // Import the Picker
 import { useNavigation } from "@react-navigation/native";
@@ -9,7 +9,7 @@ import { auth, db } from "../../config/firebaseConfig";
 
 const predefinedFeelings = [
   "😊 Happy", "🎉 Celebrate", "😞 Disappointment",
-  "❤️ Love", "😡 Angry", "😢 Sad", "🎂 Birthday", "Other+"
+  "❤️ Love", "😡 Angry", "😢 Sad", "🎂 Birthday", "Other +"
 ];
 
 const CreatePostScreen = () => {
@@ -34,7 +34,7 @@ const CreatePostScreen = () => {
       }
 
       // Determine the feeling to save (selected or custom)
-      const feelingToSave = selectedFeeling === "Other+" ? customFeeling : selectedFeeling;
+      const feelingToSave = selectedFeeling === "Other +" ? customFeeling : selectedFeeling;
 
       await addDoc(collection(db, "forumPosts"), {
         userId: user.uid,
@@ -62,11 +62,14 @@ const CreatePostScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       {/* Post content input */}
       <TextInput
         style={styles.input}
-        placeholder="Write your post..."
+        placeholder="What's on your mind?"
         multiline
         value={content}
         onChangeText={setContent}
@@ -74,11 +77,11 @@ const CreatePostScreen = () => {
 
       {/* Dropdown for feelings */}
       <View style={styles.dropdownContainer}>
-        
+        <Text style={styles.label}>Select a feeling:</Text>
         <Picker
           selectedValue={selectedFeeling}
           onValueChange={(itemValue) => {
-            if (itemValue === "Other+") {
+            if (itemValue === "Other +") {
               setIsModalVisible(true); // Open modal for custom feeling
             } else {
               setSelectedFeeling(itemValue); // Set predefined feeling
@@ -95,7 +98,7 @@ const CreatePostScreen = () => {
       </View>
 
       {/* Display selected feeling */}
-      {selectedFeeling && selectedFeeling !== "Other+" && (
+      {selectedFeeling && selectedFeeling !== "Other +" && (
         <Text style={styles.selectedFeeling}>
           Selected Feeling: {selectedFeeling}
         </Text>
@@ -109,15 +112,15 @@ const CreatePostScreen = () => {
       {/* Modal for custom feeling input */}
       <Modal visible={isModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
-          <Text style={styles.modelTitle}>Enter your feeling:</Text>
+          <Text style={styles.modalTitle}>Enter your feeling:</Text>
           <TextInput
-            style={styles.input}
+            style={styles.modalInput}
             placeholder="Type your feeling..."
             value={customFeeling}
             onChangeText={setCustomFeeling}
             autoFocus={true}
           />
-           <View style={styles.modalButtonContainer}>
+          <View style={styles.modalButtonContainer}>
             <TouchableOpacity style={styles.modalButton} onPress={handleCustomFeeling}>
               <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
@@ -125,23 +128,75 @@ const CreatePostScreen = () => {
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
-          </View>
+        </View>
       </Modal>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#fff" },
-  input: { borderWidth: 1, borderColor: "#ccc", padding: 10, borderRadius: 10, height: 100, marginBottom: 20, fontSize: 16 },
-  dropdownContainer: { marginBottom: 10 },
-  label: { fontSize: 16, marginBottom: 5 },
-  dropdown: { backgroundColor: "#f5f5f5", borderRadius: 5 },
-  selectedFeeling: { fontSize: 16, color: "#555", marginBottom: 10 },
-  postButton: { backgroundColor: "blue", padding: 10, borderRadius: 5 },
-  buttonText: { color: "white", textAlign: "center", fontSize: 16 },
-  modalContainer: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.5)" },
-  modalButton: { backgroundColor: "blue", padding: 10, margin: 5, borderRadius: 5 },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    borderRadius: 10,
+    height: 100,
+    marginBottom: 20,
+    fontSize: 16,
+  },
+  dropdownContainer: { marginBottom: 20 },
+  label: { fontSize: 16, marginBottom: 5, color: "#333" },
+  dropdown: { backgroundColor: "#f5f5f5", borderRadius: 10 },
+  selectedFeeling: {
+    fontSize: 16,
+    color: "#555",
+    marginBottom: 20,
+    fontStyle: "italic",
+  },
+  postButton: {
+    backgroundColor: "blue",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#fff",
+  },
+  modalInput: {
+    backgroundColor: "#fff",
+    width: "80%",
+    padding: 15,
+    borderRadius: 10,
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  modalButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "80%",
+  },
+  modalButton: {
+    backgroundColor: "blue",
+    padding: 10,
+    borderRadius: 10,
+    width: "45%",
+    alignItems: "center",
+  },
 });
 
 export default CreatePostScreen;
