@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import {
   View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, Modal, ScrollView, Image
 } from "react-native";
@@ -35,16 +35,30 @@ const CreatePostScreen = () => {
 
   // Function to handle image selection
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaType.Images, // Use MediaType instead of MediaTypeOptions
-      allowsMultipleSelection: true, // Allow multiple selections
-      quality: 0.5, // Reduce image quality for faster uploads
-    });
+    console.log("Add Image Button Pressed");
+    try{
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaType.Images, // Use MediaType instead of MediaTypeOptions
+        allowsMultipleSelection: true, // Allow multiple selections
+        quality: 0.5, // Reduce image quality for faster uploads
+      });
 
-    if (!result.canceled) {
-      setImages([...images, ...result.assets]); // Add selected images to the state
+      console.log("Image picker result:", result);
+
+      if (!result.canceled) {
+        setImages([...images, ...result.assets]); // Add selected images to the state
+        console.log("Selected Images.", result.assets);
+      }
+    } catch (error) {
+      console.error("Error picking images:", error);
+      Alert.alert("Error", "Failed to pick images.");
     }
   };
+
+  //Debugging: Log images state when it changes
+  useEffect(() => {
+    console.log("Images state updated: ", images);
+  }, [images]);
 
   // Function to upload images to Firebase Storage
   const uploadImages = async () => {
