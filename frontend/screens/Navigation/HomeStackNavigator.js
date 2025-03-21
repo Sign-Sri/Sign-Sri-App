@@ -47,7 +47,7 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="Sign Language School" component={SchoolScreen} />
       <Stack.Screen name="Community Forum" component={ForumScreen} />
       <Stack.Screen name="CreatePost" component={CreatePostScreen} />
-      <Stack.Screen name="Post Detail" component={PostDetailScreen} />
+      <Stack.Screen name="PostDetail" component={PostDetailScreen} />
       
       <Stack.Screen name="Lesson Screen" component={LessonScreen} />
       <Stack.Screen name="Progress" component={ProgressScreen} />
