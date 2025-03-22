@@ -584,8 +584,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color:"#ffffff",
   },
-  input: { borderWidth: 3, borderColor: "#182a38", padding: 10, borderRadius: 20, marginTop: 10,  },
-  commentButton: { padding: 10, marginTop: 10, borderRadius: 20, backgroundColor: "#79DD09" },
+  input: { borderWidth: 3, borderColor: "#182a38", padding: 10, borderRadius: 50, marginBottom:30 },
+  commentButton: { padding: 10,marginBottom:50, borderRadius: 20, backgroundColor: "#79DD09" },
   buttonText: { color: "white", textAlign: "center", fontSize: 18, fontWeight: "bold" },
 });
 

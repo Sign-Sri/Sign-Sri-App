@@ -402,7 +402,7 @@ const styles = StyleSheet.create({
   createPostButton: {
     backgroundColor: "#35d0fe",
     padding: 15,
-    borderRadius: 20,
+    borderRadius: 50,
     marginBottom: 20,
     alignItems: "center",
   },
