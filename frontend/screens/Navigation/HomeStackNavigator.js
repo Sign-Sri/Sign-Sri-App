@@ -36,6 +36,7 @@ const HomeStackNavigator = () => {
         component={MenuScreen} 
         options={{ 
           title: 'Home',
+          headerLeft: () => null, // Hide the back button in the header
         }} 
       />
       <Stack.Screen name="Sign To Text" component={SignToTextScreen} />
@@ -56,7 +57,7 @@ const HomeStackNavigator = () => {
         component={QuizScreen} 
         options={{
           gestureEnabled: false, // Disable swipe back gesture 
-          headerLeft: () => null, // Hide the back button in the header
+          
         }}
       />
     </Stack.Navigator>

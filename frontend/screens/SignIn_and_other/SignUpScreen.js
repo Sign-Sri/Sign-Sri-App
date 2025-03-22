@@ -1,11 +1,10 @@
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import React, { useContext, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { auth, db } from '../../config/firebaseConfig';
-import { setDoc, doc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { UserDetailContext } from '../../Context/UserDetailContext';
-import { Ionicons } from '@expo/vector-icons'; // Import eye icon
+import { Ionicons } from '@expo/vector-icons';
 
 export default function SignUpScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');
@@ -14,158 +13,183 @@ export default function SignUpScreen({ navigation }) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const { userDetail, setUserDetail } = useContext(UserDetailContext);
-
-  // State for hiding/showing password
+  const { setUserDetail } = useContext(UserDetailContext);
+  const [loading, setLoading] = useState(false);
   const [secureTextPassword, setSecureTextPassword] = useState(true);
   const [secureTextConfirm, setSecureTextConfirm] = useState(true);
 
-  // Error handling function
   const validateInputs = () => {
     if (!firstName || !lastName || !email || !phoneNumber || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields.');
+      Alert.alert('Error', 'Please fill in all fields');
       return false;
     }
 
     if (!/^\S+@\S+\.\S+$/.test(email)) {
-      Alert.alert('Error', 'Invalid email format.');
+      Alert.alert('Error', 'Invalid email format');
       return false;
     }
 
     if (phoneNumber.length < 10) {
-      Alert.alert('Error', 'Phone number must be at least 10 digits.');
+      Alert.alert('Error', 'Phone number must be at least 10 digits');
       return false;
     }
 
     if (password.length < 8) {
-      Alert.alert('Error', 'Password must be at least 8 characters.');
+      Alert.alert('Error', 'Password must be at least 8 characters');
       return false;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match.');
+      Alert.alert('Error', 'Passwords do not match');
       return false;
     }
 
     return true;
   };
 
-  const CreateNewAccount = () => {
-    if (!validateInputs()) {
-      return; // Stop function if validation fails
+  const handleSignUp = async () => {
+    if (!validateInputs()) return;
+    setLoading(true);
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await sendEmailVerification(user);
+      await saveUserData(user);
+      await auth.signOut();
+
+      Alert.alert(
+        'Verify Email',
+        'A verification email has been sent. Please verify your email before signing in.',
+        [{ text: 'OK', onPress: () => navigation.replace('SignIn') }]
+      );
+    } catch (error) {
+      handleSignUpError(error);
+    } finally {
+      setLoading(false);
     }
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (resp) => {
-        const user = resp.user;
-        console.log(user);
-        await SaveUser(user);
-        Alert.alert('Success', 'Account created successfully!');
-        navigation.replace('SignIn'); // Navigate to sign-in screen
-      })
-      .catch((error) => {
-        let errorMessage = 'Something went wrong. Please try again.';
-
-        // Handling Firebase-specific errors
-        if (error.code === 'auth/email-already-in-use') {
-          errorMessage = 'This email is already in use.';
-        } else if (error.code === 'auth/invalid-email') {
-          errorMessage = 'Invalid email format.';
-        } else if (error.code === 'auth/weak-password') {
-          errorMessage = 'Password is too weak. Use at least 8 characters.';
-        }
-
-        Alert.alert('Error', errorMessage);
-      });
   };
 
-  const SaveUser = async (user) => {
-    const data = {
+  const saveUserData = async (user) => {
+    const userData = {
       firstName,
       lastName,
       email,
       phoneNumber,
       member: false,
       uid: user.uid,
+      emailVerified: user.emailVerified
     };
-    await setDoc(doc(db, 'users', user.uid), data);
-    setUserDetail(data);
+    
+    await setDoc(doc(db, 'users', user.uid), userData);
+    setUserDetail(userData);
+  };
+
+  const handleSignUpError = (error) => {
+    let message = 'Registration failed. Please try again.';
+    switch (error.code) {
+      case 'auth/email-already-in-use':
+        message = 'Email already in use';
+        break;
+      case 'auth/invalid-email':
+        message = 'Invalid email address';
+        break;
+      case 'auth/weak-password':
+        message = 'Password should be at least 8 characters';
+        break;
+    }
+    Alert.alert('Error', message);
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Icon name="arrow-back" size={24} color="#000000" />
-      </TouchableOpacity>
-      <Text style={styles.title}>Sign Up</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Create Account</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="First Name"
-        value={firstName}
-        onChangeText={setFirstName}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Last Name"
-        value={lastName}
-        onChangeText={setLastName}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Email Address"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Phone Number"
-        value={phoneNumber}
-        onChangeText={setPhoneNumber}
-        keyboardType="phone-pad"
-      />
-
-      {/* Password Field */}
-      <View style={styles.passwordContainer}>
+      <View style={styles.inputContainer}>
         <TextInput
-          style={styles.passwordInput}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={secureTextPassword}
+          style={styles.input}
+          placeholder="First Name"
+          value={firstName}
+          onChangeText={setFirstName}
         />
-        <TouchableOpacity onPress={() => setSecureTextPassword(!secureTextPassword)} style={styles.eyeIcon}>
-          <Ionicons name={secureTextPassword ? 'eye-off' : 'eye'} size={24} color="gray" />
-        </TouchableOpacity>
+
+        <TextInput
+          style={styles.input}
+          placeholder="Last Name"
+          value={lastName}
+          onChangeText={setLastName}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Email Address"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Phone Number"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+          keyboardType="phone-pad"
+        />
+
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={secureTextPassword}
+          />
+          <TouchableOpacity
+            onPress={() => setSecureTextPassword(!secureTextPassword)}
+            style={styles.eyeIcon}
+          >
+            <Ionicons name={secureTextPassword ? 'eye-off' : 'eye'} size={24} color="gray" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry={secureTextConfirm}
+          />
+          <TouchableOpacity
+            onPress={() => setSecureTextConfirm(!secureTextConfirm)}
+            style={styles.eyeIcon}
+          >
+            <Ionicons name={secureTextConfirm ? 'eye-off' : 'eye'} size={24} color="gray" />
+          </TouchableOpacity>
+        </View>
       </View>
 
-      {/* Confirm Password Field */}
-      <View style={styles.passwordContainer}>
-        <TextInput
-          style={styles.passwordInput}
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry={secureTextConfirm}
-        />
-        <TouchableOpacity onPress={() => setSecureTextConfirm(!secureTextConfirm)} style={styles.eyeIcon}>
-          <Icon name={secureTextConfirm ? 'eye-off' : 'eye'} size={24} color="gray" />
+      <TouchableOpacity
+        style={styles.signUpButton}
+        onPress={handleSignUp}
+        disabled={loading}
+      >
+        {loading ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Sign Up</Text>
+        )}
+      </TouchableOpacity>
+
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>Already have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+          <Text style={styles.signInText}>Sign In</Text>
         </TouchableOpacity>
       </View>
-
-      <Text style={styles.termsText}>
-        By proceeding, you agree to our Terms & Privacy Policy.
-      </Text>
-
-      <TouchableOpacity style={styles.signUpButton} onPress={CreateNewAccount}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -174,17 +198,16 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: '#FFFFFF',
-    marginTop: 32,
-  },
-  backButton: {
-    alignSelf: 'flex-start',
-    marginBottom: 20,
+    marginTop: 50,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#1E3D59',
-    marginBottom: 32,
+    marginBottom: 25,
+  },
+  inputContainer: {
+    marginBottom: 24,
   },
   input: {
     height: 56,
@@ -195,24 +218,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: '#E0E0E0',
-  },
-  termsText: {
-    fontSize: 14,
-    color: '#666666',
-    textAlign: 'center',
-    marginVertical: 24,
-  },
-  signUpButton: {
-    height: 56,
-    backgroundColor: '#1E3D59',
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   passwordContainer: {
     flexDirection: 'row',
@@ -234,5 +239,33 @@ const styles = StyleSheet.create({
     padding: 12,
     position: 'absolute',
     right: 16,
+  },
+  signUpButton: {
+    height: 56,
+    backgroundColor: '#1E3D59',
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 'auto',
+    paddingVertical: 24,
+  },
+  footerText: {
+    color: '#666666',
+    fontSize: 14,
+  },
+  signInText: {
+    color: '#1E3D59',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });

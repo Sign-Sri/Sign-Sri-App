@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FAF9F6",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 50,
+    paddingTop: 10,
   },
 
   backButton: { position: "absolute", top: 40, left: 20 },
