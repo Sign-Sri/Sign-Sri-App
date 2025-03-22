@@ -302,7 +302,7 @@ const ForumScreen = () => {
       />
 
       {loading ? (
-        <ActivityIndicator size="large" color="blue" />
+        <ActivityIndicator size="large" color="#182a38" />
       ) : (
         <FlatList
           data={posts}
@@ -319,7 +319,7 @@ const ForumScreen = () => {
                     style={styles.editDeleteButton}
                     onPress={() => showEditDeleteOptions(item.id, item.content)}
                   >
-                    <Icon name="more-vertical" size={20} color="#666" />
+                    <Icon name="more-vertical" size={20} color="#ffffff"></Icon>
                   </TouchableOpacity>
                 )}
               </View>
@@ -352,10 +352,10 @@ const ForumScreen = () => {
                 >
                   <Icon
                     name="thumbs-up"
-                    size={20}
-                    color={likedPosts[item.id] ? "green" : "#666"} // Green if liked, gray if not
+                    size={26}
+                    color={likedPosts[item.id] ? "#79DD09" : "#666"} // Green if liked, gray if not
                   />
-                  <Text style={[styles.interactionText, { color: likedPosts[item.id] ? "green" : "#666" }]}>
+                  <Text style={[styles.interactionText, { color: likedPosts[item.id] ? "#79DD09" : "#666" }]}>
                     {item.likes || 0} {/* Show the like count */}
                   </Text>
                 </TouchableOpacity>
@@ -365,7 +365,7 @@ const ForumScreen = () => {
                   style={styles.interactionButton}
                   onPress={() => navigateToPostDetail(item.id, item.content, item.username)}
                 >
-                  <Icon name="message-circle" size={20} color="#666" />
+                  <Icon name="message-circle" size={26} color="#79DD09"></Icon>
                   <Text style={styles.interactionText}>{item.commentCount || 0}</Text>
                 </TouchableOpacity>
 
@@ -374,7 +374,7 @@ const ForumScreen = () => {
                   style={styles.interactionButton}
                   onPress={() => handleShareOrReshare(item.id, item.content, item.username)}
                 >
-                  <Icon name="share-2" size={20} color="#666" />
+                  <Icon name="share-2" size={26} color="#666" />
                   <Text style={styles.interactionText}>{item.reshares || 0}</Text>
                 </TouchableOpacity>
               </View>
@@ -398,19 +398,19 @@ const ForumScreen = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 10, backgroundColor: "#f5f5f5" },
-  createPostButton: { backgroundColor: "blue", padding: 10, borderRadius: 5, marginBottom: 10 },
-  post: { backgroundColor: "#fff", padding: 15, borderRadius: 8, marginBottom: 10, elevation: 2 },
+  createPostButton: { backgroundColor: "#79DD09", padding: 10, borderRadius: 20, marginBottom: 15 },
+  post: { backgroundColor: "#182a38", padding: 15, borderRadius: 8, marginBottom: 10, elevation: 2 },
   header: { flexDirection: "row", alignItems: "center", marginBottom: 5 },
-  username: { fontWeight: "bold", color: "#333", flex: 1 },
-  feeling: { marginLeft: 5, color: "#555", fontSize: 14, fontStyle: "bold" },
-  content: { marginTop: 5, color: "#555" },
+  username: { fontWeight: "bold", color: "#ffffff", flex: 1, fontSize: 18 },
+  feeling: { marginLeft: 5, color: "#35d0fe", fontSize: 16, fontStyle: "bold" },
+  content: { marginTop: 12, color: "#ffffff" },
   timestamp: { marginTop: 5, fontSize: 12, color: "gray" },
   interactionContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 10,
     borderTopWidth: 1,
-    borderTopColor: "#eee",
+    borderTopColor: "#79DD09",
     paddingTop: 10,
   },
   interactionButton: {
@@ -419,29 +419,32 @@ const styles = StyleSheet.create({
   },
   interactionText: {
     marginLeft: 5,
-    fontSize: 14,
+    fontSize: 16,
   },
   editDeleteButton: {
     padding: 5,
   },
   editInput: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#ffffff",
     borderRadius: 5,
     padding: 10,
     marginTop: 10,
     fontSize: 16,
+    backgroundColor: "#ffffff",
   },
   saveButton: {
-    backgroundColor: "blue",
+    backgroundColor: "#79DD09",
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     marginTop: 10,
     alignItems: "center",
+    
   },
   saveButtonText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
