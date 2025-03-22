@@ -83,7 +83,7 @@ const PostDetailScreen = () => {
         setLikedComments(likedCommentsData);
         setLikedReplies(likedRepliesData);
       }
-      setComment(commentsData.length);
+      setCommentCount(commentsData.length);
 
       setLoading(false);
     });
