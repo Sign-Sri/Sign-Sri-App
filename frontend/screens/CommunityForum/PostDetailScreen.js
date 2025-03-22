@@ -416,23 +416,35 @@ const PostDetailScreen = () => {
                 multiline
               />
             ) : (
-              <Text>{item.comment}</Text>
+              <Text style={styles.commentText}>{item.comment}</Text>
             )}
             <Text style={styles.commentTimestamp}>
               {item.timestamp ? new Date(item.timestamp.seconds * 1000).toLocaleString() : "N/A"}
             </Text>
 
-            {/* Like button for comments */}
-            <TouchableOpacity
-              style={styles.likeButton}
-              onPress={() => handleLike(item.id)}
-            >
-              <Icon
-                name="thumbs-up"
-                size={28}
-                color={likedComments[item.id] ? "#79DD09" : "#666"} // Green if liked, gray if not
-              />
-            </TouchableOpacity>
+            {/* Like and reply buttons in a single row */}
+            <View style={styles.actionButtons}>
+              <TouchableOpacity
+                style={styles.likeButton}
+                onPress={() => handleLike(item.id)}
+              >
+                <Icon
+                  name="thumbs-up"
+                  size={28}
+                  color={likedComments[item.id] ? "#79DD09" : "#666"} // Green if liked, gray if not
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.replyButton}
+                onPress={() => setReplyingTo(item.id)}
+              >
+                <Icon name="message-circle" size={25} color="#79DD09" />
+                {/* Display the number of replies */}
+                {item.replies && item.replies.length > 0 && (
+                  <Text style={styles.replyCountText}>{item.replies.length}</Text>
+                )}
+              </TouchableOpacity>
+            </View>
 
             {/* Display replies */}
             {item.replies && item.replies.length > 0 && (
@@ -461,7 +473,7 @@ const PostDetailScreen = () => {
                         multiline
                       />
                     ) : (
-                      <Text>{reply.reply}</Text>
+                      <Text style={styles.replyText}>{reply.reply}</Text>
                     )}
                     {/* Like button for replies */}
                     <TouchableOpacity
@@ -488,18 +500,6 @@ const PostDetailScreen = () => {
               </View>
             )}
 
-            {/* Reply button (icon with reply count) */}
-            <TouchableOpacity
-              style={styles.replyButton}
-              onPress={() => setReplyingTo(item.id)}
-            >
-              <Icon name="message-circle" size={25} color="#79DD09" />
-              {/* Display the number of replies */}
-              {item.replies && item.replies.length > 0 && (
-                <Text style={styles.replyCountText}>{item.replies.length}</Text>
-              )}
-            </TouchableOpacity>
-
             {/* Save button for editing comments */}
             {editingCommentId === item.id && (
               <TouchableOpacity
@@ -520,7 +520,9 @@ const PostDetailScreen = () => {
         value={comment}
         onChangeText={setComment}
       />
-      <TouchableOpacity style={styles.commentButton} onPress={handleAddComment}>
+      <TouchableOpacity 
+        style={styles.commentButton} onPress={handleAddComment}
+      >
         <Text style={styles.buttonText}>{replyingTo ? "Reply" : "Comment"}</Text>
       </TouchableOpacity>
     </View>
@@ -535,6 +537,7 @@ const styles = StyleSheet.create({
   commentBox: { borderBottomWidth: 1, padding: 5, marginBottom: 5, borderRadius: 20, backgroundColor: "#182a38" },
   commentHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20,}, // Updated for right-aligned icon
   commentUser: { fontWeight: "bold", color :"#ffffff" , fontSize: 20}, // Removed flex: 1 to allow space for the icon
+  commentText: { color: "#ffffff" }, // Added for white text color
   commentTimestamp: { marginTop: 5, fontSize: 12, color: "#ffffff" },
   editDeleteButton: { padding: 5,},
   editInput: {
@@ -559,19 +562,22 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
   },
-  likeButton: {
+  actionButtons: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 5,
+  },
+  likeButton: {
+    marginRight: 10,
   },
   repliesContainer: { marginLeft: 20, marginTop: 5, borderColor:"#ffffff",  },
   replyBox: { borderLeftWidth: 2, borderLeftColor: "#35d0fe", paddingLeft: 10, marginBottom: 5, },
   replyHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10, }, // Updated for right-aligned icon
   replyUser: { fontWeight: "bold", fontSize: 15, color:"#ffffff" }, // Removed flex: 1 to allow space for the icon
+  replyText: { color: "#ffffff" }, // Added for white text color
   replyButton: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 5,
   },
   replyCountText: {
     marginLeft: 5,
@@ -579,7 +585,7 @@ const styles = StyleSheet.create({
     color:"#ffffff",
   },
   input: { borderWidth: 3, borderColor: "#182a38", padding: 10, borderRadius: 20, marginTop: 10,  },
-  commentButton: { backgroundColor: "#79DD09", padding: 10, marginTop: 10, borderRadius: 20 },
+  commentButton: { padding: 10, marginTop: 10, borderRadius: 20, backgroundColor: "#79DD09" },
   buttonText: { color: "white", textAlign: "center", fontSize: 18, fontWeight: "bold" },
 });
 
