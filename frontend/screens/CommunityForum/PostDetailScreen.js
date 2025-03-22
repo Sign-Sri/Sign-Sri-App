@@ -37,7 +37,9 @@ const PostDetailScreen = () => {
   const [replyingTo, setReplyingTo] = useState(null); // Track which comment is being replied to
   const [loading, setLoading] = useState(true);
   const [editingCommentId, setEditingCommentId] = useState(null); // Track which comment is being edited
+  const [editingReplyId, setEditingReplyId] = useState(null); // Track which Reply is being replied to
   const [editedComment, setEditedComment] = useState(""); // Track edited comment content
+  const [editedReply, setEditedReply] = useState(""); // Track edited reply content 
   const [likedComments, setLikedComments] = useState({}); // Track liked comments by the current user
   const [likedReplies, setLikedReplies] = useState({}); // Track liked replies by the current user
   const[commentCount, setCommentCount] = useState(0); // Track the total number of comments 
@@ -144,6 +146,86 @@ const PostDetailScreen = () => {
       console.error("Error adding comment/reply:", error);
       Alert.alert("Error", "Failed to add comment/reply.");
     }
+  };
+
+  // Handle editing a reply 
+
+  const handleEditReply = async ( commentId, replyId) => {
+    if (!editedReply.trim()) {
+      Alert.alert("Error", "Reply cannot be empty.");
+      return;
+    }
+    try {
+      const replyRef = doc(db, "forumPosts", postId, "comments", commentId, "replies", replyId);
+      await updateDoc(replyRef, {
+        reply: editedReply, // Update the reply content
+      });
+      console.log("Reply edited successfully!");
+      Alert.alert("Success", "Reply edited successfully!");
+
+      // Reset editing state
+      setEditingReplyId(null);
+      setEditedReply("");
+    } catch (error) {
+      console.error("Error editing reply:", error);
+      Alert.alert("Error", "Failed to edit the reply.");
+    }
+  };
+  
+  // Handle deleting a reply 
+  const handleDeleteReply = async (commentId, replyId) => {
+    try {
+      //  // Show confirmation dialog
+      Alert.alert(
+        "Delete Reply",
+        "Are you sure you want to delete this reply?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Delete",
+            onPress: async () => {
+              const replyRef = doc(db, "forumPosts", postId, "comments", commentId, "replies", replyId);
+              await deleteDoc(replyRef); // Delete the reply from Firestore
+              console.log("Reply deleted successfully!");
+              Alert.alert("Success", "Reply deleted successfully!");
+            },
+          },
+        ],
+        { cancelable: true }
+      );
+    } catch (error) {
+      console.error("Error deleting reply:", error);
+      Alert.alert("Error", "Failed to delete the reply.");
+    }
+  };
+
+   // Show edit/delete options for replies
+   const showEditDeleteOptionsForReply = (commentId, replyId, replyContent) => {
+    Alert.alert(
+      "Options",
+      "Choose an action:",
+      [
+        {
+          text: "Edit",
+          onPress: () => {
+            setEditingReplyId(replyId); // Set the reply ID being edited
+            setEditedReply(replyContent); // Pre-fill the input with the current content
+          },
+        },
+        {
+          text: "Delete",
+          onPress: () => handleDeleteReply(commentId, replyId),
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   // Handle liking/unliking a comment or reply
