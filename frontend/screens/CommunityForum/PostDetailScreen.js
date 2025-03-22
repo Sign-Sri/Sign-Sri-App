@@ -387,7 +387,7 @@ const PostDetailScreen = () => {
         renderItem={({ item }) => (
           <View style={styles.commentBox}>
             <View style={styles.commentHeader}>
-              <Text style={styles.commentUser}>{item.username}:</Text>
+              <Text style={styles.commentUser}>{item.firstName}:</Text>
               {/* Edit/Delete button (only visible to the comment owner) */}
               {item.userId === auth.currentUser?.uid && (
                 <TouchableOpacity
