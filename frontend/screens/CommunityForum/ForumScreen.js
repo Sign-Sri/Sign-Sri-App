@@ -353,9 +353,9 @@ const ForumScreen = () => {
                   <Icon
                     name="thumbs-up"
                     size={26}
-                    color={likedPosts[item.id] ? "#79DD09" : "#666"} // Green if liked, gray if not
+                    color={likedPosts[item.id] ? "#79DD09" : "#ffffff"} // Green if liked, white if not
                   />
-                  <Text style={[styles.interactionText, { color: likedPosts[item.id] ? "#79DD09" : "#666" }]}>
+                  <Text style={[styles.interactionText, { color: likedPosts[item.id] ? "#79DD09" : "#ffffff" }]}>
                     {item.likes || 0} {/* Show the like count */}
                   </Text>
                 </TouchableOpacity>
@@ -365,7 +365,7 @@ const ForumScreen = () => {
                   style={styles.interactionButton}
                   onPress={() => navigateToPostDetail(item.id, item.content, item.username)}
                 >
-                  <Icon name="message-circle" size={26} color="#79DD09"></Icon>
+                  <Icon name="message-circle" size={26} color="#ffffff"></Icon>
                   <Text style={styles.interactionText}>{item.commentCount || 0}</Text>
                 </TouchableOpacity>
 
@@ -374,7 +374,7 @@ const ForumScreen = () => {
                   style={styles.interactionButton}
                   onPress={() => handleShareOrReshare(item.id, item.content, item.username)}
                 >
-                  <Icon name="share-2" size={26} color="#666" />
+                  <Icon name="share-2" size={26} color="#ffffff" />
                   <Text style={styles.interactionText}>{item.reshares || 0}</Text>
                 </TouchableOpacity>
               </View>
