@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import {
-  View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, Modal, ScrollView
+  View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, Modal, ScrollView, Image
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { auth, db } from "../../config/firebaseConfig";
+import { auth, db, storage } from "../../config/firebaseConfig"; // Import storage
+import * as ImagePicker from "expo-image-picker"; // For video upload
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // For Firebase Storage
+import Icon from "react-native-vector-icons/Feather"; // Use Feather icons
 
 const predefinedFeelings = [
   "😊 Happy", "🎉 Celebrate", "😞 Disappointment",
@@ -17,7 +20,27 @@ const CreatePostScreen = () => {
   const [selectedFeeling, setSelectedFeeling] = useState("");
   const [customFeeling, setCustomFeeling] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [videoUri, setVideoUri] = useState(null); // State for video URI
   const navigation = useNavigation();
+
+  // Function to pick a video from the device
+  const pickVideo = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Permission Denied", "Please allow access to your media library to upload videos.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setVideoUri(result.uri); // Set the video URI
+    }
+  };
 
   // Function to handle post creation using Firebase
   const handleCreatePost = async () => {
@@ -33,6 +56,16 @@ const CreatePostScreen = () => {
         return;
       }
 
+      let videoUrl = null;
+      if (videoUri) {
+        // Upload video to Firebase Storage
+        const response = await fetch(videoUri);
+        const blob = await response.blob();
+        const storageRef = ref(storage, `videos/${new Date().toISOString()}`);
+        await uploadBytes(storageRef, blob);
+        videoUrl = await getDownloadURL(storageRef);
+      }
+
       // Determine the feeling to save (selected or custom)
       const feelingToSave = selectedFeeling === "Other +" ? customFeeling : selectedFeeling;
 
@@ -41,6 +74,7 @@ const CreatePostScreen = () => {
         userId: user.uid,
         content: content,
         feeling: feelingToSave || null, // Save the feeling (or null if none)
+        videoUrl: videoUrl || null, // Save the video URL (or null if none)
         timestamp: serverTimestamp(),
       });
 
@@ -72,6 +106,17 @@ const CreatePostScreen = () => {
         value={content}
         onChangeText={setContent}
       />
+
+      {/* Video upload button */}
+      <TouchableOpacity style={styles.videoButton} onPress={pickVideo}>
+        <Icon name="video" size={20} color="#666" />
+        <Text style={styles.videoButtonText}>Upload Video</Text>
+      </TouchableOpacity>
+
+      {/* Display selected video thumbnail */}
+      {videoUri && (
+        <Image source={{ uri: videoUri }} style={styles.videoThumbnail} />
+      )}
 
       {/* Dropdown for feelings */}
       <View style={styles.dropdownContainer}>
@@ -145,8 +190,23 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 16,
   },
+  videoButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  videoButtonText: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: "#666",
+  },
+  videoThumbnail: {
+    width: "100%",
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
   dropdownContainer: { marginBottom: 20 },
-  label: { fontSize: 16, marginBottom: 5, color: "#333" },
   dropdown: { backgroundColor: "#f5f5f5", borderRadius: 10 },
   selectedFeeling: {
     fontSize: 16,
