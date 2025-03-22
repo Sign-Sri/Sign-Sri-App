@@ -39,6 +39,7 @@ const PostDetailScreen = () => {
   const [editingCommentId, setEditingCommentId] = useState(null); // Track which comment is being edited
   const [editedComment, setEditedComment] = useState(""); // Track edited comment content
   const [likedComments, setLikedComments] = useState({}); // Track liked comments by the current user
+  const [likedReplies, setLikedReplies] = useState({}); // Track liked replies by the current user
 
   // Fetch comments and their replies for the post
   useEffect(() => {
@@ -62,16 +63,23 @@ const PostDetailScreen = () => {
       );
       setComments(commentsData);
 
-      // Initialize likedComments state
+      // Initialize likedComments and likedReplies state
       const user = auth.currentUser;
       if (user) {
         const likedCommentsData = {};
+        const likedRepliesData = {};
         commentsData.forEach((comment) => {
           if (comment.likedBy && comment.likedBy.includes(user.uid)) {
             likedCommentsData[comment.id] = true; // Mark comment as liked by the user
           }
+          comment.replies.forEach((reply) => {
+            if (reply.likedBy && reply.likedBy.includes(user.uid)) {
+              likedRepliesData[reply.id] = true; // Mark reply as liked by the user
+            }
+          });
         });
         setLikedComments(likedCommentsData);
+        setLikedReplies(likedRepliesData);
       }
 
       setLoading(false);
@@ -102,6 +110,8 @@ const PostDetailScreen = () => {
             username: user.displayName || "Anonymous",
             reply: comment,
             timestamp: serverTimestamp(),
+            likes: 0, // Initialize likes to 0
+            likedBy: [], // Initialize likedBy array
           }
         );
       } else {
@@ -131,46 +141,164 @@ const PostDetailScreen = () => {
     }
   };
 
-  // Handle liking/unliking a comment
-  const handleLikeComment = async (commentId) => {
+  // Handle liking/unliking a comment or reply
+  const handleLike = async (commentId, replyId = null) => {
     try {
       const user = auth.currentUser;
       if (!user) {
-        Alert.alert("Error", "You must be logged in to like a comment.");
+        Alert.alert("Error", "You must be logged in to like.");
         return;
       }
 
-      const commentRef = doc(db, "forumPosts", postId, "comments", commentId);
-      const commentSnapshot = await getDoc(commentRef);
-      const commentData = commentSnapshot.data();
+      // Determine the reference (comment or reply)
+      const ref = replyId
+        ? doc(db, "forumPosts", postId, "comments", commentId, "replies", replyId) // Reply reference
+        : doc(db, "forumPosts", postId, "comments", commentId); // Comment reference
 
-      // Check if the user has already liked the comment
-      if (commentData.likedBy && commentData.likedBy.includes(user.uid)) {
-        // User has already liked the comment, so remove the like
-        await updateDoc(commentRef, {
+      const snapshot = await getDoc(ref);
+      const data = snapshot.data();
+
+      // Ensure the likes and likedBy fields exist
+      if (!data.likes) {
+        await updateDoc(ref, { likes: 0 }); // Initialize likes if it doesn't exist
+      }
+      if (!data.likedBy) {
+        await updateDoc(ref, { likedBy: [] }); // Initialize likedBy if it doesn't exist
+      }
+
+      // Check if the user has already liked the comment/reply
+      if (data.likedBy && data.likedBy.includes(user.uid)) {
+        // User has already liked, so remove the like
+        // Optimistically update the UI
+        setComments((prevComments) =>
+          prevComments.map((comment) => {
+            if (comment.id === commentId) {
+              if (replyId) {
+                // Update the reply's likes and likedBy
+                return {
+                  ...comment,
+                  replies: comment.replies.map((reply) => {
+                    if (reply.id === replyId) {
+                      return {
+                        ...reply,
+                        likes: reply.likes - 1,
+                        likedBy: reply.likedBy.filter((id) => id !== user.uid),
+                      };
+                    }
+                    return reply;
+                  }),
+                };
+              } else {
+                // Update the comment's likes and likedBy
+                return {
+                  ...comment,
+                  likes: comment.likes - 1,
+                  likedBy: comment.likedBy.filter((id) => id !== user.uid),
+                };
+              }
+            }
+            return comment;
+          })
+        );
+
+        // Update Firestore
+        await updateDoc(ref, {
           likes: increment(-1), // Decrement the like count
           likedBy: arrayRemove(user.uid), // Remove the user's ID from the likedBy array
         });
 
-        // Update the likedComments state to mark the comment as unliked
-        setLikedComments((prev) => ({ ...prev, [commentId]: false }));
+        // Update the likedComments or likedReplies state
+        if (replyId) {
+          setLikedReplies((prev) => ({ ...prev, [replyId]: false }));
+        } else {
+          setLikedComments((prev) => ({ ...prev, [commentId]: false }));
+        }
 
         console.log("Like removed successfully!");
       } else {
-        // User hasn't liked the comment, so add the like
-        await updateDoc(commentRef, {
+        // User hasn't liked, so add the like
+        // Optimistically update the UI
+        setComments((prevComments) =>
+          prevComments.map((comment) => {
+            if (comment.id === commentId) {
+              if (replyId) {
+                // Update the reply's likes and likedBy
+                return {
+                  ...comment,
+                  replies: comment.replies.map((reply) => {
+                    if (reply.id === replyId) {
+                      return {
+                        ...reply,
+                        likes: reply.likes + 1,
+                        likedBy: [...reply.likedBy, user.uid],
+                      };
+                    }
+                    return reply;
+                  }),
+                };
+              } else {
+                // Update the comment's likes and likedBy
+                return {
+                  ...comment,
+                  likes: comment.likes + 1,
+                  likedBy: [...comment.likedBy, user.uid],
+                };
+              }
+            }
+            return comment;
+          })
+        );
+
+        // Update Firestore
+        await updateDoc(ref, {
           likes: increment(1), // Increment the like count
           likedBy: arrayUnion(user.uid), // Add the user's ID to the likedBy array
         });
 
-        // Update the likedComments state to mark the comment as liked
-        setLikedComments((prev) => ({ ...prev, [commentId]: true }));
+        // Update the likedComments or likedReplies state
+        if (replyId) {
+          setLikedReplies((prev) => ({ ...prev, [replyId]: true }));
+        } else {
+          setLikedComments((prev) => ({ ...prev, [commentId]: true }));
+        }
 
-        console.log("Comment liked successfully!");
+        console.log("Liked successfully!");
       }
     } catch (error) {
       console.error("Error toggling like:", error);
       Alert.alert("Error", "Failed to toggle like.");
+
+      // Revert the optimistic update if Firestore update fails
+      setComments((prevComments) =>
+        prevComments.map((comment) => {
+          if (comment.id === commentId) {
+            if (replyId) {
+              // Revert the reply's likes and likedBy
+              return {
+                ...comment,
+                replies: comment.replies.map((reply) => {
+                  if (reply.id === replyId) {
+                    return {
+                      ...reply,
+                      likes: reply.likes - 1,
+                      likedBy: reply.likedBy.filter((id) => id !== user.uid),
+                    };
+                  }
+                  return reply;
+                }),
+              };
+            } else {
+              // Revert the comment's likes and likedBy
+              return {
+                ...comment,
+                likes: comment.likes - 1,
+                likedBy: comment.likedBy.filter((id) => id !== user.uid),
+              };
+            }
+          }
+          return comment;
+        })
+      );
     }
   };
 
@@ -306,7 +434,7 @@ const PostDetailScreen = () => {
             {/* Like button for comments */}
             <TouchableOpacity
               style={styles.likeButton}
-              onPress={() => handleLikeComment(item.id)}
+              onPress={() => handleLike(item.id)}
             >
               <Icon
                 name="thumbs-up"
@@ -325,6 +453,20 @@ const PostDetailScreen = () => {
                   <View key={reply.id} style={styles.replyBox}>
                     <Text style={styles.replyUser}>{reply.username}:</Text>
                     <Text>{reply.reply}</Text>
+                    {/* Like button for replies */}
+                    <TouchableOpacity
+                      style={styles.likeButton}
+                      onPress={() => handleLike(item.id, reply.id)}
+                    >
+                      <Icon
+                        name="thumbs-up"
+                        size={20}
+                        color={likedReplies[reply.id] ? "green" : "#666"} // Green if liked, gray if not
+                      />
+                      <Text style={[styles.likeText, { color: likedReplies[reply.id] ? "green" : "#666" }]}>
+                        {reply.likes || 0} {/* Show the like count */}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 ))}
               </View>
