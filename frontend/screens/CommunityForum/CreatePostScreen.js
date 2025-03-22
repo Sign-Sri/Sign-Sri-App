@@ -11,9 +11,8 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
-import { collection, addDoc, serverTimestamp, doc, getDoc } from "firebase/firestore"; // Import getDoc
-import { auth, db } from "../../config/firebaseConfig"; // Removed storage import
-import Icon from "react-native-vector-icons/Feather"; // Use Feather icons
+import { collection, addDoc, serverTimestamp, doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../../config/firebaseConfig";
 
 const predefinedFeelings = [
   "😊 Happy",
@@ -33,7 +32,6 @@ const CreatePostScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigation = useNavigation();
 
-  // Function to handle post creation using Firebase
   const handleCreatePost = async () => {
     if (!content.trim()) {
       Alert.alert("Error", "Post content cannot be empty.");
@@ -47,19 +45,16 @@ const CreatePostScreen = () => {
         return;
       }
 
-      // Determine the feeling to save (selected or custom)
       const feelingToSave = selectedFeeling === "Other +" ? customFeeling : selectedFeeling;
 
-      // Fetch the user's first name from Firestore
       const userDoc = await getDoc(doc(db, "users", user.uid));
       const firstName = userDoc.data().firstName;
 
-      // Save the post to Firestore
       await addDoc(collection(db, "forumPosts"), {
         userId: user.uid,
         firstName: firstName,
         content: content,
-        feeling: feelingToSave || null, // Save the feeling (or null if none)
+        feeling: feelingToSave || null,
         timestamp: serverTimestamp(),
       });
 
@@ -71,7 +66,6 @@ const CreatePostScreen = () => {
     }
   };
 
-  // Function to handle custom feeling submission
   const handleCustomFeeling = () => {
     if (customFeeling.trim()) {
       setSelectedFeeling(customFeeling);
@@ -87,6 +81,7 @@ const CreatePostScreen = () => {
       <TextInput
         style={styles.input}
         placeholder="What's on your mind?"
+        placeholderTextColor="#666"
         multiline
         value={content}
         onChangeText={setContent}
@@ -98,26 +93,29 @@ const CreatePostScreen = () => {
           selectedValue={selectedFeeling}
           onValueChange={(itemValue) => {
             if (itemValue === "Other +") {
-              setIsModalVisible(true); // Open modal for custom feeling
+              setIsModalVisible(true);
             } else {
-              setSelectedFeeling(itemValue); // Set predefined feeling
+              setSelectedFeeling(itemValue);
             }
           }}
           style={styles.dropdown}
-          mode="dropdown" // Android-specific prop
+          mode="dropdown"
+          dropdownIconColor="#fff" // Set dropdown arrow color to white
         >
-          <Picker.Item label="Select a feeling..." value="" />
+          <Picker.Item label="Select a feeling..." value="" style={styles.pickerItem} />
           {predefinedFeelings.map((feeling, index) => (
-            <Picker.Item key={index} label={feeling} value={feeling} />
+            <Picker.Item key={index} label={feeling} value={feeling} style={styles.pickerItem} />
           ))}
         </Picker>
       </View>
 
       {/* Display selected feeling */}
       {selectedFeeling && selectedFeeling !== "Other +" && (
-        <Text style={styles.selectedFeeling}>
-          Selected Feeling: {selectedFeeling}
-        </Text>
+        <View style={styles.selectedFeelingContainer}>
+          <Text style={styles.selectedFeelingText}>
+            Selected Feeling: {selectedFeeling}
+          </Text>
+        </View>
       )}
 
       {/* Post button */}
@@ -132,6 +130,7 @@ const CreatePostScreen = () => {
           <TextInput
             style={styles.modalInput}
             placeholder="Type your feeling..."
+            placeholderTextColor="#666"
             value={customFeeling}
             onChangeText={setCustomFeeling}
             autoFocus={true}
@@ -165,30 +164,48 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 100,
     marginBottom: 20,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
+    color: "#000",
   },
-  dropdownContainer: { marginBottom: 20, borderWidth: 3,
-    borderColor: "#182a38", borderRadius: 10, },
-  dropdown: { backgroundColor: "#f5f5f5", borderRadius: 20 },
-  selectedFeeling: {
-    fontSize: 16,
-    alignItems: "center",
-    color: "black",
-    height: 40,
-    borderRadius: 10,
+  dropdownContainer: {
     marginBottom: 20,
-    fontStyle: "italic",
-    backgroundColor: "#ffffff",
     borderWidth: 3,
     borderColor: "#182a38",
-
+    borderRadius: 10,
+    backgroundColor: "#182a38", // Background color of the dropdown container
+    overflow: "hidden",
+  },
+  dropdown: {
+    backgroundColor: "#182a38", // Background color of the dropdown
+    color: "#fff", // Text color of the dropdown
+  },
+  pickerItem: {
+    fontSize: 18, // Font size of the dropdown items
+    color: "#000", // Text color of the dropdown items
+  },
+  selectedFeelingContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderWidth: 3,
+    borderColor: "#182a38",
+    borderRadius: 20,
+    padding: 10,
+    marginBottom: 20,
+  },
+  selectedFeelingText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#000",
+    textAlign: "center",
   },
   postButton: {
     backgroundColor: "#79DD09",
     padding: 15,
     borderRadius: 20,
     alignItems: "center",
+    marginBottom: 20, // Add margin to separate the button and other elements
   },
   buttonText: {
     color: "white",
@@ -216,6 +233,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderColor: "#35d0fe",
     borderWidth: 3,
+    color: "#000",
   },
   modalButtonContainer: {
     flexDirection: "row",
