@@ -4,7 +4,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, doc } from "firebase/firestore";
 import { auth, db, storage } from "../../config/firebaseConfig"; // Import storage
 import * as ImagePicker from "expo-image-picker"; // For video upload
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // For Firebase Storage
@@ -55,6 +55,9 @@ const CreatePostScreen = () => {
         Alert.alert("Error", "You must be logged in to post.");
         return;
       }
+      // Fetch the user's first name from Firestore
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      const firstName = userDoc.data().firstName;
 
       let videoUrl = null;
       if (videoUri) {
@@ -72,6 +75,7 @@ const CreatePostScreen = () => {
       // Save the post to Firestore
       await addDoc(collection(db, "forumPosts"), {
         userId: user.uid,
+        firstName: firstName,
         content: content,
         feeling: feelingToSave || null, // Save the feeling (or null if none)
         videoUrl: videoUrl || null, // Save the video URL (or null if none)
