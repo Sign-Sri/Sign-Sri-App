@@ -22,6 +22,7 @@ import {
   updateDoc,
   increment,
   arrayUnion,
+  arrayRemove, // Import arrayRemove for removing likes
   getDoc,
   addDoc,
   deleteDoc,
@@ -62,7 +63,7 @@ const ForumScreen = () => {
     return () => unsubscribe();
   }, []);
 
-  // Handle post like
+  // Handle liking/unliking a post
   const handleLike = async (postId) => {
     try {
       const user = auth.currentUser;
@@ -75,25 +76,41 @@ const ForumScreen = () => {
       const postSnapshot = await getDoc(postRef);
       const postData = postSnapshot.data();
 
-      // Check if the user has already liked the post
-      if (postData.likedBy && postData.likedBy.includes(user.uid)) {
-        Alert.alert("Error", "You have already liked this post.");
-        return;
+      // Ensure the likes and likedBy fields exist
+      if (!postData.likes) {
+        await updateDoc(postRef, { likes: 0 }); // Initialize likes if it doesn't exist
+      }
+      if (!postData.likedBy) {
+        await updateDoc(postRef, { likedBy: [] }); // Initialize likedBy if it doesn't exist
       }
 
-      // Update the likes and likedBy array
-      await updateDoc(postRef, {
-        likes: increment(1),
-        likedBy: arrayUnion(user.uid), // Add the user's ID to the likedBy array
-      });
+      // Check if the user has already liked the post
+      if (postData.likedBy && postData.likedBy.includes(user.uid)) {
+        // User has already liked, so remove the like
+        await updateDoc(postRef, {
+          likes: increment(-1), // Decrement the like count
+          likedBy: arrayRemove(user.uid), // Remove the user's ID from the likedBy array
+        });
 
-      // Update the likedPosts state to mark the post as liked
-      setLikedPosts((prev) => ({ ...prev, [postId]: true }));
+        // Update the likedPosts state to mark the post as unliked
+        setLikedPosts((prev) => ({ ...prev, [postId]: false }));
 
-      console.log("Post liked successfully!");
+        console.log("Like removed successfully!");
+      } else {
+        // User hasn't liked, so add the like
+        await updateDoc(postRef, {
+          likes: increment(1), // Increment the like count
+          likedBy: arrayUnion(user.uid), // Add the user's ID to the likedBy array
+        });
+
+        // Update the likedPosts state to mark the post as liked
+        setLikedPosts((prev) => ({ ...prev, [postId]: true }));
+
+        console.log("Post liked successfully!");
+      }
     } catch (error) {
-      console.error("Error liking post:", error);
-      Alert.alert("Error", "Failed to like the post.");
+      console.error("Error toggling like:", error);
+      Alert.alert("Error", "Failed to toggle like.");
     }
   };
 
@@ -336,10 +353,10 @@ const ForumScreen = () => {
                   <Icon
                     name="thumbs-up"
                     size={20}
-                    color={likedPosts[item.id] ? "green" : "#666"} // Change color to green if liked
+                    color={likedPosts[item.id] ? "green" : "#666"} // Green if liked, gray if not
                   />
                   <Text style={[styles.interactionText, { color: likedPosts[item.id] ? "green" : "#666" }]}>
-                    {item.likes || 0}
+                    {item.likes || 0} {/* Show the like count */}
                   </Text>
                 </TouchableOpacity>
 
