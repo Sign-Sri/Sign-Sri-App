@@ -311,7 +311,7 @@ const ForumScreen = () => {
             <View style={styles.post}>
               <View style={styles.header}>
                 <Text style={styles.username}>
-                  {item.username || `User: ${item.userId || "Unknown"}`}
+                  {item.firstName || `User: ${item.userId || "Unknown"}`}
                 </Text>
                 {/* Edit/Delete button (only visible to the post owner) */}
                 {item.userId === auth.currentUser?.uid && (
