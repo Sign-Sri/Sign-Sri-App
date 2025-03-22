@@ -40,6 +40,7 @@ const PostDetailScreen = () => {
   const [editedComment, setEditedComment] = useState(""); // Track edited comment content
   const [likedComments, setLikedComments] = useState({}); // Track liked comments by the current user
   const [likedReplies, setLikedReplies] = useState({}); // Track liked replies by the current user
+  const[commentCount, setCommentCount] = useState(0); // Track the total number of comments 
 
   // Fetch comments and their replies for the post
   useEffect(() => {
@@ -48,6 +49,7 @@ const PostDetailScreen = () => {
       const commentsData = await Promise.all(
         snapshot.docs.map(async (doc) => {
           const commentData = { id: doc.id, ...doc.data() };
+
           // Fetch replies for each comment
           const repliesQuery = query(
             collection(db, "forumPosts", postId, "comments", doc.id, "replies"),
@@ -81,6 +83,7 @@ const PostDetailScreen = () => {
         setLikedComments(likedCommentsData);
         setLikedReplies(likedRepliesData);
       }
+      setComment(commentsData.length);
 
       setLoading(false);
     });
@@ -124,6 +127,8 @@ const PostDetailScreen = () => {
           likes: 0, // Initialize likes to 0
           likedBy: [], // Initialize likedBy array
         });
+
+        setCommentCount((prevCount) => prevCount +1);
       }
 
       // Increment the commentCount in the post document
@@ -397,6 +402,9 @@ const PostDetailScreen = () => {
       <Text style={styles.postTitle}>{postUsername}:</Text>
       <Text style={styles.postContent}>{postContent}</Text>
 
+      {/* Display the total number of Comments*/}
+      <Text style={styles.commentCountText}>Comment: {commentCount}</Text>
+
       {/* Display comments and replies */}
       <FlatList
         data={comments}
@@ -515,6 +523,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#fff" },
   postTitle: { fontWeight: "bold", fontSize: 18 },
   postContent: { fontSize: 16, marginBottom: 10 },
+  commentCountText: { fontSize: 14, color: "gray", marginBottom: 10 }, // Style for comment count
   commentBox: { borderBottomWidth: 1, padding: 5, marginBottom: 5 },
   commentHeader: { flexDirection: "row", alignItems: "center", marginBottom: 5 },
   commentUser: { fontWeight: "bold", flex: 1 },
