@@ -541,8 +541,18 @@ const PostDetailScreen = () => {
               <View style={styles.repliesContainer}>
                 {item.replies.map((reply) => (
                   <View key={reply.id} style={styles.replyBox}>
-                    <Text style={styles.replyUser}>{reply.username}:</Text>
-                    <Text>{reply.reply}</Text>
+                    <View style={styles.replyHeader}> 
+                    {/* Edit/Delete button for replies (only visible to the reply owner) */}
+                    {reply.userId === auth.currentUser?.uid && (
+                        <TouchableOpacity
+                          style={styles.editDeleteButton}
+                          onPress={() => showEditDeleteOptionsForReply(item.id, reply.id, reply.reply)}
+                        >
+                          <Icon name="more-vertical" size={20} color="#666" />
+                        </TouchableOpacity>
+                      )}
+                      <Text style={styles.replyUser}>{reply.username}:</Text>
+                    </View>
                     {/* Show input field if the reply is being edited */}
                     {editingReplyId === reply.id ? (
                       <TextInput
@@ -569,6 +579,14 @@ const PostDetailScreen = () => {
                         {reply.likes || 0} {/* Show the like count */}
                       </Text>
                     </TouchableOpacity>
+                    {/* Save button for editing replies */}
+                    {editingReplyId === reply.id && (
+                      <TouchableOpacity
+                        style={styles.saveButton}
+                        onPress={() => handleEditReply(item.id, reply.id)}
+                      >
+                        <Text style={styles.saveButtonText}>Save</Text>
+                      </TouchableOpacity>
                     {/* Edit/Delete button for replies (only visible to the reply owner) */}
                     {reply.userId === auth.currentUser?.uid && (
                       <TouchableOpacity
