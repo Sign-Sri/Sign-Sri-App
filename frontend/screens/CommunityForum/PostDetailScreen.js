@@ -130,7 +130,7 @@ const PostDetailScreen = () => {
           likedBy: [], // Initialize likedBy array
         });
 
-        setCommentCount((prevCount) => prevCount +1);
+        setCommentCount((prevCount) => prevCount + 1);
       }
 
       // Increment the commentCount in the post document
@@ -150,7 +150,7 @@ const PostDetailScreen = () => {
 
   // Handle editing a reply 
 
-  const handleEditReply = async ( commentId, replyId) => {
+  const handleEditReply = async (commentId, replyId) => {
     if (!editedReply.trim()) {
       Alert.alert("Error", "Reply cannot be empty.");
       return;
@@ -175,7 +175,7 @@ const PostDetailScreen = () => {
   // Handle deleting a reply 
   const handleDeleteReply = async (commentId, replyId) => {
     try {
-      //  // Show confirmation dialog
+      //  Show confirmation dialog
       Alert.alert(
         "Delete Reply",
         "Are you sure you want to delete this reply?",
@@ -543,6 +543,18 @@ const PostDetailScreen = () => {
                   <View key={reply.id} style={styles.replyBox}>
                     <Text style={styles.replyUser}>{reply.username}:</Text>
                     <Text>{reply.reply}</Text>
+                    {/* Show input field if the reply is being edited */}
+                    {editingReplyId === reply.id ? (
+                      <TextInput
+                        style={styles.editInput}
+                        value={editedReply}
+                        onChangeText={setEditedReply}
+                        placeholder="Edit your reply..."
+                        multiline
+                      />
+                    ) : (
+                      <Text>{reply.reply}</Text>
+                    )}
                     {/* Like button for replies */}
                     <TouchableOpacity
                       style={styles.likeButton}
@@ -557,10 +569,29 @@ const PostDetailScreen = () => {
                         {reply.likes || 0} {/* Show the like count */}
                       </Text>
                     </TouchableOpacity>
+                    {/* Edit/Delete button for replies (only visible to the reply owner) */}
+                    {reply.userId === auth.currentUser?.uid && (
+                      <TouchableOpacity
+                        style={styles.editDeleteButton}
+                        onPress={() => showEditDeleteOptionsForReply(item.id, reply.id, reply.reply)}
+                      >
+                        <Icon name="more-vertical" size={20} color="#666" />
+                      </TouchableOpacity>
+                    )}
+                    {/* Save button for editing replies */}
+                    {editingReplyId === reply.id && (
+                       <TouchableOpacity
+                       style={styles.saveButton}
+                       onPress={() => handleEditReply(item.id, reply.id)}
+                     >
+                       <Text style={styles.saveButtonText}>Save</Text>
+                     </TouchableOpacity>
+                   )}
                   </View>
                 ))}
               </View>
             )}
+
 
             {/* Reply button (icon with reply count) */}
             <TouchableOpacity
@@ -574,7 +605,7 @@ const PostDetailScreen = () => {
               )}
             </TouchableOpacity>
 
-            {/* Save button for editing */}
+            {/* Save button for editing comments */}
             {editingCommentId === item.id && (
               <TouchableOpacity
                 style={styles.saveButton}
