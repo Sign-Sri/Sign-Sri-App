@@ -378,7 +378,7 @@ const PostDetailScreen = () => {
     );
   };
 
-  if (loading) return <ActivityIndicator size="large" color="blue" />;
+  if (loading) return <ActivityIndicator size="large" color="#182a38" />;
 
   return (
     <View style={styles.container}>
