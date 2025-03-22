@@ -32,6 +32,7 @@ const PostDetailScreen = () => {
   const { postId, postContent, postUsername } = route.params;
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
+  const [replyingTo, setReplyingTo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editingCommentId, setEditingCommentId] = useState(null); // Track which comment is being edited
   const [editedComment, setEditedComment] = useState(""); // Track edited comment content
