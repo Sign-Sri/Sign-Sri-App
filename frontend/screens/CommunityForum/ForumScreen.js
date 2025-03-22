@@ -295,11 +295,12 @@ const ForumScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Button
-        title="Create Post"
-        onPress={navigateToCreatePost}
+      <TouchableOpacity
         style={styles.createPostButton}
-      />
+        onPress={navigateToCreatePost}
+      >
+        <Text style={styles.createPostButtonText}>Create Post</Text>
+      </TouchableOpacity>
 
       {loading ? (
         <ActivityIndicator size="large" color="#182a38" />
@@ -398,7 +399,18 @@ const ForumScreen = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 10, backgroundColor: "#f5f5f5" },
-  createPostButton: { backgroundColor: "#79DD09", padding: 10, borderRadius: 20, marginBottom: 15 },
+  createPostButton: {
+    backgroundColor: "#35d0fe",
+    padding: 15,
+    borderRadius: 20,
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  createPostButtonText: {
+    color: "#ffffff",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
   post: { backgroundColor: "#182a38", padding: 15, borderRadius: 8, marginBottom: 10, elevation: 2 },
   header: { flexDirection: "row", alignItems: "center", marginBottom: 5 },
   username: { fontWeight: "bold", color: "#ffffff", flex: 1, fontSize: 18 },
@@ -420,6 +432,7 @@ const styles = StyleSheet.create({
   interactionText: {
     marginLeft: 5,
     fontSize: 16,
+    color: "#ffffff", // Changed to white
   },
   editDeleteButton: {
     padding: 5,
@@ -439,7 +452,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     alignItems: "center",
-    
   },
   saveButtonText: {
     color: "white",
