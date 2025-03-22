@@ -72,11 +72,13 @@ const PostDetailScreen = () => {
         const likedCommentsData = {};
         const likedRepliesData = {};
         commentsData.forEach((comment) => {
-          if (comment.likedBy && comment.likedBy.includes(user.uid)) {
+          const likedBy = comment.likedBy || []; // Ensure likedBy is an array
+          if (likedBy.includes(user.uid)) {
             likedCommentsData[comment.id] = true; // Mark comment as liked by the user
           }
           comment.replies.forEach((reply) => {
-            if (reply.likedBy && reply.likedBy.includes(user.uid)) {
+            const replyLikedBy = reply.likedBy || []; // Ensure likedBy is an array
+            if (replyLikedBy.includes(user.uid)) {
               likedRepliesData[reply.id] = true; // Mark reply as liked by the user
             }
           });
@@ -275,7 +277,10 @@ const PostDetailScreen = () => {
         const replyDoc = await getDoc(replyRef);
         const replyData = replyDoc.data();
 
-        if (replyData.likedBy.includes(user.uid)) {
+        // Ensure likedBy is an array
+        const likedBy = replyData.likedBy || [];
+
+        if (likedBy.includes(user.uid)) {
           // User already liked the reply, so unlike it
           await updateDoc(replyRef, {
             likes: increment(-1),
@@ -296,7 +301,10 @@ const PostDetailScreen = () => {
         const commentDoc = await getDoc(commentRef);
         const commentData = commentDoc.data();
 
-        if (commentData.likedBy.includes(user.uid)) {
+        // Ensure likedBy is an array
+        const likedBy = commentData.likedBy || [];
+
+        if (likedBy.includes(user.uid)) {
           // User already liked the comment, so unlike it
           await updateDoc(commentRef, {
             likes: increment(-1),
@@ -387,7 +395,7 @@ const PostDetailScreen = () => {
         renderItem={({ item }) => (
           <View style={styles.commentBox}>
             <View style={styles.commentHeader}>
-              <Text style={styles.commentUser}>{item.firstName}:</Text>
+              <Text style={styles.commentUser}>{item.username}:</Text>
               {/* Edit/Delete button (only visible to the comment owner) */}
               {item.userId === auth.currentUser?.uid && (
                 <TouchableOpacity
