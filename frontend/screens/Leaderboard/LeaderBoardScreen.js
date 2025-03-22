@@ -50,16 +50,7 @@ const LeaderBoardScreen = () => {
   return (
     <View style={styles.container}>
 
-      {/* Header with Gradient Background */}
-      <LinearGradient
-        colors={['#182a38', '#2c3e50']}
-        style={styles.header}
-      >
-        <TouchableOpacity onPress={() => console.log("Go Back")}>
-          <Text style={styles.backButton}>←</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>Leader Board</Text>
-      </LinearGradient>
+      
 
       {/* Podium Section */}
       <View style={styles.podiumContainer}>
@@ -92,6 +83,7 @@ const LeaderBoardScreen = () => {
       </View>
 
       {/* Leaderboard List */}
+      
       <FlatList
         data={leaderboardData}
         keyExtractor={(item) => item.rank.toString()}
