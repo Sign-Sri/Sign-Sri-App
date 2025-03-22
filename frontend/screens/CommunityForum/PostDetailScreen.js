@@ -402,7 +402,7 @@ const PostDetailScreen = () => {
                   style={styles.editDeleteButton}
                   onPress={() => showEditDeleteOptions(item.id, item.comment)}
                 >
-                  <Icon name="more-vertical" size={20} color="#666" />
+                  <Icon name="more-vertical" size={22} color="#ffffff" />
                 </TouchableOpacity>
               )}
             </View>
@@ -429,8 +429,8 @@ const PostDetailScreen = () => {
             >
               <Icon
                 name="thumbs-up"
-                size={20}
-                color={likedComments[item.id] ? "green" : "#666"} // Green if liked, gray if not
+                size={28}
+                color={likedComments[item.id] ? "#79DD09" : "#666"} // Green if liked, gray if not
               />
             </TouchableOpacity>
 
@@ -447,7 +447,7 @@ const PostDetailScreen = () => {
                           style={styles.editDeleteButton}
                           onPress={() => showEditDeleteOptionsForReply(item.id, reply.id, reply.reply)}
                         >
-                          <Icon name="more-vertical" size={20} color="#666" />
+                          <Icon name="more-vertical" size={22} color="#ffffff" />
                         </TouchableOpacity>
                       )}
                     </View>
@@ -470,8 +470,8 @@ const PostDetailScreen = () => {
                     >
                       <Icon
                         name="thumbs-up"
-                        size={20}
-                        color={likedReplies[reply.id] ? "green" : "#666"} // Green if liked, gray if not
+                        size={25}
+                        color={likedReplies[reply.id] ? "#79DD09" : "#666"} // Green if liked, gray if not
                       />
                     </TouchableOpacity>
                     {/* Save button for editing replies */}
@@ -493,7 +493,7 @@ const PostDetailScreen = () => {
               style={styles.replyButton}
               onPress={() => setReplyingTo(item.id)}
             >
-              <Icon name="message-circle" size={20} color="#666" />
+              <Icon name="message-circle" size={25} color="#79DD09" />
               {/* Display the number of replies */}
               {item.replies && item.replies.length > 0 && (
                 <Text style={styles.replyCountText}>{item.replies.length}</Text>
@@ -529,30 +529,33 @@ const PostDetailScreen = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#fff" },
-  postTitle: { fontWeight: "bold", fontSize: 18 },
-  postContent: { fontSize: 16, marginBottom: 10 },
-  commentCountText: { fontSize: 14, color: "gray", marginBottom: 10 }, // Style for comment count
-  commentBox: { borderBottomWidth: 1, padding: 5, marginBottom: 5 },
-  commentHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 5 }, // Updated for right-aligned icon
-  commentUser: { fontWeight: "bold" }, // Removed flex: 1 to allow space for the icon
-  commentTimestamp: { marginTop: 5, fontSize: 12, color: "gray" },
-  editDeleteButton: { padding: 5 },
+  postTitle: { fontWeight: "bold", fontSize: 10 },
+  postContent: { fontSize: 30, marginBottom: 10, color: "#79DD09"},
+  commentCountText: { fontSize: 14, color: "black", marginBottom: 10, fontWeight: "bold" }, // Style for comment count
+  commentBox: { borderBottomWidth: 1, padding: 5, marginBottom: 5, borderRadius: 20, backgroundColor: "#182a38" },
+  commentHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20,}, // Updated for right-aligned icon
+  commentUser: { fontWeight: "bold", color :"#ffffff" , fontSize: 20}, // Removed flex: 1 to allow space for the icon
+  commentTimestamp: { marginTop: 5, fontSize: 12, color: "#ffffff" },
+  editDeleteButton: { padding: 5,},
   editInput: {
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
+    borderColor: "#ffffff",
+    borderRadius: 20,
     padding: 10,
     marginTop: 10,
-    fontSize: 16,
+    fontSize: 18,
+    backgroundColor: "#ffffff"
   },
   saveButton: {
-    backgroundColor: "blue",
+    backgroundColor: "#79DD09",
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     marginTop: 10,
     alignItems: "center",
+    borderWidth: 3,
   },
   saveButtonText: {
+    fontWeight: "bold",
     color: "white",
     fontSize: 16,
   },
@@ -561,10 +564,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 5,
   },
-  repliesContainer: { marginLeft: 20, marginTop: 5 },
-  replyBox: { borderLeftWidth: 2, borderLeftColor: "#ccc", paddingLeft: 10, marginBottom: 5 },
-  replyHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 5 }, // Updated for right-aligned icon
-  replyUser: { fontWeight: "bold", fontSize: 14 }, // Removed flex: 1 to allow space for the icon
+  repliesContainer: { marginLeft: 20, marginTop: 5, borderColor:"#ffffff",  },
+  replyBox: { borderLeftWidth: 2, borderLeftColor: "#35d0fe", paddingLeft: 10, marginBottom: 5, },
+  replyHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10, }, // Updated for right-aligned icon
+  replyUser: { fontWeight: "bold", fontSize: 15, color:"#ffffff" }, // Removed flex: 1 to allow space for the icon
   replyButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -573,11 +576,11 @@ const styles = StyleSheet.create({
   replyCountText: {
     marginLeft: 5,
     fontSize: 14,
-    color: "#666",
+    color:"#ffffff",
   },
-  input: { borderWidth: 1, borderColor: "#ccc", padding: 10, borderRadius: 5, marginTop: 10 },
-  commentButton: { backgroundColor: "blue", padding: 10, marginTop: 10, borderRadius: 5 },
-  buttonText: { color: "white", textAlign: "center", fontSize: 16 },
+  input: { borderWidth: 3, borderColor: "#182a38", padding: 10, borderRadius: 20, marginTop: 10,  },
+  commentButton: { backgroundColor: "#79DD09", padding: 10, marginTop: 10, borderRadius: 20 },
+  buttonText: { color: "white", textAlign: "center", fontSize: 18, fontWeight: "bold" },
 });
 
 export default PostDetailScreen;
