@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
 
   backButton: { position: "absolute", top: 40, left: 20 },
 
-  backText: { fontSize: 30, color: "white" },
+  backText: { fontSize: 30, color: "black", fontWeight: "bold" },
 
   word: { fontSize: 50, fontWeight: "bold", color: "#172937", marginBottom: 20 },
 

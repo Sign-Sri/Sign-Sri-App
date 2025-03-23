@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   backButton: { position: "absolute", top: 40, left: 20 },
-  backText: { fontSize: 30, color: "white" },
+  backText: { fontSize: 30, color: "black", fontWeight: "bold" },
   letter: { fontSize: 50, fontWeight: "bold", color: "#172937", marginBottom: 20 },
   noWordsText: {
     fontSize: 20,
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
   letterButtonText: { color: "#172937", fontSize: 20, fontWeight: "bold" },
 });
 
-export { LetterScreen, AlphabetList };
+export default LetterScreen;
