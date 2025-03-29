@@ -8,10 +8,12 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Learn</Text>
       <Text style={styles.subtitle}>Dictionary & Phrasebook</Text>
-      <ScrollView contentContainerStyle={styles.scrollContainer}
-        showsHorizontalScrollIndicator = {false}
-        showsVerticalScrollIndicator = {false}
-        >
+      <ScrollView 
+        contentContainerStyle={styles.scrollContainer}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}  // Added style for the ScrollView itself
+      >
         <View style={styles.grid}>
           {letters.map((letter) => (
             <TouchableOpacity
@@ -29,16 +31,39 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", alignItems: "center", paddingTop: 30 },
-
-  title: { fontSize: 32, fontWeight: "bold", color: "#0A369D" },
-
-  subtitle: { fontSize: 16, color: "#555", marginBottom: 20 },
-
-  scrollContainer: { alignItems: "center", paddingBottom: 20 },
-
-  grid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", width: "90%" },
-
+  container: { 
+    flex: 1, 
+    backgroundColor: "#fff", 
+    alignItems: "center", 
+    paddingTop: 30 
+  },
+  title: { 
+    fontSize: 32, 
+    fontWeight: "bold", 
+    color: "#0A369D" 
+  },
+  subtitle: { 
+    fontSize: 16, 
+    color: "#555", 
+    marginBottom: 20 
+  },
+  scrollView: {
+    flex: 1,  // This makes the ScrollView take all available space
+    width: '100%',  // Ensures full width
+  },
+  scrollContainer: { 
+    flexGrow: 1,  // Allows content to expand vertically
+    alignItems: "center", 
+    paddingBottom: 40,  // Increased padding
+    minHeight: '100%',  // Ensures minimum height
+  },
+  grid: { 
+    flexDirection: "row", 
+    flexWrap: "wrap", 
+    justifyContent: "center", 
+    width: "90%",
+    paddingBottom: 40,  // Added padding at bottom
+  },
   button: {
     backgroundColor: "#172937",
     padding: 20,
@@ -47,8 +72,11 @@ const styles = StyleSheet.create({
     width: "25%",
     alignItems: "center",
   },
-
-  buttonText: { color: "#79dd09", fontSize: 20, fontWeight: "bold" },
+  buttonText: { 
+    color: "#79dd09", 
+    fontSize: 20, 
+    fontWeight: "bold" 
+  },
 });
 
 export default HomeScreen;
