@@ -88,25 +88,26 @@ root/
    ```
 
 ### Backend
-1. Navigate to the `backend` directory:
-   ```bash
-   cd backend
-   ```
-2. Start the Express.js server:
-   ```bash
-   node index.js
-   ```
-
-### Python
 1. Navigate to the `backend/python` directory:
    ```bash
    cd backend/python
    ```
-2. Run your Python scripts as needed:
+2. Run the below script:
    ```bash
-   python your_script.py
+   venv\Scripts\activate
    ```
-
+3. Install the `requirements.txt`:
+   ```bash
+   pip install requirements.txt
+   ```
+4. Navigate to the `backend/python` directory:
+   ```bash
+   cd ..
+   ```
+5. Run the below script
+   ```bash
+   node TestToSign.js
+   ```
 ## Node.js Version Management
 To ensure consistency across team members, use `nvm` to manage Node.js versions:
 
