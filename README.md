@@ -8,14 +8,19 @@ This the Sign Sri's main repository
 root/
 ├── frontend/
 │   ├── node_modules/
-│   ├── src/
+│   ├── Context
+|   ├── assets
+|   ├── config
+|   ├── screens 
 │   ├── App.js
 │   ├── package.json
 │   └── ...
 ├── backend/
 │   ├── node_modules/
-│   ├── src/
-│   ├── index.js
+│   ├── ASLimages
+|   ├── config
+|   ├── outputs
+│   ├── routes
 │   ├── package.json
 │   ├── python/
 │   │   ├── venv/
