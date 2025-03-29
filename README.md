@@ -98,7 +98,7 @@ root/
    ```
 3. Install the `requirements.txt`:
    ```bash
-   pip install requirements.txt
+   pip install -r requirements.txt
    ```
 4. Navigate to the `backend/python` directory:
    ```bash
