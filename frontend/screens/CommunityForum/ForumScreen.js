@@ -398,7 +398,7 @@ const ForumScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 10, backgroundColor: "#f5f5f5" },
+  container: { flexGrow: 1, padding: 10, backgroundColor: "#f5f5f5",paddingBottom: 130, },
   createPostButton: {
     backgroundColor: "#35d0fe",
     padding: 15,
