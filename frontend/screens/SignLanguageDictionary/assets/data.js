@@ -647,7 +647,7 @@ export const videoData = {
       "video": require("../assets/videos/T/text.mp4")
     },
     {
-      "word": "Thank, Thank you",
+      "word": "Thank",
       "video": require("../assets/videos/T/thank.mp4")
     },
     {
