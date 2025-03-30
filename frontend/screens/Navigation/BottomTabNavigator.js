@@ -99,7 +99,7 @@ const BottomTabNavigator = () => {
 // Define styles for the active tab circle
 const styles = StyleSheet.create({
   activeTab: {
-    backgroundColor: '#172938', // Light grey color
+    backgroundColor: '#172938', // dark blue
     borderRadius: moderateScale(20), // Circular shape
     width: moderateScale(50), // Fixed width for the circle
     height: moderateScale(33), // Fixed height for the circle

@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: moderateScale(20),
-    backgroundColor: "#F5F5F5",
+    backgroundColor: "#f5f5f5",
   },
   loaderContainer: {
     flex: 1,

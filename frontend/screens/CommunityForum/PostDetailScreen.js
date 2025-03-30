@@ -45,22 +45,46 @@ const PostDetailScreen = () => {
   const [commentCount, setCommentCount] = useState(0); // Track the total number of comments
 
   // Fetch comments and their replies for the post
+  const getUserFirstName = async (userId) => {
+    try {
+      const userDoc = await getDoc(doc(db, "users", userId));
+      if (userDoc.exists()) {
+        return userDoc.data().firstName || "User";
+      }
+      return "User";
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      return "User";
+    }
+  };
+
   useEffect(() => {
     const q = query(collection(db, "forumPosts", postId, "comments"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, async (snapshot) => {
       const commentsData = await Promise.all(
         snapshot.docs.map(async (doc) => {
           const commentData = { id: doc.id, ...doc.data() };
+          
+          // Get the user's firstName for the comment
+          commentData.firstName = await getUserFirstName(commentData.userId);
+          
           // Fetch replies for each comment
           const repliesQuery = query(
             collection(db, "forumPosts", postId, "comments", doc.id, "replies"),
             orderBy("timestamp", "asc")
           );
           const repliesSnapshot = await getDocs(repliesQuery);
-          commentData.replies = repliesSnapshot.docs.map((replyDoc) => ({
-            id: replyDoc.id,
-            ...replyDoc.data(),
-          }));
+          
+          // Process replies with firstName
+          commentData.replies = await Promise.all(
+            repliesSnapshot.docs.map(async (replyDoc) => {
+              const replyData = { id: replyDoc.id, ...replyDoc.data() };
+              // Get the user's firstName for the reply
+              replyData.firstName = await getUserFirstName(replyData.userId);
+              return replyData;
+            })
+          );
+          
           return commentData;
         })
       );
@@ -72,14 +96,14 @@ const PostDetailScreen = () => {
         const likedCommentsData = {};
         const likedRepliesData = {};
         commentsData.forEach((comment) => {
-          const likedBy = comment.likedBy || []; // Ensure likedBy is an array
+          const likedBy = comment.likedBy || [];
           if (likedBy.includes(user.uid)) {
-            likedCommentsData[comment.id] = true; // Mark comment as liked by the user
+            likedCommentsData[comment.id] = true;
           }
           comment.replies.forEach((reply) => {
-            const replyLikedBy = reply.likedBy || []; // Ensure likedBy is an array
+            const replyLikedBy = reply.likedBy || [];
             if (replyLikedBy.includes(user.uid)) {
-              likedRepliesData[reply.id] = true; // Mark reply as liked by the user
+              likedRepliesData[reply.id] = true;
             }
           });
         });
@@ -87,9 +111,7 @@ const PostDetailScreen = () => {
         setLikedReplies(likedRepliesData);
       }
 
-      // Update the comment count
       setCommentCount(commentsData.length);
-
       setLoading(false);
     });
     return unsubscribe;
@@ -395,7 +417,7 @@ const PostDetailScreen = () => {
         renderItem={({ item }) => (
           <View style={styles.commentBox}>
             <View style={styles.commentHeader}>
-              <Text style={styles.commentUser}>{item.username}:</Text>
+              <Text style={styles.commentUser}>{item.firstName}:</Text>
               {/* Edit/Delete button (only visible to the comment owner) */}
               {item.userId === auth.currentUser?.uid && (
                 <TouchableOpacity
@@ -452,7 +474,7 @@ const PostDetailScreen = () => {
                 {item.replies.map((reply) => (
                   <View key={reply.id} style={styles.replyBox}>
                     <View style={styles.replyHeader}>
-                      <Text style={styles.replyUser}>{reply.username}:</Text>
+                      <Text style={styles.replyUser}>{reply.firstName}:</Text>
                       {/* Edit/Delete button for replies (only visible to the reply owner) */}
                       {reply.userId === auth.currentUser?.uid && (
                         <TouchableOpacity
@@ -530,7 +552,7 @@ const PostDetailScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#fff" },
+  container: { flex: 1, padding: 20, backgroundColor: "#f5f5f5" },
   postTitle: { fontWeight: "bold", fontSize: 10 },
   postContent: { fontSize: 30, marginBottom: 10, color: "#79DD09"},
   commentCountText: { fontSize: 14, color: "black", marginBottom: 10, fontWeight: "bold" }, // Style for comment count

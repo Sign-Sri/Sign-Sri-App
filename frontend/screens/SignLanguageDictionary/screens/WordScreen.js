@@ -4,17 +4,22 @@ import { Video } from "expo-av";
 import { videoData } from "../assets/data";
 
 const WordScreen = ({ route, navigation }) => {
-  const { word } = route.params;
+  const { word = "" } = route.params; // Add default value
   const videoRef = useRef(null);
   const [videoSource, setVideoSource] = useState(null);
   const [videoRate, setVideoRate] = useState(1);
 
   useEffect(() => {
+    if (!word) {
+      console.warn("No word parameter provided");
+      return;
+    }
+
     let foundVideo = null;
 
     for (const letter in videoData) {
       const videoEntry = videoData[letter].find(
-        (item) => item.word.toLowerCase() === word.toLowerCase()
+        (item) => item.word && word && item.word.toLowerCase() === word.toLowerCase()
       );
 
       if (videoEntry && videoEntry.video) {
@@ -26,7 +31,6 @@ const WordScreen = ({ route, navigation }) => {
     setVideoSource(foundVideo);
   }, [word]);
 
-  // Slows down the video for easy viewing for the user
   const slowDownVideo = () => {
     setVideoRate((prevRate) => Math.max(prevRate - 0.25, 0.05));
   };
@@ -55,23 +59,20 @@ const WordScreen = ({ route, navigation }) => {
         />
       )}
 
-      {/* Slow button */}
       <TouchableOpacity style={styles.slowButton} onPress={slowDownVideo}>
         <Text style={styles.buttonText}>Slow Down</Text>
       </TouchableOpacity>
 
-      {/* Normal Speed Button */}
-      <TouchableOpacity style = {styles.fastButton} onPress={speedUp}>
-        <Text style = {styles.buttonText}>Normal Speed</Text>
+      <TouchableOpacity style={styles.fastButton} onPress={speedUp}>
+        <Text style={styles.buttonText}>Normal Speed</Text>
       </TouchableOpacity>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FAF9F6",
+    backgroundColor: "#f5f5f5",
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 10,

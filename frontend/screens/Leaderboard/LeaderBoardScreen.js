@@ -97,7 +97,7 @@ const LeaderBoardScreen = () => {
 export default LeaderBoardScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
+  container: { flexGrow: 1, backgroundColor: "#f5f5f5",paddingBottom: 290 },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -221,7 +221,8 @@ const styles = StyleSheet.create({
   rank: { 
     fontSize: 20, 
     fontWeight: "bold", 
-    marginRight: 20 
+    marginRight: 20,
+    color: "#73E000",
   },
 
   medal: {

@@ -42,7 +42,22 @@ const ForumScreen = () => {
   useEffect(() => {
     const q = query(collection(db, "forumPosts"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const postsData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const postsData = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          // Ensure all required fields exist with defaults
+          firstName: data.firstName || "User",
+          content: data.content || "",
+          feeling: data.feeling || null,
+          timestamp: data.timestamp || serverTimestamp(),
+          likes: data.likes || 0,
+          likedBy: data.likedBy || [],
+          commentCount: data.commentCount || 0,
+          reshares: data.reshares || 0,
+          userId: data.userId || "",
+        };
+      });
       setPosts(postsData);
 
       // Initialize likedPosts state
@@ -51,7 +66,7 @@ const ForumScreen = () => {
         const likedPostsData = {};
         postsData.forEach((post) => {
           if (post.likedBy && post.likedBy.includes(user.uid)) {
-            likedPostsData[post.id] = true; // Mark post as liked by the user
+            likedPostsData[post.id] = true;
           }
         });
         setLikedPosts(likedPostsData);
@@ -245,32 +260,32 @@ const ForumScreen = () => {
   };
 
   // Handle resharing a post
-  const handleResharePost = async (postId, postContent, postUsername) => {
+  const handleResharePost = async (postId, postContent, postFirstName) => {
     try {
       const user = auth.currentUser;
       if (!user) {
         Alert.alert("Error", "You must be logged in to reshare a post.");
         return;
       }
-
+  
       // Create a new post with a reference to the original post
       await addDoc(collection(db, "forumPosts"), {
         userId: user.uid,
-        username: user.displayName || "Anonymous",
-        content: `Reshared: ${postContent}`,
-        originalPostId: postId, // Reference to the original post
+        firstName: user.displayName || "Anonymous", // Use firstName instead of username
+        content: `Reshared by ${postFirstName}: ${postContent}`,
+        originalPostId: postId,
         timestamp: serverTimestamp(),
         likes: 0,
         likedBy: [],
         commentCount: 0,
       });
-
+  
       // Increment the reshares count for the original post
       const postRef = doc(db, "forumPosts", postId);
       await updateDoc(postRef, {
         reshares: increment(1),
       });
-
+  
       console.log("Post reshared successfully!");
       Alert.alert("Success", "Post reshared successfully!");
     } catch (error) {
@@ -311,8 +326,8 @@ const ForumScreen = () => {
           renderItem={({ item }) => (
             <View style={styles.post}>
               <View style={styles.header}>
-                <Text style={styles.username}>
-                  {item.username || `User: ${item.userId || "Unknown"}`}
+              <Text style={styles.username}>
+                  {item.firstName} {/* Changed from username to firstName */}
                 </Text>
                 {/* Edit/Delete button (only visible to the post owner) */}
                 {item.userId === auth.currentUser?.uid && (
@@ -373,7 +388,7 @@ const ForumScreen = () => {
                 {/* Share button */}
                 <TouchableOpacity
                   style={styles.interactionButton}
-                  onPress={() => handleShareOrReshare(item.id, item.content, item.username)}
+                  onPress={() => handleShareOrReshare(item.id, item.content, item.firstName)}
                 >
                   <Icon name="share-2" size={26} color="#ffffff" />
                   <Text style={styles.interactionText}>{item.reshares || 0}</Text>
@@ -398,7 +413,7 @@ const ForumScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 10, backgroundColor: "#f5f5f5" },
+  container: { flexGrow: 1, padding: 10, backgroundColor: "#f5f5f5",paddingBottom: 130, },
   createPostButton: {
     backgroundColor: "#35d0fe",
     padding: 15,

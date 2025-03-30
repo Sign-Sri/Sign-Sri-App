@@ -37,27 +37,39 @@ const CreatePostScreen = () => {
       Alert.alert("Error", "Post content cannot be empty.");
       return;
     }
-
+  
     try {
       const user = auth.currentUser;
       if (!user) {
         Alert.alert("Error", "You must be logged in to post.");
         return;
       }
-
+  
       const feelingToSave = selectedFeeling === "Other +" ? customFeeling : selectedFeeling;
-
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      const firstName = userDoc.data().firstName;
-
+  
+      // Get user document from the "users" collection
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+      
+      if (!userDoc.exists()) {
+        Alert.alert("Error", "User data not found.");
+        return;
+      }
+  
+      const userData = userDoc.data();
+      const firstName = userData.firstName || "Anonymous"; // Fallback if firstName doesn't exist
+  
       await addDoc(collection(db, "forumPosts"), {
         userId: user.uid,
         firstName: firstName,
         content: content,
         feeling: feelingToSave || null,
         timestamp: serverTimestamp(),
+        likes: 0, // Initialize likes
+        likedBy: [], // Initialize likedBy array
+        commentCount: 0, // Initialize comment count
       });
-
+  
       Alert.alert("Success", "Post created!");
       navigation.goBack();
     } catch (error) {
@@ -156,7 +168,7 @@ const CreatePostScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#fff" },
+  container: { flex: 1, padding: 20, backgroundColor: "##f5f5f5" },
   input: {
     borderWidth: 3,
     borderColor: "#182a38",

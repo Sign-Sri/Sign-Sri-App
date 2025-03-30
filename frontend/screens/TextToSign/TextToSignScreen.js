@@ -261,7 +261,7 @@ const TextToSignScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#f5f5f5',
   },
   scrollContainer: {
     flexGrow: 1,

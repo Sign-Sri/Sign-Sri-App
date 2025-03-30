@@ -271,7 +271,7 @@ export const videoData = {
   ],
   H: [
     {
-      "word": "Have / Has / Had",
+      "word": "Have",
       "video": require("../assets/videos/H/have.mp4")
     },
     {
@@ -647,7 +647,7 @@ export const videoData = {
       "video": require("../assets/videos/T/text.mp4")
     },
     {
-      "word": "Thank, Thank you",
+      "word": "Thank",
       "video": require("../assets/videos/T/thank.mp4")
     },
     {
