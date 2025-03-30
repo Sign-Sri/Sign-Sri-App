@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: moderateScale(16),
-    backgroundColor: '#FFFFFF', // White background
+    backgroundColor: '#f5f5f5', // White background
   },
   header: {
     fontSize: moderateScale(24),

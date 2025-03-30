@@ -59,7 +59,7 @@ const AlphabetList = ({ navigation }) => {
 const styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
-    backgroundColor: "#FAF9F6",
+    backgroundColor: "#f5f5f5",
     alignItems: "center",
     paddingTop: 20,
     paddingBottom: 90, // Extra padding at the bottom to allow better scrolling

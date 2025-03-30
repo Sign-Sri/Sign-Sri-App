@@ -552,7 +552,7 @@ const PostDetailScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#fff" },
+  container: { flex: 1, padding: 20, backgroundColor: "#f5f5f5" },
   postTitle: { fontWeight: "bold", fontSize: 10 },
   postContent: { fontSize: 30, marginBottom: 10, color: "#79DD09"},
   commentCountText: { fontSize: 14, color: "black", marginBottom: 10, fontWeight: "bold" }, // Style for comment count

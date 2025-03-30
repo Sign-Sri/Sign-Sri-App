@@ -110,7 +110,7 @@ const ProgressScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#f5f5f5',
     padding: moderateScale(20),
     paddingBottom: verticalScale(80), // Extra padding to avoid navigation bar
   },
