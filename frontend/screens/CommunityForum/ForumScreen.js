@@ -42,7 +42,22 @@ const ForumScreen = () => {
   useEffect(() => {
     const q = query(collection(db, "forumPosts"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const postsData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const postsData = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          // Ensure all required fields exist with defaults
+          firstName: data.firstName || "User",
+          content: data.content || "",
+          feeling: data.feeling || null,
+          timestamp: data.timestamp || serverTimestamp(),
+          likes: data.likes || 0,
+          likedBy: data.likedBy || [],
+          commentCount: data.commentCount || 0,
+          reshares: data.reshares || 0,
+          userId: data.userId || "",
+        };
+      });
       setPosts(postsData);
 
       // Initialize likedPosts state
@@ -51,7 +66,7 @@ const ForumScreen = () => {
         const likedPostsData = {};
         postsData.forEach((post) => {
           if (post.likedBy && post.likedBy.includes(user.uid)) {
-            likedPostsData[post.id] = true; // Mark post as liked by the user
+            likedPostsData[post.id] = true;
           }
         });
         setLikedPosts(likedPostsData);
@@ -311,8 +326,8 @@ const ForumScreen = () => {
           renderItem={({ item }) => (
             <View style={styles.post}>
               <View style={styles.header}>
-                <Text style={styles.username}>
-                  {item.username || `User: ${item.userId || "Unknown"}`}
+              <Text style={styles.username}>
+                  {item.firstName} {/* Changed from username to firstName */}
                 </Text>
                 {/* Edit/Delete button (only visible to the post owner) */}
                 {item.userId === auth.currentUser?.uid && (
