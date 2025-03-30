@@ -221,7 +221,8 @@ const styles = StyleSheet.create({
   rank: { 
     fontSize: 20, 
     fontWeight: "bold", 
-    marginRight: 20 
+    marginRight: 20,
+    color: "#73E000",
   },
 
   medal: {
